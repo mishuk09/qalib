@@ -13,7 +13,7 @@ const Home = () => {
                 <h1 className="text-3xl md:text-5xl font-bold text-gray-800 text-center">
                     👋 Discover the Future of Startups with
                     <span className="text-blue-600 inline-block ms-3 relative">
-                        Qaliv
+                        Qalib
                         {/* Underline Image */}
                         <div className="absolute mt-[-4px] left-0">
                             <img
