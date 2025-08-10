@@ -27,7 +27,7 @@ const Navbar = () => {
 
                 {/* Logo & Search */}
                 <div className="flex items-center gap-6">
-                    <a href="/" className="shrink-0">
+                    <a href="/dashboard" className="shrink-0">
                         <img src={qaliblogo} alt="Qalib Logo" className="w-28 md:w-32" />
                     </a>
 

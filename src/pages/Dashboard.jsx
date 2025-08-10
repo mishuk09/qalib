@@ -1,7 +1,11 @@
 import React from "react";
 import Navbar from "./Navbar";
+import useUserData from "../utills/useUserData";
+import MiniLoading from "../utills/miniLoading";
 
 const Dashboard = () => {
+    const { userData, loading, error } = useUserData();
+
     return (
         <>
           
@@ -12,14 +16,14 @@ const Dashboard = () => {
                     <aside className="lg:col-span-3 space-y-6">
                         {/* Profile Card */}
                         <div className="bg-white rounded-lg shadow-md p-4 text-center">
-                            <div className="w-20 h-20 mx-auto rounded-full border-gray-300 overflow-hidden">
+                            <div className="w-20 h-20 mx-auto rounded-full border border-gray-300 overflow-hidden">
                                 <img
                                     src="path_to_your_image.jpg"
                                     alt="Profile"
                                     className="w-full h-full object-cover"
                                 />
                             </div>
-                            <h2 className="mt-3 text-lg font-semibold">Mahadi Hasan Mishuk</h2>
+                            <h2 className="mt-3 text-lg font-semibold"> {loading ? <MiniLoading /> : userData?.name}</h2>
                             <p className="text-sm text-gray-500">Full-Stack Developer | MERN Stack</p>
                             <p className="text-xs text-gray-400">Melaka, Malacca</p>
                             <div className="mt-4 space-y-1 text-sm">
