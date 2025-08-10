@@ -40,8 +40,12 @@ const AuthForm = () => {
                         password: formData.password,
                     }),
                 });
-                const data = await res.json();
-                setMessage(data.message || data.error);
+
+                setMessage('Registration successful!');
+                // Set a timeout to clear the message after 5 seconds (5000ms)
+                setTimeout(() => {
+                    setMessage(""); // Clear the message after the timeout
+                }, 3000);
             } else {
                 const res = await fetch(`${API_BASE}/login`, {
                     method: "POST",
@@ -58,6 +62,10 @@ const AuthForm = () => {
                 } else {
                     setMessage(data.error || "Login failed");
                 }
+                // Set a timeout to clear the message after 5 seconds (5000ms)
+                setTimeout(() => {
+                    setMessage(""); // Clear the message after the timeout
+                }, 3000);
             }
         } catch (error) {
             setMessage("Server error. Please try again.");
@@ -67,7 +75,11 @@ const AuthForm = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-4">
+        <div className="flex relative justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-4">
+            {message && (
+                <p className="absolute px-4 py-2 text-white font-semibold  top-2 right-2 bg-blue-500 text-center  rounded  mt-4  ">{message}</p>
+            )}
+
             <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md transition-all duration-300">
                 {/* Tabs */}
                 <div className="flex mb-8 border-b border-gray-200">
@@ -169,9 +181,7 @@ const AuthForm = () => {
                 </form>
 
                 {/* Feedback */}
-                {message && (
-                    <p className="text-center text-sm mt-4 text-red-500">{message}</p>
-                )}
+
 
                 {/* Forgot password */}
                 {!isSignUp && (
@@ -211,6 +221,7 @@ const AuthForm = () => {
                         <span className="text-gray-700 font-medium">Continue with X</span>
                     </button>
                 </div>
+
 
                 {/* Switch Link */}
                 <p className="text-center text-sm text-gray-500 mt-6">
