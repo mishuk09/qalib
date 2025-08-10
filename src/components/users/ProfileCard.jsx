@@ -1,11 +1,39 @@
 import React from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope, FaGlobe } from 'react-icons/fa';
- 
+
 
 export default function ProfileCard() {
+  const [userData, setUserData] = React.useState(null);
+  const token = localStorage.getItem("token");
+
+
+  React.useEffect(() => {
+    if (!token) return; // no token, don't fetch
+
+    fetch("http://127.0.0.1:5000/api/profile", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUserData(data.user);
+        } else {
+          console.error(data.error || "Unexpected response");
+        }
+      })
+      .catch(err => console.error("Fetch error:", err));
+  }, [token]); // runs once unless token changes
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-    
+
 
       <div className="bg-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -33,7 +61,8 @@ export default function ProfileCard() {
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between">
 
                     <div>
-                      <h1 className="text-2xl font-semibold text-gray-900">Mahadi Hasan Mishuk</h1>
+                      <h1 className="text-2xl font-semibold text-gray-900"><h1>{userData?.name}</h1>
+                      </h1>
                       <p className="text-sm text-gray-500 mt-1">Full-Stack Developer · MERN Stack · React · NoSQL</p>
                       <p className="text-sm text-gray-400 mt-1">Melaka, Malacca · Multimedia University</p>
                     </div>

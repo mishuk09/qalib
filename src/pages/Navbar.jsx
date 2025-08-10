@@ -15,6 +15,12 @@ const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
 
+    // Logout function
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+    };
+
     return (
         <header className="bg-white shadow-md sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center py-3">
@@ -66,7 +72,7 @@ const Navbar = () => {
                             <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-40 overflow-hidden">
                                 <a href="/profile" className="block px-4 py-2 hover:bg-blue-50">Profile</a>
                                 <a href="#" className="block px-4 py-2 hover:bg-blue-50">Settings</a>
-                                <a href="#" className="block px-4 py-2 hover:bg-blue-50">Logout</a>
+                                <button onClick={handleLogout} className="block px-4 py-2 hover:bg-blue-50">Logout</button>
                             </div>
                         )}
                     </div>

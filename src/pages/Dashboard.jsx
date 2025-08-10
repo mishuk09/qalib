@@ -12,7 +12,7 @@ const Dashboard = () => {
                     <aside className="lg:col-span-3 space-y-6">
                         {/* Profile Card */}
                         <div className="bg-white rounded-lg shadow-md p-4 text-center">
-                            <div className="w-20 h-20 mx-auto rounded-full overflow-hidden">
+                            <div className="w-20 h-20 mx-auto rounded-full border-gray-300 overflow-hidden">
                                 <img
                                     src="path_to_your_image.jpg"
                                     alt="Profile"
@@ -43,7 +43,8 @@ const Dashboard = () => {
                     <main className="lg:col-span-6 space-y-6">
                         {/* Post */}
                         <div className="bg-white rounded-lg shadow-md p-6">
-                            <div className="flex items-center space-x-4">
+                            Newsfeed will be there
+                            {/* <div className="flex items-center space-x-4">
                                 <div className="w-10 h-10 rounded-full overflow-hidden">
                                     <img
                                         src="path_to_your_image.jpg"
@@ -73,7 +74,7 @@ const Dashboard = () => {
                                 <button className="px-4 py-2 bg-yellow-300 text-black rounded-lg hover:bg-yellow-400 transition">
                                     Congratulations!
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </main>
 
