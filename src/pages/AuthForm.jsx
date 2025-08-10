@@ -58,6 +58,7 @@ const AuthForm = () => {
                 const data = await res.json();
                 if (data.token) {
                     localStorage.setItem("token", data.token);
+                    window.location.href = "/dashboard"; // Redirect to home page
                     setMessage("Login successful!");
                 } else {
                     setMessage(data.error || "Login failed");
@@ -73,6 +74,9 @@ const AuthForm = () => {
             setLoading(false);
         }
     };
+
+
+
 
     return (
         <div className="flex relative justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-4">

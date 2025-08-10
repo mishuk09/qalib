@@ -1,13 +1,14 @@
 import underimg from '../assets/underimg.png';
 
+
 const Home = () => {
     return (
         <div className="w-full px-3 pb-6 md:px-0 relative h-auto flex flex-col items-center bg-blue-50">
             {/* Wallet Connect Section */}
-           
+
 
             {/* Main Content */}
-            <div className="flex flex-col items-center justify-center mt-36">
+            <div className="flex flex-col items-center justify-center mt-20">
                 {/* Title */}
                 <h1 className="text-3xl md:text-5xl font-bold text-gray-800 text-center">
                     👋 Discover the Future of Startups with
