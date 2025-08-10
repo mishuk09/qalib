@@ -2,20 +2,80 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaXTwitter } from "react-icons/fa6";
 
+const API_BASE = "http://127.0.0.1:5000/api"; // Flask backend
+
 const AuthForm = () => {
     const [isSignUp, setIsSignUp] = useState(false);
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.type === "text" ? "name" : e.target.type === "email" ? "email" : e.target.name || "password"]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setMessage("");
+        setLoading(true);
+
+        try {
+            if (isSignUp) {
+                if (formData.password !== formData.confirmPassword) {
+                    setMessage("Passwords do not match");
+                    setLoading(false);
+                    return;
+                }
+                const res = await fetch(`${API_BASE}/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: formData.name,
+                        email: formData.email,
+                        password: formData.password,
+                    }),
+                });
+                const data = await res.json();
+                setMessage(data.message || data.error);
+            } else {
+                const res = await fetch(`${API_BASE}/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: formData.email,
+                        password: formData.password,
+                    }),
+                });
+                const data = await res.json();
+                if (data.token) {
+                    localStorage.setItem("token", data.token);
+                    setMessage("Login successful!");
+                } else {
+                    setMessage(data.error || "Login failed");
+                }
+            }
+        } catch (error) {
+            setMessage("Server error. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-4">
             <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md transition-all duration-300">
-
                 {/* Tabs */}
                 <div className="flex mb-8 border-b border-gray-200">
                     <button
                         onClick={() => setIsSignUp(false)}
                         className={`flex-1 py-3 font-semibold text-lg transition-colors duration-200 ${!isSignUp
-                                ? "text-blue-600 border-b-2 border-blue-600"
-                                : "text-gray-500 hover:text-blue-500"
+                            ? "text-blue-600 border-b-2 border-blue-600"
+                            : "text-gray-500 hover:text-blue-500"
                             }`}
                     >
                         Sign In
@@ -23,8 +83,8 @@ const AuthForm = () => {
                     <button
                         onClick={() => setIsSignUp(true)}
                         className={`flex-1 py-3 font-semibold text-lg transition-colors duration-200 ${isSignUp
-                                ? "text-blue-600 border-b-2 border-blue-600"
-                                : "text-gray-500 hover:text-blue-500"
+                            ? "text-blue-600 border-b-2 border-blue-600"
+                            : "text-gray-500 hover:text-blue-500"
                             }`}
                     >
                         Sign Up
@@ -32,7 +92,7 @@ const AuthForm = () => {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-5">
+                <form className="space-y-5" onSubmit={handleSubmit}>
                     {isSignUp && (
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -41,7 +101,10 @@ const AuthForm = () => {
                             <input
                                 type="text"
                                 placeholder="John Doe"
+                                value={formData.name}
+                                onChange={handleChange}
                                 className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition-all"
+                                required
                             />
                         </div>
                     )}
@@ -53,7 +116,10 @@ const AuthForm = () => {
                         <input
                             type="email"
                             placeholder="you@example.com"
+                            value={formData.email}
+                            onChange={handleChange}
                             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition-all"
+                            required
                         />
                     </div>
 
@@ -63,8 +129,12 @@ const AuthForm = () => {
                         </label>
                         <input
                             type="password"
+                            name="password"
                             placeholder="••••••••"
+                            value={formData.password}
+                            onChange={handleChange}
                             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition-all"
+                            required
                         />
                     </div>
 
@@ -75,19 +145,33 @@ const AuthForm = () => {
                             </label>
                             <input
                                 type="password"
+                                name="confirmPassword"
                                 placeholder="••••••••"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
                                 className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition-all"
+                                required
                             />
                         </div>
                     )}
 
                     <button
                         type="submit"
+                        disabled={loading}
                         className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white py-3 rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
                     >
-                        {isSignUp ? "Create Account" : "Sign In"}
+                        {loading
+                            ? "Please wait..."
+                            : isSignUp
+                                ? "Create Account"
+                                : "Sign In"}
                     </button>
                 </form>
+
+                {/* Feedback */}
+                {message && (
+                    <p className="text-center text-sm mt-4 text-red-500">{message}</p>
+                )}
 
                 {/* Forgot password */}
                 {!isSignUp && (
@@ -115,7 +199,9 @@ const AuthForm = () => {
                         className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 hover:bg-gray-50 transition-colors shadow-sm"
                     >
                         <FcGoogle size={22} />
-                        <span className="text-gray-700 font-medium">Continue with Google</span>
+                        <span className="text-gray-700 font-medium">
+                            Continue with Google
+                        </span>
                     </button>
                     <button
                         type="button"
@@ -128,7 +214,9 @@ const AuthForm = () => {
 
                 {/* Switch Link */}
                 <p className="text-center text-sm text-gray-500 mt-6">
-                    {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+                    {isSignUp
+                        ? "Already have an account?"
+                        : "Don't have an account?"}{" "}
                     <button
                         onClick={() => setIsSignUp(!isSignUp)}
                         className="text-blue-600 font-semibold hover:underline transition-colors"
