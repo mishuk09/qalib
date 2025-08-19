@@ -118,7 +118,7 @@ export default function ProfileCard() {
                         {/* Button to open */}
                         <button
                           onClick={() => setSecondModalOpen(true)}
-                          className="inline-flex items-center gap-2 px-4 py-2 mt-1 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
+                          className="inline-flex items-center gap-2 px-4 py-2 mt-1 bg-red-600 text-white rounded-full text-sm font-medium hover:bg-red-700 transition"
                         >
                           Behavioral Traits ✎
                         </button>

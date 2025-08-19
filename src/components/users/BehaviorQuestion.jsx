@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const RatingScale = ({ name, label, value, onChange }) => {
     return (
-        <div className="p-4 mb-6 bg-gray-50 rounded-2xl shadow-sm border border-gray-200">
+        <div className="p-4 mb-6 bg-white  rounded-2xl shadow-sm border border-gray-200">
             {/* Question Label */}
             <p className="text-base text-justify font-semibold text-gray-800 mb-4">{label}</p>
 
@@ -203,7 +203,7 @@ const BehaviorQuestion = () => {
                 {/* ================= SECTION 2. QALB BEHAVIORAL TRAITS ================= */}
 
                 {/* 2(A). Trustworthy */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(A). Trustworthy</h2>
                     <RatingScale name="twoaq1" label="1. I am someone who strives to fulfil the organization’s trust" value={formData.twoaq1} onChange={handleRadioChange} />
                     <RatingScale name="twoaq2" label="2. I am someone who leads by following the guidelines set by the organization" value={formData.twoaq2} onChange={handleRadioChange} />
@@ -213,7 +213,7 @@ const BehaviorQuestion = () => {
                 </div>
 
                 {/* 2(B). Concern for the Welfare */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(B). Concern for the Welfare</h2>
                     <RatingScale name="twobq6" label="6. As an entrepreneur, I would advise employees on religious matters" value={formData.twobq6} onChange={handleRadioChange} />
                     <RatingScale name="twobq7" label="7. As an entrepreneur, I would exercise my powers to ensure my employees' rights are safeguarded" value={formData.twobq7} onChange={handleRadioChange} />
@@ -226,7 +226,7 @@ const BehaviorQuestion = () => {
                 </div>
 
                 {/* 2(C). Do not Waste */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(C). Do not Waste</h2>
                     <RatingScale name="twocq14" label="14. As an entrepreneur, I would refrain from making decisions resulting in any wrongdoing" value={formData.twocq14} onChange={handleRadioChange} />
                     <RatingScale name="twocq15" label="15. As an entrepreneur, I do not compromise with any kind of wrongdoings" value={formData.twocq15} onChange={handleRadioChange} />
@@ -239,7 +239,7 @@ const BehaviorQuestion = () => {
                 </div>
 
                 {/* 2(D). Caring for the Society and Environment */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(D). Caring for the Society and Environment</h2>
                     <RatingScale name="twodq22" label="22. As an entrepreneur, I encourage the organization and the employees to engage in charity by helping the poor and needy" value={formData.twodq22} onChange={handleRadioChange} />
                     <RatingScale name="twodq23" label="23. As an entrepreneur, I encourage the organization’s corporate social responsibility (CSR) policy prioritizes charitable activity" value={formData.twodq23} onChange={handleRadioChange} />
@@ -248,7 +248,7 @@ const BehaviorQuestion = () => {
                 </div>
 
                 {/* 2(E). Faith (Taqwa) to Allah when running a business */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(E). Faith (Taqwa) to Allah when running a business</h2>
                     <RatingScale name="twoeq26" label="26. I realize that status and rank are tests from Allah (SWT)" value={formData.twoeq26} onChange={handleRadioChange} />
                     <RatingScale name="twoeq27" label="27. Religion is important factor in entrepreneurship" value={formData.twoeq27} onChange={handleRadioChange} />
@@ -259,7 +259,7 @@ const BehaviorQuestion = () => {
                 </div>
 
                 {/* 2(F). Halal as a Top Priority */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(F). Halal as a Top Priority</h2>
                     <RatingScale name="twofq32" label="32. As an entrepreneur, I believe that every human, especially a leader, is obliged to do what is permitted and leave what is forbidden in the religion" value={formData.twofq32} onChange={handleRadioChange} />
                     <RatingScale name="twofq33" label="33. As an entrepreneur, I would put high priority the use of Halal resources within the organization" value={formData.twofq33} onChange={handleRadioChange} />
@@ -267,14 +267,14 @@ const BehaviorQuestion = () => {
                 </div>
 
                 {/* 2(G). Worship to Allah is a Priority */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(G). Worship to Allah is a Priority</h2>
                     <RatingScale name="twogq35" label="35. I believe an entrepreneur must obey and carry out the orders of Allah and His Messengers" value={formData.twogq35} onChange={handleRadioChange} />
                     <RatingScale name="twogq36" label="36. I believe every opinion or suggestion should be thoroughly examined" value={formData.twogq36} onChange={handleRadioChange} />
                 </div>
 
                 {/* 2(H). Practicing High Moral Values */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(H). Practicing High Moral Values</h2>
                     <RatingScale name="twohq37" label="37. I would refrain from making a decision when angry" value={formData.twohq37} onChange={handleRadioChange} />
                     <RatingScale name="twohq38" label="38. As an entrepreneur, I would emphasize to the employees to always be patient in achieving their goals" value={formData.twohq38} onChange={handleRadioChange} />
@@ -300,7 +300,7 @@ const BehaviorQuestion = () => {
                 </div>
 
                 {/* 2(I). Knowledgeable */}
-                <div className="p-4 bg-white rounded-xl shadow-md mb-6">
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">2(I). Knowledgeable</h2>
                     <RatingScale name="twoiq58" label="58. As an entrepreneur, I would always be alert to the development of competitors" value={formData.twoiq58} onChange={handleRadioChange} />
                     <RatingScale name="twoiq59" label="59. I believe an entrepreneur should be wise and mature when delivering speech so that she/he will be heard by the employees" value={formData.twoiq59} onChange={handleRadioChange} />
@@ -310,6 +310,244 @@ const BehaviorQuestion = () => {
                     <RatingScale name="twoiq63" label="63. As an entrepreneur, in general I believe decisions made by the employees are free from any influence by their immediate superiors" value={formData.twoiq63} onChange={handleRadioChange} />
                 </div>
 
+
+
+                {/* SECTION 3. INCLUSIVE INNOVATIVENESS */}
+
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">3. Inclusive Innovativeness</h2>
+                    <RatingScale
+                        name="three64"
+                        label="64. I would produce inclusive goods for the commonly marginalized groups such as the poor, the disabled, the migrants, the women, the elderly, certain ethnic group, etc"
+                        value={formData.three64}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="three65"
+                        label="65. I would strive to achieve significantly low costs"
+                        value={formData.three65}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="three66"
+                        label="66. I would price our product affordably low"
+                        value={formData.three66}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="three67"
+                        label="67. I would ensure our product is accessible by the commonly marginalized groups such as the poor, the disabled, the migrants, the women, the elderly, certain ethnic group, etc"
+                        value={formData.three67}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="three68"
+                        label="68. I would offer products and services designed for the commonly marginalized groups that is appealing to the mass market as well"
+                        value={formData.three68}
+                        onChange={handleRadioChange}
+                    />
+
+                </div>
+
+
+                {/* SECTION 4. INCLUSIVE ENTREPRENEURSHIP INTENTION */}
+
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">INCLUSIVE ENTREPRENEURSHIP INTENTION</h2>
+                    <RatingScale
+                        name="four69"
+                        label="69. I’m ready to do anything to be an inclusive entrepreneur"
+                        value={formData.four69}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="four70"
+                        label="70. My professional goal is becoming an inclusive entrepreneur"
+                        value={formData.four70}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="four71"
+                        label="71. I will make every effort to start and run my own firm that produce inclusive products/services"
+                        value={formData.four71}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="four72"
+                        label="72. I’m determined to create a firm in the future that produce inclusive products/services"
+                        value={formData.four72}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="four73"
+                        label="73. I have very seriously thought in starting a firm that produce inclusive products/services"
+                        value={formData.four73}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="four74"
+                        label="74. I’ve got the firm intention to start a firm someday that produce inclusive products/services"
+                        value={formData.four74}
+                        onChange={handleRadioChange}
+                    />
+
+                </div>
+
+
+                {/* SECTION 5. RELIGIOSITY */}
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">RELIGIOSITY</h2>
+                    <RatingScale
+                        name="five75"
+                        label="75. I use the lessons from the Qur'an/Holy book/Scriptures in my conversations"
+                        value={formData.five75}
+                        onChange={handleRadioChange}
+                    />
+
+
+                    <RatingScale
+                        name="five76"
+                        label="76. I am the first to greet when meeting another person"
+                        value={formData.five76}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="five77"
+                        label="77. I fulfil all my promises"
+                        value={formData.five77}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="five78"
+                        label="78. I perceive those who are not the same religion as mine as potential believers of my religion"
+                        value={formData.five78}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="five79"
+                        label="79. I respect those who are not the same religion as mine"
+                        value={formData.five79}
+                        onChange={handleRadioChange}
+                    />
+
+                </div>
+
+
+                {/* SECTION 6. THEORY OF PLANNED BEHAVIOR */}
+
+
+                {/* 6(A). Attitude */}
+
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Attitude</h2>
+                    <RatingScale
+                        name="sixa80"
+                        label="80. If I had opportunity and resources, I would start a business"
+                        value={formData.sixa80}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixa81"
+                        label="81. Among various options, I prefer to be an entrepreneur"
+                        value={formData.sixa81}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixa82"
+                        label="82. Being an entrepreneur would give me great satisfaction and involves more advantages than disadvantages to me"
+                        value={formData.sixa82}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixa83"
+                        label="83. I believe entrepreneurship is a desirable career choice for me"
+                        value={formData.sixa83}
+                        onChange={handleRadioChange}
+                    />
+
+                </div>
+
+                {/* 6(B). Subjective Norms */}
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Subjective Norms</h2>
+                    <RatingScale
+                        name="sixb84"
+                        label="84. My friends would accept my decision to start a new firm"
+                        value={formData.sixb84}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixb85"
+                        label="85. My immediate family would approve my decision to start a business"
+                        value={formData.sixb85}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixb86"
+                        label="86. My colleagues would appreciate my decision to create a business"
+                        value={formData.sixb86}
+                        onChange={handleRadioChange}
+                    />
+
+                </div>
+
+                {/* 6(C). Perceived Behavioural Control */}
+
+                <div className="p-4 bg-blue-50 rounded-xl shadow-md mb-6">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Perceived Behavioural Control</h2>
+                    <RatingScale
+                        name="sixc87"
+                        label="87. I am able to control the process of creating a new business"
+                        value={formData.sixc87}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixc88"
+                        label="88. I think I would be completely able to start a new firm"
+                        value={formData.sixc88}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixc89"
+                        label="89. Generally it will be easy for me to develop a business idea"
+                        value={formData.sixc89}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixc90"
+                        label="90. I have the skills and knowledge required to start a business"
+                        value={formData.sixc90}
+                        onChange={handleRadioChange}
+                    />
+
+                    <RatingScale
+                        name="sixc91"
+                        label="91. Starting a business is within my control"
+                        value={formData.sixc91}
+                        onChange={handleRadioChange}
+                    />
+
+                </div>
 
                 <button
                     type="submit"
