@@ -3,11 +3,13 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaGlobe } from 'react-icons/fa';
 import useUserData from "../../utills/useUserData";
 import MiniLoading from '../../utills/miniLoading';
 import BioDataForm from './BioDataForm';
+import BehaviorQuestion from './BehaviorQuestion';
 
 
 export default function ProfileCard() {
   const { userData, loading, error } = useUserData();
   const [modalOpen, setModalOpen] = React.useState(false);
+  const [secondModalOpen, setSecondModalOpen] = React.useState(false);
 
 
 
@@ -27,29 +29,45 @@ export default function ProfileCard() {
             onClick={(e) => e.stopPropagation()} // prevent close on inside click
           >
             {/* Header with Close */}
-             
+
+            <button
+              onClick={() => setModalOpen(false)}
+              className="px-2 py-1 absolute top-2 right-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+            >
+              ✕
+            </button>
+
+            {/* Scrollable Content */}
+            <BioDataForm />
+          </div>
+        </div>
+      )}
+      {
+        secondModalOpen && (
+          <div
+            className="fixed inset-0 bg-black/40 flex items-center justify-center z-20"
+            onClick={() => setSecondModalOpen(false)} // click outside closes modal
+          >
+            {/* Modal Content */}
+            <div
+              className="bg-white relative p-6 max-w-4xl w-full h-[80vh] rounded-xl shadow-lg overflow-y-auto"
+              onClick={(e) => e.stopPropagation()} // prevent close on inside click
+            >
+              {/* Header with Close */}
+
               <button
-                onClick={() => setModalOpen(false)}
+                onClick={() => setSecondModalOpen(false)}
                 className="px-2 py-1 absolute top-2 right-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
               >
                 ✕
               </button>
 
-            {/* Scrollable Content */}
-            <BioDataForm />
-
-            {/* Footer Close Button */}
-            {/* <div className="mt-6 flex justify-end sticky bottom-0 bg-white pt-2 border-t">
-              <button
-                onClick={() => setModalOpen(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
-              >
-                Close
-              </button>
-            </div> */}
+              {/* Scrollable Content */}
+              <BehaviorQuestion />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
 
 
       <div className="bg-blue-50 min-h-screen">
@@ -84,24 +102,27 @@ export default function ProfileCard() {
                       <p className="text-sm text-gray-400 mt-1">Melaka, Malacca · Multimedia University</p>
                     </div>
 
-                    <div className="mt-4 md:mt-0 flex items-center gap-3">
-                      <a
-                        href="https://mishukinfo.com"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition"
-                        aria-label="Visit website"
-                      >
-                        <FaGlobe /> <span>Website</span>
-                      </a>
+                    <div className="mt-4 flex-row  md:mt-0 text-end  items-end  justify-end gap-3">
 
-                      {/* Button to open */}
-                      <button
-                        onClick={() => setModalOpen(true)}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
-                      >
-                        Edit Profile
-                      </button>
+
+                      <div>
+                        {/* Button to open */}
+                        <button
+                          onClick={() => setModalOpen(true)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
+                        >
+                          Edit Profile ✎
+                        </button>
+                      </div>
+                      <div>
+                        {/* Button to open */}
+                        <button
+                          onClick={() => setSecondModalOpen(true)}
+                          className="inline-flex items-center gap-2 px-4 py-2 mt-1 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
+                        >
+                          Behavioral Traits ✎
+                        </button>
+                      </div>
 
                     </div>
 
