@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
 
+
+const API_BASE = "http://127.0.0.1:5000/api"; // Flask backend
+
 const RatingScale = ({ name, label, value, onChange }) => {
     return (
         <div className="p-4 mb-6 bg-gray-50 rounded-2xl shadow-sm border border-gray-200">
@@ -92,10 +95,43 @@ const BioDataForm = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData); // You can replace this with any form submission logic (e.g., API request)
+
+        try {
+            // Get email from localStorage
+            const email = localStorage.getItem("email");
+
+            // Merge email into formData
+            const payload = { ...formData, email };
+
+            const res = await fetch(`${API_BASE}/update-profile`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+            console.log("Update Profile Response:", data);
+
+            if (data.success) {
+                alert("Profile updated successfully!");
+            } else {
+                alert(data.message || "Failed to update profile");
+            }
+        } catch (error) {
+            console.error("Error updating profile:", error);
+            alert("Server error while updating profile");
+        }
     };
+
+
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     console.log(formData); // You can replace this with any form submission logic (e.g., API request)
+    // };
 
     return (
 

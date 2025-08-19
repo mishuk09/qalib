@@ -41,11 +41,22 @@ const AuthForm = () => {
                     }),
                 });
 
-                setMessage('Registration successful!');
-                // Set a timeout to clear the message after 5 seconds (5000ms)
-                setTimeout(() => {
-                    setMessage(""); // Clear the message after the timeout
-                }, 3000);
+                const data = await res.json();
+
+                if (res.ok) {
+                    // Save email directly from formData
+                    localStorage.setItem("email", formData.email);
+                    if (data.token) {
+                        localStorage.setItem("token", data.token);
+                    }
+                    setMessage("Registration successful!");
+                    setTimeout(() => setMessage(""), 3000);
+
+                    // Optional: redirect after register
+                    window.location.href = "/dashboard";
+                } else {
+                    setMessage(data.error || "Registration failed");
+                }
             } else {
                 const res = await fetch(`${API_BASE}/login`, {
                     method: "POST",
@@ -55,19 +66,21 @@ const AuthForm = () => {
                         password: formData.password,
                     }),
                 });
+
                 const data = await res.json();
+
                 if (data.token) {
+                    localStorage.setItem("email", formData.email); // use formData.email here too
                     localStorage.setItem("token", data.token);
-                    window.location.href = "/dashboard"; // Redirect to home page
                     setMessage("Login successful!");
+                    window.location.href = "/dashboard";
                 } else {
                     setMessage(data.error || "Login failed");
                 }
-                // Set a timeout to clear the message after 5 seconds (5000ms)
-                setTimeout(() => {
-                    setMessage(""); // Clear the message after the timeout
-                }, 3000);
+
+                setTimeout(() => setMessage(""), 3000);
             }
+
         } catch (error) {
             setMessage("Server error. Please try again.");
         } finally {
