@@ -2,15 +2,54 @@ import React from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope, FaGlobe } from 'react-icons/fa';
 import useUserData from "../../utills/useUserData";
 import MiniLoading from '../../utills/miniLoading';
+import BioDataForm from './BioDataForm';
 
 
 export default function ProfileCard() {
   const { userData, loading, error } = useUserData();
+  const [modalOpen, setModalOpen] = React.useState(false);
+
 
 
 
   return (
     <>
+
+      {/* Modal Overlay */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-center justify-center z-20"
+          onClick={() => setModalOpen(false)} // click outside closes modal
+        >
+          {/* Modal Content */}
+          <div
+            className="bg-white relative p-6 max-w-4xl w-full h-[80vh] rounded-xl shadow-lg overflow-y-auto"
+            onClick={(e) => e.stopPropagation()} // prevent close on inside click
+          >
+            {/* Header with Close */}
+             
+              <button
+                onClick={() => setModalOpen(false)}
+                className="px-2 py-1 absolute top-2 right-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+              >
+                ✕
+              </button>
+
+            {/* Scrollable Content */}
+            <BioDataForm />
+
+            {/* Footer Close Button */}
+            {/* <div className="mt-6 flex justify-end sticky bottom-0 bg-white pt-2 border-t">
+              <button
+                onClick={() => setModalOpen(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+              >
+                Close
+              </button>
+            </div> */}
+          </div>
+        </div>
+      )}
 
 
       <div className="bg-blue-50 min-h-screen">
@@ -56,12 +95,14 @@ export default function ProfileCard() {
                         <FaGlobe /> <span>Website</span>
                       </a>
 
+                      {/* Button to open */}
                       <button
+                        onClick={() => setModalOpen(true)}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
-                        aria-pressed="false"
                       >
-                        Open to work
+                        Edit Profile
                       </button>
+
                     </div>
 
                   </div>
