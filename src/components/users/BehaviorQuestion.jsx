@@ -49,7 +49,7 @@ const RatingScale = ({ name, label, value, onChange }) => {
     );
 };
 
-const BehaviorQuestion = () => {
+const BehaviorQuestion = ({ setBehaviorData }) => {
     const [formData, setFormData] = useState({
 
         // 2(A). Trustworthy
@@ -189,10 +189,11 @@ const BehaviorQuestion = () => {
 
     const handleRadioChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        setFormData((prev) => {
+            const updated = { ...prev, [name]: value };
+            setBehaviorData(updated); // ✅ send data to parent
+            return updated;
+        });
     };
 
     return (
