@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 export default function useUserData() {
     const [userData, setUserData] = useState(null);
+    const [allUsers, setAllUsers] = useState([]);
+    const [admins, setAdmins] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -13,23 +15,42 @@ export default function useUserData() {
             return;
         }
 
-        fetch("http://127.0.0.1:5000/api/profile", {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.user) {
-                    setUserData(data.user);
+        const fetchData = async () => {
+            try {
+                // Fetch profile
+                const profileRes = await fetch("http://127.0.0.1:5000/api/profile", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                const profileData = await profileRes.json();
+
+                if (profileData.user) {
+                    setUserData(profileData.user);
                 } else {
-                    setError(data.error || "Unexpected response");
+                    throw new Error(profileData.error || "Failed to fetch profile");
                 }
-            })
-            .catch(err => setError(err.message))
-            .finally(() => setLoading(false));
+
+                // Fetch all users
+                const usersRes = await fetch("http://127.0.0.1:5000/api/users");
+                const usersData = await usersRes.json();
+                setAllUsers(usersData.users || []);
+
+                // Fetch all admins
+                const adminRes = await fetch("http://127.0.0.1:5000/api/admin");
+                const adminData = await adminRes.json();
+                setAdmins(adminData.admins || []);
+
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, [token]);
 
-    return { userData, loading, error };
+    return { userData, allUsers, admins, loading, error };
 }

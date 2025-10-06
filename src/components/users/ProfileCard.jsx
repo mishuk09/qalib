@@ -7,7 +7,7 @@ import BehaviorQuestion from './BehaviorQuestion';
 
 
 export default function ProfileCard() {
-  const { userData, loading, error } = useUserData();
+  const { userData, loading, allUsers } = useUserData();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [secondModalOpen, setSecondModalOpen] = React.useState(false);
 
@@ -84,11 +84,9 @@ export default function ProfileCard() {
 
                 {/* Avatar (overlapping) */}
                 <div className="absolute left-6 top-26">
-                  <img
-                    src="https://via.placeholder.com/150"
-                    alt="Profile"
-                    className="w-28 h-28 rounded-full border-4 border-white object-cover shadow-md"
-                  />
+                  <span className="text-6xl border-2 border-white rounded-full leading-none">
+                    {userData?.demographics?.gender?.toLowerCase() === "male" ? "👦🏻" : "👩🏻"}
+                  </span>
                 </div>
 
                 {/* Profile content (moved right to leave room for avatar) */}
@@ -96,10 +94,15 @@ export default function ProfileCard() {
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between">
 
                     <div>
-                      <h1 className="text-2xl font-semibold text-gray-900"><h1>{loading ? <MiniLoading /> : userData?.name}</h1>
-                      </h1>
-                      <p className="text-sm text-gray-500 mt-1">Full-Stack Developer · MERN Stack · React · NoSQL</p>
-                      <p className="text-sm text-gray-400 mt-1">Melaka, Malacca · Multimedia University</p>
+                      <h2 className="mt-3 text-lg font-semibold">
+                        {loading ? <MiniLoading /> : userData?.name}
+                      </h2>
+                      <p className="text-sm leading-4 text-gray-500">
+                        🎓{userData?.demographics?.field_of_study}
+                      </p>
+                      <p className="text-sm mt-1 text-gray-400">
+                        🏠︎ {userData?.demographics?.place_of_residence}
+                      </p>
                     </div>
 
                     <div className="mt-4 flex-row  md:mt-0 text-end  items-end  justify-end gap-3">
@@ -158,7 +161,7 @@ export default function ProfileCard() {
                   </div>
 
                   {/* Quick stats */}
-                  <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {/* <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div className="bg-gray-50 p-3 rounded-lg text-center">
                       <div className="text-xs text-gray-500">Profile views</div>
                       <div className="font-semibold">104</div>
@@ -175,7 +178,7 @@ export default function ProfileCard() {
                       <div className="text-xs text-gray-500">Connections</div>
                       <div className="font-semibold">500+</div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* About & Skills */}
                   <div className="mt-6 border-t pt-4">
@@ -230,20 +233,30 @@ export default function ProfileCard() {
             <div className="bg-white rounded-xl shadow p-4 sticky top-24">
               <h3 className="font-semibold mb-3">People you may know</h3>
 
-              <ul className="space-y-3">
-                {[1, 2, 3].map((i) => (
-                  <li key={i} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gray-200" />
-                      <div>
-                        <div className="text-sm font-semibold">User {i}</div>
-                        <div className="text-xs text-gray-400">Role · Company</div>
+              {/* Suggestions */}
+                  {allUsers.slice(0, 5).map((user) => (
+                    <div
+                      key={user.id}
+                      className="flex items-center space-x-3 py-2  "
+                    >
+                      {/* Avatar */}
+                      <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg">
+                        {user.demographics?.gender === "Male" ? "👦🏻" : "👩🏻"}
+                      </div>
+
+                      {/* User info + button */}
+                      <div className="flex flex-col">
+                        <p className="text-sm font-semibold">{user.name?.split(' ').slice(0, 2).join('')}</p>
+                        <p className="text-xs text-gray-500">
+                          {user.demographics?.education_level || "N/A"}
+                        </p>
+                        <button className="mt-1 text-blue-600 text-xs font-medium hover:underline self-start">
+                          Connect
+                        </button>
                       </div>
                     </div>
-                    <button className="text-blue-600 text-sm">Connect</button>
-                  </li>
-                ))}
-              </ul>
+                  ))}
+                 
 
               <div className="mt-4 border-t pt-4 text-sm text-gray-500">© 2025 Qalib Network</div>
             </div>
