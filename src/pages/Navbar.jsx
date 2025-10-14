@@ -6,7 +6,7 @@ import {
     FaHome,
     FaUser,
     FaUsers,
- 
+
 } from 'react-icons/fa';
 import { FiMenu, FiX } from 'react-icons/fi';
 import qaliblogo from '../assets/qaliblogo.png';
@@ -27,6 +27,7 @@ const Navbar = () => {
 
                 {/* Logo & Search */}
                 <div className="flex items-center gap-6">
+                    
                     <a href="/dashboard" className="shrink-0">
                         <img src={qaliblogo} alt="Qalib Logo" className="w-28 md:w-32" />
                     </a>
@@ -49,7 +50,7 @@ const Navbar = () => {
                     <button className="hover:text-blue-500 transition-colors" title="My Network">
                         <FaUsers size={22} />
                     </button>
-                   
+
                     <button className="relative hover:text-blue-500 transition-colors" title="Notifications">
                         <FaBell size={22} />
                         <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">

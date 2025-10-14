@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LoginForm from "./LoginForm ";
-import SignupForm from "./SignupForm";
+import AdminSignIn from "./AdminSignIn";
+// import SignupForm from "./SignupForm";
 
 
 const AuthForm = () => {
@@ -15,24 +16,28 @@ const AuthForm = () => {
                 </p>
             )}
 
+
             <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl transition-all duration-300">
+              
+              
                 <div className="flex mb-8 border-b border-gray-200">
                     <button
                         onClick={() => setIsSignUp(false)}
                         className={`flex-1 py-3 font-semibold text-lg transition-colors duration-200 ${!isSignUp ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500 hover:text-blue-500"}`}
                     >
-                        Sign In
+                       User
                     </button>
                     <button
                         onClick={() => setIsSignUp(true)}
                         className={`flex-1 py-3 font-semibold text-lg transition-colors duration-200 ${isSignUp ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500 hover:text-blue-500"}`}
                     >
-                        Sign Up
+                        Admin
                     </button>
                 </div>
 
                 {isSignUp ? (
-                    <SignupForm setMessage={setMessage} /> // Pass setMessage here
+                    // <SignupForm setMessage={setMessage} /> // Pass setMessage here
+                    <AdminSignIn   />
                 ) : (
                     <LoginForm setMessage={setMessage} /> // Pass setMessage here
                 )}

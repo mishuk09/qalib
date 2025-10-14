@@ -5,7 +5,11 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './utills/ProtectedRoute';
 import ProfileCard from './components/users/ProfileCard';
 import Navbar from './pages/Navbar';
-import LoginForm from './pages/LoginForm ';
+import Offer from './components/Offer/Offer';
+import AdminHome from './components/Home/AdminHome';
+import Layout from './pages/Home/Layout';
+import AdminProtectedRoute from './utills/AdminProtectedRoute';
+import UserRegister from './pages/UserRegister';
 
 function App() {
   return (
@@ -15,14 +19,31 @@ function App() {
 
         <Route path='/' element={<Home />} />
         {/* <Route path='/login' element={<LoginForm />} /> */}
+
+        <Route path='/user-register' element={<UserRegister />} />
         <Route path='/register' element={<AuthForm />} />
         <Route path='/profile' element={<ProfileCard />} />
 
-        {/* Protect the Dashboard route */}
+        {/* Protect the Dash-board route */}
         <Route
           path="/dashboard"
           element={<ProtectedRoute element={Dashboard} />}
         />
+
+
+
+
+        {/* admin route */}
+
+
+        <Route path='/layout' element={<AdminProtectedRoute element={Layout} />} />
+        <Route path='/adminhome' element={<AdminProtectedRoute element={AdminHome} />} />
+
+
+
+        <Route path="/offer" element={<Offer />} />
+
+
       </Routes>
     </>
 
