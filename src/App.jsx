@@ -10,6 +10,8 @@ import AdminHome from './components/Home/AdminHome';
 import Layout from './pages/Home/Layout';
 import AdminProtectedRoute from './utills/AdminProtectedRoute';
 import UserRegister from './pages/UserRegister';
+import Qeqprofile from './components/users/Qeqprofile';
+import DreamTeam from './components/users/Dreamteam';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path='/user-register' element={<UserRegister />} />
         <Route path='/register' element={<AuthForm />} />
         <Route path='/profile' element={<ProfileCard />} />
+        <Route path='/qeq-profile' element={<Qeqprofile />} />
+        <Route path='/dream-team' element={<DreamTeam />} />
 
         {/* Protect the Dash-board route */}
         <Route

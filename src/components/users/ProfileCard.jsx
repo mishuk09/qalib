@@ -4,15 +4,19 @@ import useUserData from "../../utills/useUserData";
 import MiniLoading from '../../utills/miniLoading';
 import BioDataForm from './BioDataForm';
 import BehaviorQuestion from './BehaviorQuestion';
+import { useNavigate } from 'react-router-dom';
+
 
 
 export default function ProfileCard() {
   const { userData, loading, allUsers } = useUserData();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [secondModalOpen, setSecondModalOpen] = React.useState(false);
+  const navigate = useNavigate();
 
-
-
+  function handleNavigate() {
+    navigate("/qeq-profile");
+  }
 
   return (
     <>
@@ -114,16 +118,16 @@ export default function ProfileCard() {
                           onClick={() => setModalOpen(true)}
                           className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
                         >
-                          Edit Profile ✎
+                          Update Profile
                         </button>
                       </div>
                       <div>
                         {/* Button to open */}
                         <button
-                          onClick={() => setSecondModalOpen(true)}
+                          onClick={handleNavigate}
                           className="inline-flex items-center gap-2 px-4 py-2 mt-1 bg-red-600 text-white rounded-full text-sm font-medium hover:bg-red-700 transition"
                         >
-                          Behavioral Traits ✎
+                          QEQ Profile
                         </button>
                       </div>
 
@@ -234,29 +238,29 @@ export default function ProfileCard() {
               <h3 className="font-semibold mb-3">People you may know</h3>
 
               {/* Suggestions */}
-                  {allUsers.slice(0, 5).map((user) => (
-                    <div
-                      key={user.id}
-                      className="flex items-center space-x-3 py-2  "
-                    >
-                      {/* Avatar */}
-                      <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg">
-                        {user.demographics?.gender === "Male" ? "👦🏻" : "👩🏻"}
-                      </div>
+              {allUsers.slice(0, 5).map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center space-x-3 py-2  "
+                >
+                  {/* Avatar */}
+                  <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg">
+                    {user.demographics?.gender === "Male" ? "👦🏻" : "👩🏻"}
+                  </div>
 
-                      {/* User info + button */}
-                      <div className="flex flex-col">
-                        <p className="text-sm font-semibold">{user.name?.split(' ').slice(0, 2).join('')}</p>
-                        <p className="text-xs text-gray-500">
-                          {user.demographics?.education_level || "N/A"}
-                        </p>
-                        <button className="mt-1 text-blue-600 text-xs font-medium hover:underline self-start">
-                          Connect
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                 
+                  {/* User info + button */}
+                  <div className="flex flex-col">
+                    <p className="text-sm font-semibold">{user.name?.split(' ').slice(0, 2).join('')}</p>
+                    <p className="text-xs text-gray-500">
+                      {user.demographics?.education_level || "N/A"}
+                    </p>
+                    <button className="mt-1 text-blue-600 text-xs font-medium hover:underline self-start">
+                      Connect
+                    </button>
+                  </div>
+                </div>
+              ))}
+
 
               <div className="mt-4 border-t pt-4 text-sm text-gray-500">© 2025 Qalib Network</div>
             </div>

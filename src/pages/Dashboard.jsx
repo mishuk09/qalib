@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import useUserData from "../utills/useUserData";
 import MiniLoading from "../utills/miniLoading";
+import { useLocation } from "react-router-dom";
+
 import {
     FaLinkedin,
     FaBell,
@@ -12,11 +14,49 @@ import {
     FaBriefcase
 } from 'react-icons/fa';
 import { FaPerson } from "react-icons/fa6";
+import BehaviorQuestion from "../components/users/BehaviorQuestion";
 const Dashboard = () => {
     const { userData, loading, allUsers } = useUserData();
+    const location = useLocation();
+    const [secondModalOpen, setSecondModalOpen] = useState(false);
 
+    useEffect(() => {
+        if (location.state?.showModalAfter) {
+            const timer = setTimeout(() => {
+                setSecondModalOpen(true);
+            }, 3000);
+
+            // Cleanup in case user leaves early
+            return () => clearTimeout(timer);
+        }
+    }, [location.state]);
     return (
         <>
+            {
+                secondModalOpen && (
+                    <div
+                        className="fixed inset-0 bg-black/40 flex items-center justify-center z-20"
+                        onClick={() => setSecondModalOpen(false)} // click outside closes modal
+                    >
+                        {/* Modal Content */}
+                        <div
+                            className="bg-white relative p-6 max-w-4xl w-full h-[80vh] rounded-xl shadow-lg overflow-y-auto"
+                            onClick={(e) => e.stopPropagation()} // prevent close on inside click
+                        >
+                            {/* Header with Close */}
+
+                            <button
+                                onClick={() => setSecondModalOpen(false)}
+                                className="px-2 py-1 absolute top-2 right-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                            >
+                                ✕
+                            </button>
+
+                            {/* Scrollable Content */}
+                            <BehaviorQuestion />
+                        </div>
+                    </div>
+                )}
 
             <div className="bg-blue-50 min-h-screen">
                 <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -49,7 +89,7 @@ const Dashboard = () => {
                             <ul className="space-y-2 text-sm text-blue-600">
                                 <li><a href="#">My Connections</a></li>
                                 <li><a href="#">Saved Posts</a></li>
-                                <li><a href="#">Groups</a></li>
+                                <li><a href="/dream-team">Dream Team</a></li>
                             </ul>
                         </div>
                     </aside>
@@ -109,7 +149,7 @@ const Dashboard = () => {
                                                         className="text-xs text-gray-500 mt-2 break-words"
                                                         title={user.demographics.university_college_name}
                                                     >
-                                                       🏛️ {user.demographics.university_college_name}
+                                                        🏛️ {user.demographics.university_college_name}
                                                     </p>
                                                 ) : (
                                                     <p className="text-xs text-gray-400 mt-2 italic">University not specified</p>

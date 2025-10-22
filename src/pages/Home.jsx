@@ -11,9 +11,9 @@ const Home = () => {
             <div className="flex flex-col items-center justify-center mt-20">
                 {/* Title */}
                 <h1 className="text-3xl md:text-5xl font-bold text-gray-800 text-center">
-                    👋 Discover the Future of Startups with
+                    👋 Qalib Entrepreneurial Quotient and Profiling
                     <span className="text-blue-600 inline-block ms-3 relative">
-                        Qalib
+                        System
                         {/* Underline Image */}
                         <div className="absolute mt-[-4px] left-0">
                             <img
