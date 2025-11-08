@@ -94,44 +94,50 @@ const BioDataForm = () => {
             [name]: value,
         }));
     };
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    try {
+        // Get stored email (used for identifying the user in DB)
+        const storedEmail = localStorage.getItem("email");
 
-        try {
-            // Get email from localStorage
-            const email = localStorage.getItem("email");
+        // Prefer stored email; fallback to form input if none stored
+        const emailToUse = storedEmail || formData.email;
 
-            // Merge email into formData
-            const payload = { ...formData, email };
-
-            const res = await fetch(`${API_BASE}/update-profile`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            });
-
-            const data = await res.json();
-            console.log("Update Profile Response:", data);
-
-            if (data.success) {
-                alert("Profile updated successfully!");
-            } else {
-                alert(data.message || "Failed to update profile");
-            }
-        } catch (error) {
-            console.error("Error updating profile:", error);
-            alert("Server error while updating profile");
+        if (!emailToUse) {
+            alert("Email missing — please log in again.");
+            return;
         }
-    };
 
+        // Prepare payload
+        const payload = { ...formData, email: emailToUse };
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     console.log(formData); // You can replace this with any form submission logic (e.g., API request)
-    // };
+        console.log("Submitting payload:", payload);
+
+        const res = await fetch(`${API_BASE}/update-profile`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        console.log("Update Profile Response:", data);
+
+        if (res.ok && data.success) {
+            alert("✅ Profile updated successfully!");
+        } else {
+            alert(`⚠️ ${data.message || "Failed to update profile"}`);
+        }
+
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("❌ Server error while updating profile");
+    }
+};
+
+ 
 
     return (
 

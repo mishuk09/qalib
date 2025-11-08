@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function ProfileCard() {
-  const { userData, loading, allUsers } = useUserData();
+  const { userData, loading,  } = useUserData();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [secondModalOpen, setSecondModalOpen] = React.useState(false);
   const navigate = useNavigate();
@@ -18,6 +18,8 @@ export default function ProfileCard() {
     navigate("/qeq-profile");
   }
 
+
+  
   return (
     <>
 
@@ -99,14 +101,14 @@ export default function ProfileCard() {
 
                     <div>
                       <h2 className="mt-3 text-lg font-semibold">
-                        {loading ? <MiniLoading /> : userData?.name}
+                        {loading ? <MiniLoading /> : userData?.fullName}
                       </h2>
-                      <p className="text-sm leading-4 text-gray-500">
+                      {/* <p className="text-sm leading-4 text-gray-500">
                         🎓{userData?.demographics?.field_of_study}
                       </p>
                       <p className="text-sm mt-1 text-gray-400">
                         🏠︎ {userData?.demographics?.place_of_residence}
-                      </p>
+                      </p> */}
                     </div>
 
                     <div className="mt-4 flex-row  md:mt-0 text-end  items-end  justify-end gap-3">
@@ -115,7 +117,7 @@ export default function ProfileCard() {
                       <div>
                         {/* Button to open */}
                         <button
-                          onClick={() => setModalOpen(true)}
+                          // onClick={() => setModalOpen(true)}
                           className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
                         >
                           Update Profile
@@ -238,17 +240,17 @@ export default function ProfileCard() {
               <h3 className="font-semibold mb-3">People you may know</h3>
 
               {/* Suggestions */}
-              {allUsers.slice(0, 5).map((user) => (
+              {/* {allUsers.slice(0, 5).map((user) => (
                 <div
                   key={user.id}
                   className="flex items-center space-x-3 py-2  "
                 >
-                  {/* Avatar */}
+                  
                   <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg">
                     {user.demographics?.gender === "Male" ? "👦🏻" : "👩🏻"}
                   </div>
 
-                  {/* User info + button */}
+                  
                   <div className="flex flex-col">
                     <p className="text-sm font-semibold">{user.name?.split(' ').slice(0, 2).join('')}</p>
                     <p className="text-xs text-gray-500">
@@ -259,7 +261,7 @@ export default function ProfileCard() {
                     </button>
                   </div>
                 </div>
-              ))}
+              ))}  */}
 
 
               <div className="mt-4 border-t pt-4 text-sm text-gray-500">© 2025 Qalib Network</div>

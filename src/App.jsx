@@ -9,9 +9,13 @@ import Offer from './components/Offer/Offer';
 import AdminHome from './components/Home/AdminHome';
 import Layout from './pages/Home/Layout';
 import AdminProtectedRoute from './utills/AdminProtectedRoute';
-import UserRegister from './pages/UserRegister';
 import Qeqprofile from './components/users/Qeqprofile';
 import DreamTeam from './components/users/Dreamteam';
+import RegisterForm from './pages/RegisterForm';
+import SurveyForm from './components/users/SurveyForm';
+import DreamTeamData from './components/users/DreamTeamData';
+import BigFive from './components/users/BigFive';
+import BigFiveData from './components/users/BigFiveData';
 
 function App() {
   return (
@@ -22,11 +26,19 @@ function App() {
         <Route path='/' element={<Home />} />
         {/* <Route path='/login' element={<LoginForm />} /> */}
 
-        <Route path='/user-register' element={<UserRegister />} />
+        <Route path='/user-register' element={<RegisterForm />} />
         <Route path='/register' element={<AuthForm />} />
         <Route path='/profile' element={<ProfileCard />} />
         <Route path='/qeq-profile' element={<Qeqprofile />} />
         <Route path='/dream-team' element={<DreamTeam />} />
+
+
+        <Route path='/survey-form' element={<SurveyForm />} />
+        <Route path='/dream-team-add' element={<DreamTeamData />} />
+        <Route path='/big-five' element={<BigFive />} />
+        <Route path='/big-five-add' element={<BigFiveData />} />
+
+
 
         {/* Protect the Dash-board route */}
         <Route

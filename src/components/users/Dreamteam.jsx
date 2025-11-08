@@ -44,6 +44,11 @@ const DreamTeam = () => {
                     Your top collaborative matches based on performance and synergy
                 </p>
             </div>
+            <div className="mb-4">
+                <a href="/dream-team-add" target="_blank" className="text-blue-600 px-4 py-2 border-2 border-blue-500 rounded   hover:underline">
+                    + Add Your Data
+                </a>
+            </div>
 
             {/* Team Cards */}
             <div className="space-y-5">

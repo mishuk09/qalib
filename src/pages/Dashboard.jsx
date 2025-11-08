@@ -15,11 +15,31 @@ import {
 } from 'react-icons/fa';
 import { FaPerson } from "react-icons/fa6";
 import BehaviorQuestion from "../components/users/BehaviorQuestion";
+import SurveyForm from "../components/users/SurveyForm";
+
+const API_BASE = "http://127.0.0.1:5000/api/users";
+
 const Dashboard = () => {
-    const { userData, loading, allUsers } = useUserData();
+    const { userData, loading, } = useUserData();
     const location = useLocation();
     const [secondModalOpen, setSecondModalOpen] = useState(false);
+  const [users, setUsers] = useState([]);
 
+ useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch(API_BASE);
+        const data = await res.json();
+        setUsers(data.users || []);
+      } catch (err) {
+        // setError("Failed to fetch users");
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
     useEffect(() => {
         if (location.state?.showModalAfter) {
             const timer = setTimeout(() => {
@@ -53,7 +73,8 @@ const Dashboard = () => {
                             </button>
 
                             {/* Scrollable Content */}
-                            <BehaviorQuestion />
+                            {/* <BehaviorQuestion /> */}
+                            <SurveyForm/>
                         </div>
                     </div>
                 )}
@@ -72,14 +93,14 @@ const Dashboard = () => {
                             </div>
 
                             <h2 className="mt-3 text-lg font-semibold">
-                                {loading ? <MiniLoading /> : userData?.name}
+                                {loading ? <MiniLoading /> : userData?.fullName}
                             </h2>
-                            <p className="text-sm leading-4 text-gray-500">
+                            {/* <p className="text-sm leading-4 text-gray-500">
                                 🎓  {userData?.demographics?.field_of_study}
                             </p>
                             <p className="text-sm mt-1 text-gray-400">
                                 🏠︎  {userData?.demographics?.place_of_residence}
-                            </p>
+                            </p> */}
                         </div>
 
 
@@ -90,6 +111,7 @@ const Dashboard = () => {
                                 <li><a href="#">My Connections</a></li>
                                 <li><a href="#">Saved Posts</a></li>
                                 <li><a href="/dream-team">Dream Team</a></li>
+                                <li><a href="/big-five">Big Five</a></li>
                             </ul>
                         </div>
                     </aside>
@@ -98,7 +120,7 @@ const Dashboard = () => {
                     <main className="lg:col-span-6 space-y-6">
                         {/* Post */}
                         <div className="bg-gray-50 rounded-xl p-4">
-                            {allUsers.map((user) => (
+                            {users.map((user) => (
                                 <div
                                     key={user.id || user._id}
                                     className="bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all duration-300 p-5 mb-4 border border-gray-100 cursor-pointer"
@@ -110,7 +132,7 @@ const Dashboard = () => {
                                         </div>
                                         <div>
                                             <h2 className="text-lg font-semibold text-gray-800">
-                                                {user.name?.split(" ").slice(0, 2).join(" ") || "Unknown User"}
+                                                {user.fullName?.split(" ").slice(0, 2).join(" ") || "Unknown User"}
                                             </h2>
                                             <p className="text-sm text-gray-500">
                                                 {user.demographics?.age ? `${user.demographics.age} • ` : ""}
@@ -194,7 +216,7 @@ const Dashboard = () => {
                         <div className="bg-white rounded-lg shadow-md p-4">
                             <h3 className="font-semibold mb-3">People you may know</h3>
                             <div className="space-y-0">
-                                {allUsers.slice(0, 5).map((user) => (
+                                {users.slice(0, 5).map((user) => (
                                     <div
                                         key={user.id}
                                         className="flex items-center space-x-3 py-2  "

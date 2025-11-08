@@ -27,20 +27,23 @@ const AuthForm = () => {
                     >
                        User
                     </button>
-                    <button
+                    {/* <button
                         onClick={() => setIsSignUp(true)}
                         className={`flex-1 py-3 font-semibold text-lg transition-colors duration-200 ${isSignUp ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500 hover:text-blue-500"}`}
                     >
                         Admin
-                    </button>
+                    </button> */}
                 </div>
 
                 {isSignUp ? (
                     // <SignupForm setMessage={setMessage} /> // Pass setMessage here
                     <AdminSignIn   />
+                    
                 ) : (
                     <LoginForm setMessage={setMessage} /> // Pass setMessage here
-                )}
+                )
+                
+                }
             </div>
         </div>
     );
