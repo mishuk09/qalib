@@ -1,95 +1,199 @@
-import React from "react";
-import { FaChartLine, FaUsers, FaGlobe, FaStar, FaUserFriends, FaLink } from "react-icons/fa";
-import { MdPersonSearch } from "react-icons/md";
-import { motion } from "framer-motion";
+'use client';
 
-const QeqProfile = () => {
-    const sections = [
-        {
-            title: "Score",
-            icon: <FaChartLine className="text-blue-500 text-3xl" />,
-            content: [
-                { label: "My Score", value: "85" },
-                { label: "Group Average", value: "78" },
-            ],
-        },
-        {
-            title: "Qalib Spider Web",
-            icon: <FaGlobe className="text-green-500 text-3xl" />,
-            content: [
-                { label: "My Score", value: "80" },
-                { label: "Growth", value: "▲ 5%" },
-            ],
-        },
-        {
-            title: "Dream Team",
-            icon: <FaUsers className="text-purple-500 text-3xl" />,
-            content: [{ label: "Spider Web", value: "View" }],
-        },
-        {
-            title: "Entopreneur",
-            icon: <FaStar className="text-yellow-500 text-3xl" />,
-            content: [{ label: "Spider Web", value: "View" }],
-        },
-        {
-            title: "Big Five",
-            icon: <MdPersonSearch className="text-indigo-500 text-3xl" />,
-            content: [{ label: "Personality Breakdown", value: "View" }],
-        },
-        {
-            title: "My Match",
-            icon: <FaUserFriends className="text-pink-500 text-3xl" />,
-            content: [{ label: "Top Matches", value: "View" }],
-        },
-        {
-            title: "My DNEA Team",
-            icon: <FaLink className="text-red-500 text-3xl" />,
-            content: [
-                { label: "Matching", value: "View" },
-                { label: "User Profiles", value: "Open" },
-                { label: "Team Link", value: "Share" },
-            ],
-        },
-    ];
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend
+} from "chart.js";
+import { Radar } from "react-chartjs-2";
+import { BarChart3, Star, TrendingUp, Loader2 } from "lucide-react";
 
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
+
+const Qeqprofile = () => {
+  const [chartData, setChartData] = useState(null);
+  const [groupInfo, setGroupInfo] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [ieiScore, setIeiScore] = useState(null);
+
+  const summarizeSurvey = (survey) => {
+    const groups = {};
+    Object.keys(survey).forEach((key) => {
+      const match = key.match(/[A-Za-z]+/);
+      if (!match) return;
+      const group = match[0];
+      if (!groups[group]) groups[group] = [];
+      const value = parseFloat(survey[key]);
+      if (!isNaN(value)) groups[group].push(value);
+    });
+
+    const summarized = {};
+    const info = {};
+    Object.keys(groups).forEach((group) => {
+      const values = groups[group];
+      const avg = values.reduce((a, b) => a + b, 0) / values.length;
+      summarized[group] = avg;
+      info[group] = {
+        average: avg,
+        answered: values.length,
+      };
+    });
+
+    return { summarized, info };
+  };
+
+  useEffect(() => {
+    const fetchSurvey = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://127.0.0.1:5000/api/user-profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const { summarized, info } = summarizeSurvey(res.data.user.survey);
+        setGroupInfo(info);
+
+        const ieiGroups = ["D", "H", "Att", "PBC", "II"];
+        const ieiValues = ieiGroups
+          .map((key) => summarized[key])
+          .filter((val) => !isNaN(val));
+
+        const totalIei =
+          ieiValues.length > 0
+            ? ieiValues.reduce((a, b) => a + b, 0)
+            : 0;
+
+        setIeiScore(totalIei.toFixed(2));
+
+        setChartData({
+          labels: Object.keys(summarized),
+          datasets: [
+            {
+              label: "Average Scores",
+              data: Object.values(summarized),
+              backgroundColor: "rgba(34, 202, 236, 0.2)",
+              borderColor: "rgba(34, 202, 236, 1)",
+              borderWidth: 2,
+              pointBackgroundColor: "rgba(34, 202, 236, 1)",
+            },
+          ],
+        });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSurvey();
+  }, []);
+
+  if (loading)
     return (
-        <div className="   bg-blue-50 p-6">
-            <div className="max-w-7xl mx-auto">
-                {/* Page Title */}
-                <div className="text-center mb-10 mt-6">
-                    <h1 className="text-3xl font-bold text-gray-800">QEQ Profile</h1>
-                    <p className="text-gray-500 mt-2">Your personal growth and performance dashboard</p>
-                </div>
-
-                {/* Grid Section */}
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {sections.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            whileHover={{ scale: 1.03 }}
-                            className="bg-white rounded-2xl shadow-md p-5 flex flex-col justify-between hover:shadow-lg transition-all"
-                        >
-                            <div className="flex items-center gap-3 mb-4">
-                                {item.icon}
-                                <h2 className="text-xl font-semibold text-gray-800">{item.title}</h2>
-                            </div>
-                            <ul className="space-y-2">
-                                {item.content.map((data, i) => (
-                                    <li
-                                        key={i}
-                                        className="flex justify-between text-sm text-gray-600 border-b border-gray-100 pb-1"
-                                    >
-                                        <span className="font-medium">{data.label}</span>
-                                        <span className="text-gray-800">{data.value}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-        </div>
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+        <p className="ml-3 text-gray-600 text-lg">Loading your QEQ Profile...</p>
+      </div>
     );
+
+  if (!chartData)
+    return <p className="text-center text-gray-600 mt-6">No survey data found.</p>;
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 pb-10">
+      {/* Header */}
+      <div className="text-center mb-10 mt-6">
+        <h1 className="text-3xl font-bold text-gray-900 flex items-center justify-center gap-2">
+          <BarChart3 className="text-indigo-600 w-7 h-7" />
+          QEQ Profile
+        </h1>
+        <p className="text-gray-500 mt-2 text-sm sm:text-base">
+          Your personal growth and performance dashboard
+        </p>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-6 w-full">
+        {/* Your Score Section */}
+        <div className="w-full md:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Star className="text-yellow-500 w-6 h-6" />
+            <h1 className="text-xl font-bold text-gray-800">Your Score</h1>
+          </div>
+
+          {/* IEI Total */}
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-semibold text-indigo-600 flex items-center justify-center gap-2">
+              <TrendingUp className="w-6 h-6 text-indigo-600" />
+              IEI Total: {ieiScore}
+            </h2>
+            <p className="text-gray-500 text-sm mt-1">
+              (IEI = D + H + Att + PBC + II)
+            </p>
+          </div>
+
+          {/* Individual Scores */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center mt-6">
+            {["D", "H", "Att", "PBC", "II"].map((group) => (
+              <div
+                key={group}
+                className="p-3 rounded-lg border border-gray-100 bg-gray-50 hover:bg-indigo-50 transition-all duration-300"
+              >
+                <p className="text-sm font-medium text-gray-600">{group}</p>
+                <p className="text-lg font-semibold text-gray-800 mt-1">
+                  {groupInfo[group]?.average
+                    ? groupInfo[group].average.toFixed(2)
+                    : "N/A"}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Spider Web Section */}
+        <div className="w-full md:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <BarChart3 className="text-blue-500 w-6 h-6" />
+            <h1 className="text-xl font-bold text-gray-800">Your Spider Web</h1>
+          </div>
+
+          <Radar
+            data={chartData}
+            options={{
+              responsive: true,
+              scales: {
+                r: {
+                  beginAtZero: true,
+                  max: 5,
+                  ticks: { stepSize: 1 },
+                  grid: { color: "rgba(0,0,0,0.1)" },
+                  angleLines: { color: "rgba(0,0,0,0.1)" },
+                },
+              },
+              plugins: {
+                legend: { position: "top" },
+                tooltip: {
+                  callbacks: {
+                    label: function (tooltipItem) {
+                      const group = chartData.labels[tooltipItem.dataIndex];
+                      const avg = groupInfo[group]?.average.toFixed(2);
+                      const answered = groupInfo[group]?.answered;
+                      return `${group}: ${avg} (${answered} answered)`;
+                    },
+                  },
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default QeqProfile;
+export default Qeqprofile;

@@ -44,7 +44,7 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <nav className="hidden md:flex items-center gap-6 text-gray-600">
-                    <button className="hover:text-blue-500 transition-colors" title="Home">
+                    {/* <button className="hover:text-blue-500 transition-colors" title="Home">
                         <FaHome size={22} />
                     </button>
                     <button className="hover:text-blue-500 transition-colors" title="My Network">
@@ -56,7 +56,7 @@ const Navbar = () => {
                         <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                             4
                         </span>
-                    </button>
+                    </button> */}
 
                     {/* Profile Dropdown */}
                     <div className="relative">

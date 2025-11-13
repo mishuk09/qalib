@@ -16,6 +16,7 @@ import SurveyForm from './components/users/SurveyForm';
 import DreamTeamData from './components/users/DreamTeamData';
 import BigFive from './components/users/BigFive';
 import BigFiveData from './components/users/BigFiveData';
+import SurveyViewer from './components/users/SurveyViewer';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path='/dream-team-add' element={<DreamTeamData />} />
         <Route path='/big-five' element={<BigFive />} />
         <Route path='/big-five-add' element={<BigFiveData />} />
+        <Route path='/survey' element={<SurveyViewer/>} />
 
 
 

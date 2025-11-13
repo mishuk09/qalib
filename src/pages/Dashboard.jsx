@@ -52,32 +52,29 @@ const Dashboard = () => {
     }, [location.state]);
     return (
         <>
-            {
-                secondModalOpen && (
-                    <div
-                        className="fixed inset-0 bg-black/40 flex items-center justify-center z-20"
-                        onClick={() => setSecondModalOpen(false)} // click outside closes modal
-                    >
-                        {/* Modal Content */}
-                        <div
-                            className="bg-white relative p-6 max-w-4xl w-full h-[80vh] rounded-xl shadow-lg overflow-y-auto"
-                            onClick={(e) => e.stopPropagation()} // prevent close on inside click
-                        >
-                            {/* Header with Close */}
+            {secondModalOpen && (
+  <div
+    className="fixed inset-0 bg-black/40 flex items-center justify-center z-20"
+  >
+    {/* Modal Content */}
+    <div
+      className="bg-white relative p-6 max-w-4xl w-full h-[80vh] rounded-xl shadow-lg overflow-y-auto"
+      onClick={(e) => e.stopPropagation()} // ensure inside clicks don’t propagate
+    >
+      {/* Close Button */}
+      <button
+        onClick={() => setSecondModalOpen(false)}
+        className="px-3 py-1 absolute top-3 right-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-200"
+      >
+        ✕
+      </button>
 
-                            <button
-                                onClick={() => setSecondModalOpen(false)}
-                                className="px-2 py-1 absolute top-2 right-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
-                            >
-                                ✕
-                            </button>
+      {/* Scrollable Content */}
+      <SurveyForm />
+    </div>
+  </div>
+)}
 
-                            {/* Scrollable Content */}
-                            {/* <BehaviorQuestion /> */}
-                            <SurveyForm/>
-                        </div>
-                    </div>
-                )}
 
             <div className="bg-blue-50 min-h-screen">
                 <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -112,6 +109,8 @@ const Dashboard = () => {
                                 <li><a href="#">Saved Posts</a></li>
                                 <li><a href="/dream-team">Dream Team</a></li>
                                 <li><a href="/big-five">Big Five</a></li>
+                                {/* <li><a href="/personal-score">Personal Score</a></li>
+                                <li><a href="/spider-web">Spider web</a></li> */}
                             </ul>
                         </div>
                     </aside>
