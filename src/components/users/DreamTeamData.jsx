@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const DreamTeamData = () => {
   const [dreamteam, setDreamteam] = useState({});
@@ -44,7 +44,7 @@ const DreamTeamData = () => {
     }
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/api/update-profile", {
+      const res = await fetch("https://qalib.cloud/api/update-profile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

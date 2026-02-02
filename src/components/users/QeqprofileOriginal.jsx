@@ -3,7 +3,7 @@ import { FaChartLine, FaUsers, FaGlobe, FaStar, FaUserFriends, FaLink } from "re
 import { MdPersonSearch } from "react-icons/md";
 import { motion } from "framer-motion";
 
-const QeqProfile = () => {
+const QeqprofileOriginal = () => {
     const sections = [
         {
             title: "Score",
@@ -92,4 +92,4 @@ const QeqProfile = () => {
     );
 };
 
-export default QeqProfile;
+export default QeqprofileOriginal;

@@ -1,18 +1,16 @@
-// RegisterForm.jsx
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-const API_URL = "https://qalib.cloud/api/register";
-
-// Added explicit required=true in definition, and ensured it's passed to the input
+// Professional Input Component
 const ProfessionalInput = ({
   label,
   type = "text",
   value,
   onChange,
   placeholder,
-  required = true,
+  required = false,
   icon = null,
+  name,
 }) => (
   <label className="flex flex-col text-gray-800">
     <span className="text-sm font-semibold mb-2">
@@ -26,7 +24,8 @@ const ProfessionalInput = ({
       )}
       <input
         type={type}
-        className={`w-full ${icon ? "pl-12" : "pl-4"} pr-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400 text-base font-medium`}
+        name={name}
+        className={`w-full ${icon ? "pl-12" : "pl-4"} pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400 text-base`}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
@@ -36,14 +35,15 @@ const ProfessionalInput = ({
   </label>
 );
 
-// Component for a professional-looking Dropdown/Select Field
+// Professional Dropdown Component
 const ProfessionalDropdown = ({
   label,
   value,
   onChange,
   options,
-  required = true,
+  required = false,
   icon = null,
+  name,
 }) => (
   <label className="flex flex-col text-gray-800">
     <span className="text-sm font-semibold mb-2">
@@ -56,7 +56,8 @@ const ProfessionalDropdown = ({
         </span>
       )}
       <select
-        className={`w-full ${icon ? "pl-12" : "pl-4"} pr-4 text- py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400   font-medium appearance-none cursor-pointer`}
+        name={name}
+        className={`w-full ${icon ? "pl-12" : "pl-4"} pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400 font-medium appearance-none cursor-pointer`}
         value={value}
         onChange={onChange}
         required={required}
@@ -85,14 +86,14 @@ const ProfessionalDropdown = ({
   </label>
 );
 
-// Component for professional Radio/Checkbox Groups (Pill Style)
+// Option Pill Component for Radio/Checkbox
 const OptionPill = ({ label, value, isChecked, isRadio, onChange, name }) => (
   <label
     className={`
-      px-5 py-2 text-sm font-semibold rounded cursor-pointer transition-all duration-150 ease-in-out whitespace-nowrap inline-flex items-center gap-2 border
+      px-5 py-2 text-sm font-semibold rounded-lg cursor-pointer transition-all duration-150 ease-in-out whitespace-nowrap inline-flex items-center gap-2 border
       ${
         isChecked
-          ? "bg-blue-600 text-white shadow-lg   transform  "
+          ? "bg-blue-600 text-white shadow-lg transform"
           : "bg-white text-gray-700 hover:bg-gray-50 border-gray-300 hover:border-blue-400"
       }
     `}
@@ -110,11 +111,11 @@ const OptionPill = ({ label, value, isChecked, isRadio, onChange, name }) => (
   </label>
 );
 
-// Helper component for question blocks (improves spacing and visual grouping)
+// Question Block Component
 const QuestionBlock = ({ questionNumber, title, children, isMulti = false, note = null }) => (
-  <div className="bg-gradient-to-br from-blue-50 to-gray-50 p-6 rounded border border-blue-100 shadow-sm">
+  <div className="bg-gradient-to-br from-blue-50 to-gray-50 p-6 rounded-lg border border-blue-100 shadow-sm">
     <div className="text-lg font-bold mb-4 text-gray-900 flex items-center gap-2">
-      <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-500 text-white rounded text-sm">
+      <span className="inline-flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-lg text-sm">
         {questionNumber}
       </span>
       {title}
@@ -125,65 +126,11 @@ const QuestionBlock = ({ questionNumber, title, children, isMulti = false, note 
   </div>
 );
 
-export default function RegisterForm() {
-  const [loading, setLoading] = useState(false);
-  // const [message, setMessage] = useState(null); // REMOVED
-  const navigate = useNavigate();
+const UpdateProfile = () => {
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
-  // timerRef and useEffect cleanup are REMOVED as they are no longer needed.
-
-  // central form state (UNCHANGED LOGIC)
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    // cohortinformation (program name, dates, venue) - NOTE: Making these required in UI only
-    cohortinformation: {
-      programName: "",
-      programDates: "",
-      programVenue: "",
-    },
-    // demographics (All fields required for UI)
-    demographics: {
-      ageGroup: "",
-      gender: "",
-      genderOther: "",
-      educationLevels: [], // multi
-      employmentStatus: "",
-      priorBusinessExperience: "", // yes/no
-      currentLocation: "",
-      preferredLanguages: [], // multi
-      preferredLanguageOther: "",
-      hobbiesInfluence: "", // yes/no
-      hobbiesDetails: "",
-      skills: [], // multiselect
-      workingStyle: [], // multiselect
-      enjoysCreativeProblemSolving: "", // yes/no
-      areasConfident: [], // multiselect
-      preferredLearningStyle: [], // multiselect
-      comfortableTakingRisks: "", // yes/no
-      traits: [], // multi up to 3 (frontend won't enforce limit but UI note)
-      everStartedBusiness: "", // yes/no
-      businessType: [], // multiselect with "Other text"
-      businessTypeOther: "",
-      entrepreneurshipLevel: "",
-      attendedTraining: "", // yes/no
-      followEntrepreneurContent: "", // yes/no
-      hasMentor: "", // yes/no
-      exposureAreas: [], // multiselect
-      familiarWithDigitalTools: "", // yes/no
-      whyStartBusiness: [], // multiselect with other
-      whyStartBusinessOther: "",
-      hasClearVision: "", // yes/no
-      plannedCommitment: "",
-      interestedBusinessTypes: [], // multiselect
-      preferCreateOrImprove: "",
-      preferredBusinessModel: [], // multiselect
-    },
-  });
-
-  // option lists (UNCHANGED LOGIC)
+  // Option lists matching RegisterForm
   const programNames = [
     "University of Malaya (UM)",
     "Universiti Kebangsaan Malaysia (UKM)",
@@ -223,8 +170,8 @@ export default function RegisterForm() {
     "Primary school",
     "Secondary school",
     "Diploma/Certificate",
-    "Bachelor’s degree",
-    "Master’s degree or higher",
+    "Bachelor's degree",
+    "Master's degree or higher",
   ];
   const employmentStatuses = [
     "Student",
@@ -314,257 +261,306 @@ export default function RegisterForm() {
     "Pop-up or seasonal",
   ];
 
-  // helpers (UNCHANGED LOGIC)
-  const updateTopLevel = (key, value) => setFormData((p) => ({ ...p, [key]: value }));
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    cohortinformation: { programName: "", programDates: "", programVenue: "" },
+    demographics: {
+      ageGroup: "",
+      gender: "",
+      genderOther: "",
+      educationLevels: [],
+      employmentStatus: "",
+      priorBusinessExperience: "",
+      currentLocation: "",
+      preferredLanguages: [],
+      preferredLanguageOther: "",
+      hobbiesInfluence: "",
+      hobbiesDetails: "",
+      skills: [],
+      workingStyle: [],
+      enjoysCreativeProblemSolving: "",
+      areasConfident: [],
+      preferredLearningStyle: [],
+      comfortableTakingRisks: "",
+      traits: [],
+      everStartedBusiness: "",
+      businessType: [],
+      businessTypeOther: "",
+      entrepreneurshipLevel: "",
+      attendedTraining: "",
+      followEntrepreneurContent: "",
+      hasMentor: "",
+      exposureAreas: [],
+      familiarWithDigitalTools: "",
+      whyStartBusiness: [],
+      whyStartBusinessOther: "",
+      hasClearVision: "",
+      plannedCommitment: "",
+      interestedBusinessTypes: [],
+      preferCreateOrImprove: "",
+      preferredBusinessModel: [],
+    },
+  });
 
-  const updateCohort = (key, value) =>
-    setFormData((p) => ({
-      ...p,
-      cohortinformation: { ...p.cohortinformation, [key]: value },
-    }));
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("https://qalib.cloud/api/user-profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const { user } = res.data;
 
-  const updateDemographics = (key, value) =>
-    setFormData((p) => ({
-      ...p,
-      demographics: { ...p.demographics, [key]: value },
-    }));
+        const arr = (val) => (Array.isArray(val) ? val : []);
 
-  // toggle item in array field inside demographics (UNCHANGED LOGIC)
-  const toggleArrayField = (field, value) => {
-    setFormData((p) => {
-      const arr = p.demographics[field] || [];
-      const exists = arr.includes(value);
-      const newArr = exists ? arr.filter((v) => v !== value) : [...arr, value];
-      return { ...p, demographics: { ...p.demographics, [field]: newArr } };
+        setFormData({
+          fullName: user.fullName || "",
+          email: user.email || "",
+          cohortinformation: {
+            programName: user.cohortinformation?.programName || "",
+            programDates: user.cohortinformation?.programDates || "",
+            programVenue: user.cohortinformation?.programVenue || "",
+          },
+          demographics: {
+            ageGroup: user.demographics?.ageGroup || "",
+            gender: user.demographics?.gender || "",
+            genderOther: user.demographics?.genderOther || "",
+            educationLevels: arr(user.demographics?.educationLevels),
+            employmentStatus: user.demographics?.employmentStatus || "",
+            priorBusinessExperience: user.demographics?.priorBusinessExperience || "",
+            currentLocation: user.demographics?.currentLocation || "",
+            preferredLanguages: arr(user.demographics?.preferredLanguages),
+            preferredLanguageOther: user.demographics?.preferredLanguageOther || "",
+            hobbiesInfluence: user.demographics?.hobbiesInfluence || "",
+            hobbiesDetails: user.demographics?.hobbiesDetails || "",
+            skills: arr(user.demographics?.skills),
+            workingStyle: arr(user.demographics?.workingStyle),
+            enjoysCreativeProblemSolving: user.demographics?.enjoysCreativeProblemSolving || "",
+            areasConfident: arr(user.demographics?.areasConfident),
+            preferredLearningStyle: arr(user.demographics?.preferredLearningStyle),
+            comfortableTakingRisks: user.demographics?.comfortableTakingRisks || "",
+            traits: arr(user.demographics?.traits),
+            everStartedBusiness: user.demographics?.everStartedBusiness || "",
+            businessType: arr(user.demographics?.businessType),
+            businessTypeOther: user.demographics?.businessTypeOther || "",
+            entrepreneurshipLevel: user.demographics?.entrepreneurshipLevel || "",
+            attendedTraining: user.demographics?.attendedTraining || "",
+            followEntrepreneurContent: user.demographics?.followEntrepreneurContent || "",
+            hasMentor: user.demographics?.hasMentor || "",
+            exposureAreas: arr(user.demographics?.exposureAreas),
+            familiarWithDigitalTools: user.demographics?.familiarWithDigitalTools || "",
+            whyStartBusiness: arr(user.demographics?.whyStartBusiness),
+            whyStartBusinessOther: user.demographics?.whyStartBusinessOther || "",
+            hasClearVision: user.demographics?.hasClearVision || "",
+            plannedCommitment: user.demographics?.plannedCommitment || "",
+            interestedBusinessTypes: arr(user.demographics?.interestedBusinessTypes),
+            preferCreateOrImprove: user.demographics?.preferCreateOrImprove || "",
+            preferredBusinessModel: arr(user.demographics?.preferredBusinessModel),
+          },
+        });
+      } catch (error) {
+        setMessage({ type: "error", text: "Error fetching profile data." });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  const handleChange = (e, section = null) => {
+    const { name, value } = e.target;
+    if (section === "cohortinformation") {
+      setFormData((prev) => ({
+        ...prev,
+        cohortinformation: { ...prev.cohortinformation, [name]: value },
+      }));
+    } else if (section === "demographics") {
+      setFormData((prev) => ({ ...prev, demographics: { ...prev.demographics, [name]: value } }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleMultiToggle = (value, field) => {
+    setFormData((prev) => {
+      const currentList = prev.demographics[field] || [];
+      const newList = currentList.includes(value)
+        ? currentList.filter((item) => item !== value)
+        : [...currentList, value];
+      return { ...prev, demographics: { ...prev.demographics, [field]: newList } };
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // basic validation (UPDATED TO USE ALERT)
-    // NOTE: fullName, email, password, and confirmPassword now rely on ProfessionalInput's required=true attribute
-    // but we keep the password match check here.
-    if (formData.password !== formData.confirmPassword) {
-      alert("Error: Passwords do not match.");
-      return;
-    }
-
-    // where the actual <input> is hidden and interaction is via <label> (OptionPill).
-    const requiredDemographicsFields = [
-      "ageGroup",
-      "gender",
-      "employmentStatus",
-      "priorBusinessExperience",
-      "currentLocation",
-      "hobbiesInfluence",
-      "enjoysCreativeProblemSolving",
-      "comfortableTakingRisks",
-      "everStartedBusiness",
-      "entrepreneurshipLevel",
-      "attendedTraining",
-      "followEntrepreneurContent",
-      "hasMentor",
-      "familiarWithDigitalTools",
-      "hasClearVision",
-      "plannedCommitment",
-      "preferCreateOrImprove",
-    ];
-
-    const requiredArrayFields = [
-      "educationLevels",
-      "preferredLanguages",
-      "skills",
-      "workingStyle",
-      "areasConfident",
-      "preferredLearningStyle",
-      "traits",
-      "businessType",
-      "exposureAreas",
-      "whyStartBusiness",
-      "interestedBusinessTypes",
-      "preferredBusinessModel",
-    ];
-
-    let missingField = null;
-
-    // Check for required single-select fields (Radio buttons)
-    for (const field of requiredDemographicsFields) {
-      if (!formData.demographics[field]) {
-        missingField = field;
-        break;
-      }
-    }
-
-    // Check for required multi-select fields (Checkbox groups)
-    if (!missingField) {
-      for (const field of requiredArrayFields) {
-        if (formData.demographics[field].length === 0) {
-          missingField = field;
-          break;
-        }
-      }
-    }
-
-    // Check for conditional required fields (e.g., "Other" text inputs)
-    if (!missingField) {
-      if (formData.demographics.gender === "Other" && !formData.demographics.genderOther) {
-        missingField = "Gender Other Specification";
-      } else if (
-        formData.demographics.preferredLanguages?.includes("Other") &&
-        !formData.demographics.preferredLanguageOther
-      ) {
-        missingField = "Preferred Language Other Specification";
-      } else if (
-        formData.demographics.hobbiesInfluence === "Yes" &&
-        !formData.demographics.hobbiesDetails
-      ) {
-        missingField = "Hobbies Details";
-      } else if (
-        formData.demographics.businessType?.includes("Other") &&
-        !formData.demographics.businessTypeOther
-      ) {
-        missingField = "Business Type Other Specification";
-      } else if (
-        formData.demographics.whyStartBusiness?.includes("Other") &&
-        !formData.demographics.whyStartBusinessOther
-      ) {
-        missingField = "Why Start Business Other Reason";
-      }
-    }
-
-    // Final missing field check (UPDATED TO USE ALERT)
-    if (missingField) {
-      alert(`Please fill out all required fields. Missing: ${missingField}`);
-      setLoading(false);
-      return;
-    }
-    // -----------------------------------------------------------
-
-    setLoading(true);
     try {
-      // Prepare payload similar to backend expectations (UNCHANGED LOGIC)
+      const token = localStorage.getItem("token");
+
+      // Prepare payload to match backend expectations
       const payload = {
         fullName: formData.fullName,
         email: formData.email,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
         cohortinformation: formData.cohortinformation,
         demographics: formData.demographics,
       };
 
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      console.log("Sending update payload:", payload);
+
+      const res = await axios.put("https://qalib.cloud/api/update-profile", payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        alert("Registration failed: " + (data?.error || "Unknown error"));
-      } else {
-        // store token for subsequent calls (UNCHANGED LOGIC)
-        if (data.token) localStorage.setItem("token", data.token);
-        alert("Registered successfully!");
+      console.log("Backend response:", res.data);
+      console.log("Response status:", res.status);
 
-        // Redirect (UNCHANGED LOGIC)
-        navigate("/login", { state: { showModalAfter: true } });
+      setMessage({ type: "success", text: "Profile updated successfully!" });
+
+      // If email changed, backend returns a new token
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
       }
-    } catch (err) {
-      alert("Network error: Could not connect to the registration server.");
-    } finally {
-      setLoading(false);
+
+      // Refetch profile to verify database update
+      setTimeout(async () => {
+        try {
+          const newToken = res.data.token || token;
+          const verifyRes = await axios.get("https://qalib.cloud/api/user-profile", {
+            headers: { Authorization: `Bearer ${newToken}` },
+          });
+          console.log("Verified data from DB:", verifyRes.data);
+
+          // Check if data actually saved
+          const dbUser = verifyRes.data.user;
+          if (dbUser.fullName !== payload.fullName) {
+            console.error("DB mismatch: fullName not saved!");
+            setMessage({
+              type: "error",
+              text: "Data saved but verification failed. Please refresh.",
+            });
+          }
+        } catch (err) {
+          console.error("Verification error:", err);
+        }
+      }, 500);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      console.error("❌ Update error FULL:", error);
+      console.error("Response status:", error.response?.status);
+      console.error("Response data:", error.response?.data);
+      console.error("Response headers:", error.response?.headers);
+      const errorMsg =
+        error.response?.data?.error || `Update failed. Status: ${error.response?.status}`;
+      setMessage({ type: "error", text: errorMsg });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  // Improved UI/UX structure and styling (NO CHANGES)
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-600 font-medium">Loading your profile...</p>
+      </div>
+    );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center py-12 px-1 lg:px-4">
-      <div className="max-w-4xl w-full bg-white lg:shadow-2xl rounded lg:rounded-2xl p-3 lg:p-8   border border-gray-100">
-        <div className="mb-12 text-center">
-          <h2 className="text-2xl md:text-4xl font-extrabold text-gray-900 mb-3">
-            🚀 Qalib Registration
-          </h2>
-          <p className=" md:text-lg text-gray-600 max-w-2xl mx-auto">
-            Complete your profile to get started. All fields are required.
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl p-8 border border-gray-100">
+        {/* HEADER */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
+            📝 Update Your Profile
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Keep your information up to date for a personalized experience.
           </p>
           <div className="mt-4 inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium">
-            📋 Step-by-step registration form
+            ✨ All your information in one place
           </div>
         </div>
 
+        {/* Message Alert */}
+        {message.text && (
+          <div
+            className={`fixed top-20 right-5 z-50 p-4 rounded-xl text-sm font-semibold border shadow-lg transition-all animate-in fade-in slide-in-from-top-4 ${
+              message.type === "success"
+                ? "bg-green-50 border-green-300 text-green-800"
+                : "bg-red-50 border-red-300 text-red-800"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-xl">{message.type === "success" ? "✅" : "⚠️"}</span>
+              <p>{message.text}</p>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* === Personal Information Section (Retained two-column layout) === */}
-          <section className=" pb-4">
-            <h3 className="md:text-xl font-bold mb-6 text-gray-900 pb-2 border-b border-blue-200">
-              1. Account Details
+          {/* 1. ACCOUNT DETAILS */}
+          <section className="pb-6">
+            <h3 className="text-2xl font-bold mb-6 text-gray-900 pb-3 border-b-2 border-blue-200 flex items-center gap-2">
+              <span className="text-2xl">👤</span> 1. Account Details
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ProfessionalInput
                 label="Full Name"
                 value={formData.fullName}
-                onChange={(e) => updateTopLevel("fullName", e.target.value)}
-                required={true} // Explicitly required
+                onChange={handleChange}
+                name="fullName"
+                placeholder="Enter your full name"
               />
               <ProfessionalInput
                 label="Email Address"
                 type="email"
                 value={formData.email}
-                onChange={(e) => updateTopLevel("email", e.target.value.toLowerCase())}
-                required={true} // Explicitly required
-              />
-              <ProfessionalInput
-                label="Password"
-                type="password"
-                value={formData.password}
-                onChange={(e) => updateTopLevel("password", e.target.value)}
-                required={true} // Explicitly required
-              />
-              <ProfessionalInput
-                label="Confirm Password"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={(e) => updateTopLevel("confirmPassword", e.target.value)}
-                required={true} // Explicitly required
+                onChange={handleChange}
+                name="email"
+                placeholder="your.email@example.com"
               />
             </div>
           </section>
 
-          {/* === Cohort Information Section (Retained three-column layout) === */}
-          <section className=" pb-4">
-            <h3 className="md:text-xl font-bold mb-6 text-gray-900 pb-2 border-b border-blue-200">
-              2. Cohort Details
+          {/* 2. COHORT DETAILS */}
+          <section className="pb-6">
+            <h3 className="text-2xl font-bold mb-6 text-gray-900 pb-3 border-b-2 border-blue-200 flex items-center gap-2">
+              <span className="text-2xl">🎓</span> 2. Cohort Details
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <ProfessionalDropdown
                 label="Program Name"
                 value={formData.cohortinformation.programName}
-                onChange={(e) => updateCohort("programName", e.target.value)}
+                onChange={(e) => handleChange(e, "cohortinformation")}
+                name="programName"
                 options={programNames}
-                required={true}
               />
               <ProfessionalInput
                 label="Program Dates"
-                type="Date"
-                placeholder="e.g., 2025-01-10 to 2025-02-10"
+                type="date"
                 value={formData.cohortinformation.programDates}
-                onChange={(e) => updateCohort("programDates", e.target.value)}
-                required={true} // Explicitly required
+                onChange={(e) => handleChange(e, "cohortinformation")}
+                name="programDates"
+                placeholder="e.g., 2025-01-10"
               />
               <ProfessionalInput
                 label="Program Venue"
                 value={formData.cohortinformation.programVenue}
-                onChange={(e) => updateCohort("programVenue", e.target.value)}
+                onChange={(e) => handleChange(e, "cohortinformation")}
+                name="programVenue"
                 placeholder="e.g., Virtual / City Hall"
-                required={true} // Explicitly required
               />
             </div>
           </section>
 
-          {/* === Demographics & Profile Section (MAIN CHANGE: Single Column) === */}
-          <section className="pb-4">
-            <h3 className="md:text-xl font-bold mb-6 text-gray-900 pb-2 border-b border-blue-200">
-              3. Demographic & Background
+          {/* 3. DEMOGRAPHIC & BACKGROUND */}
+          <section className="pb-6">
+            <h3 className="text-2xl font-bold mb-6 text-gray-900 pb-3 border-b-2 border-blue-200 flex items-center gap-2">
+              <span className="text-2xl">📊</span> 3. Demographic & Background
             </h3>
             <div className="space-y-6">
               {/* Q1: Age Group */}
@@ -577,7 +573,12 @@ export default function RegisterForm() {
                       value={g}
                       isRadio={true}
                       isChecked={formData.demographics.ageGroup === g}
-                      onChange={() => updateDemographics("ageGroup", g)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, ageGroup: g },
+                        }))
+                      }
                       name="ageGroup"
                     />
                   ))}
@@ -595,19 +596,25 @@ export default function RegisterForm() {
                       isRadio={true}
                       isChecked={formData.demographics.gender === g}
                       onChange={() => {
-                        updateDemographics("gender", g);
-                        if (g !== "Other") updateDemographics("genderOther", "");
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: {
+                            ...prev.demographics,
+                            gender: g,
+                            genderOther: g !== "Other" ? "" : prev.demographics.genderOther,
+                          },
+                        }));
                       }}
                       name="gender"
                     />
                   ))}
                   {formData.demographics.gender === "Other" && (
                     <input
-                      className="p-2 border border-gray-300 rounded-lg shadow-sm"
+                      className="p-3 border border-gray-300 rounded-lg shadow-sm"
                       placeholder="Please specify"
                       value={formData.demographics.genderOther}
-                      onChange={(e) => updateDemographics("genderOther", e.target.value)}
-                      required
+                      onChange={(e) => handleChange(e, "demographics")}
+                      name="genderOther"
                     />
                   )}
                 </div>
@@ -623,14 +630,14 @@ export default function RegisterForm() {
                       value={ed}
                       isRadio={false}
                       isChecked={(formData.demographics.educationLevels || []).includes(ed)}
-                      onChange={() => toggleArrayField("educationLevels", ed)}
+                      onChange={() => handleMultiToggle(ed, "educationLevels")}
                       name="educationLevels"
                     />
                   ))}
                 </div>
               </QuestionBlock>
 
-              {/* Q4: Employment Status (Now full width) */}
+              {/* Q4: Employment Status */}
               <QuestionBlock questionNumber={4} title="Current Employment Status">
                 <div className="flex flex-wrap gap-2">
                   {employmentStatuses.map((s) => (
@@ -640,25 +647,13 @@ export default function RegisterForm() {
                       value={s}
                       isRadio={true}
                       isChecked={formData.demographics.employmentStatus === s}
-                      onChange={() => updateDemographics("employmentStatus", s)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, employmentStatus: s },
+                        }))
+                      }
                       name="employmentStatus"
-                    />
-                  ))}
-                </div>
-              </QuestionBlock>
-
-              {/* Q6: Current Location (Now full width) */}
-              <QuestionBlock questionNumber={6} title="Current Location">
-                <div className="flex flex-wrap gap-2">
-                  {locationOptions.map((loc) => (
-                    <OptionPill
-                      key={loc}
-                      label={loc}
-                      value={loc}
-                      isRadio={true}
-                      isChecked={formData.demographics.currentLocation === loc}
-                      onChange={() => updateDemographics("currentLocation", loc)}
-                      name="currentLocation"
                     />
                   ))}
                 </div>
@@ -674,8 +669,35 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.priorBusinessExperience === choice}
-                      onChange={() => updateDemographics("priorBusinessExperience", choice)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, priorBusinessExperience: choice },
+                        }))
+                      }
                       name="priorBusinessExperience"
+                    />
+                  ))}
+                </div>
+              </QuestionBlock>
+
+              {/* Q6: Current Location */}
+              <QuestionBlock questionNumber={6} title="Current Location">
+                <div className="flex flex-wrap gap-2">
+                  {locationOptions.map((loc) => (
+                    <OptionPill
+                      key={loc}
+                      label={loc}
+                      value={loc}
+                      isRadio={true}
+                      isChecked={formData.demographics.currentLocation === loc}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, currentLocation: loc },
+                        }))
+                      }
+                      name="currentLocation"
                     />
                   ))}
                 </div>
@@ -695,30 +717,30 @@ export default function RegisterForm() {
                       value={lang}
                       isRadio={false}
                       isChecked={(formData.demographics.preferredLanguages || []).includes(lang)}
-                      onChange={() => toggleArrayField("preferredLanguages", lang)}
+                      onChange={() => handleMultiToggle(lang, "preferredLanguages")}
                       name="preferredLanguages"
                     />
                   ))}
                   {formData.demographics.preferredLanguages?.includes("Other") && (
                     <input
-                      className="p-2 border border-gray-300 rounded-lg shadow-sm"
+                      className="p-3 border border-gray-300 rounded-lg shadow-sm"
                       placeholder="Other language"
                       value={formData.demographics.preferredLanguageOther}
-                      onChange={(e) => updateDemographics("preferredLanguageOther", e.target.value)}
-                      required
+                      onChange={(e) => handleChange(e, "demographics")}
+                      name="preferredLanguageOther"
                     />
                   )}
                 </div>
               </QuestionBlock>
 
-              {/* Question 8-15: Personal Interests & Strengths */}
-              <h4 className="text-xl font-semibold text-blue-600 border-b pb-2 pt-4">
+              {/* Section Header: Personal Interests & Strengths */}
+              <h4 className="text-xl font-semibold text-blue-600 border-b-2 border-blue-300 pb-3 pt-6">
                 Personal Interests & Strengths
               </h4>
 
               {/* Q8: Hobbies Influence */}
               <QuestionBlock questionNumber={8} title="Hobbies that could influence business idea">
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center flex-wrap">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
                       key={choice}
@@ -727,8 +749,14 @@ export default function RegisterForm() {
                       isRadio={true}
                       isChecked={formData.demographics.hobbiesInfluence === choice}
                       onChange={() => {
-                        updateDemographics("hobbiesInfluence", choice);
-                        if (choice === "No") updateDemographics("hobbiesDetails", "");
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: {
+                            ...prev.demographics,
+                            hobbiesInfluence: choice,
+                            hobbiesDetails: choice === "No" ? "" : prev.demographics.hobbiesDetails,
+                          },
+                        }));
                       }}
                       name="hobbiesInfluence"
                     />
@@ -738,8 +766,8 @@ export default function RegisterForm() {
                       className="p-3 border border-gray-300 rounded-lg shadow-sm flex-grow ml-4"
                       placeholder="If yes, please specify"
                       value={formData.demographics.hobbiesDetails}
-                      onChange={(e) => updateDemographics("hobbiesDetails", e.target.value)}
-                      required
+                      onChange={(e) => handleChange(e, "demographics")}
+                      name="hobbiesDetails"
                     />
                   )}
                 </div>
@@ -755,7 +783,7 @@ export default function RegisterForm() {
                       value={s}
                       isRadio={false}
                       isChecked={(formData.demographics.skills || []).includes(s)}
-                      onChange={() => toggleArrayField("skills", s)}
+                      onChange={() => handleMultiToggle(s, "skills")}
                       name="skills"
                     />
                   ))}
@@ -772,7 +800,7 @@ export default function RegisterForm() {
                       value={w}
                       isRadio={false}
                       isChecked={(formData.demographics.workingStyle || []).includes(w)}
-                      onChange={() => toggleArrayField("workingStyle", w)}
+                      onChange={() => handleMultiToggle(w, "workingStyle")}
                       name="workingStyle"
                     />
                   ))}
@@ -789,8 +817,16 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.enjoysCreativeProblemSolving === choice}
-                      onChange={() => updateDemographics("enjoysCreativeProblemSolving", choice)}
-                      name="enjoySolving"
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: {
+                            ...prev.demographics,
+                            enjoysCreativeProblemSolving: choice,
+                          },
+                        }))
+                      }
+                      name="enjoysCreativeProblemSolving"
                     />
                   ))}
                 </div>
@@ -810,7 +846,7 @@ export default function RegisterForm() {
                       value={a}
                       isRadio={false}
                       isChecked={(formData.demographics.areasConfident || []).includes(a)}
-                      onChange={() => toggleArrayField("areasConfident", a)}
+                      onChange={() => handleMultiToggle(a, "areasConfident")}
                       name="areasConfident"
                     />
                   ))}
@@ -827,7 +863,7 @@ export default function RegisterForm() {
                       value={l}
                       isRadio={false}
                       isChecked={(formData.demographics.preferredLearningStyle || []).includes(l)}
-                      onChange={() => toggleArrayField("preferredLearningStyle", l)}
+                      onChange={() => handleMultiToggle(l, "preferredLearningStyle")}
                       name="preferredLearningStyle"
                     />
                   ))}
@@ -844,8 +880,13 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.comfortableTakingRisks === choice}
-                      onChange={() => updateDemographics("comfortableTakingRisks", choice)}
-                      name="takingRisks"
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, comfortableTakingRisks: choice },
+                        }))
+                      }
+                      name="comfortableTakingRisks"
                     />
                   ))}
                 </div>
@@ -866,15 +907,15 @@ export default function RegisterForm() {
                       value={t}
                       isRadio={false}
                       isChecked={(formData.demographics.traits || []).includes(t)}
-                      onChange={() => toggleArrayField("traits", t)}
+                      onChange={() => handleMultiToggle(t, "traits")}
                       name="traits"
                     />
                   ))}
                 </div>
               </QuestionBlock>
 
-              {/* Question 16-23: Entrepreneurship Experience */}
-              <h4 className="text-xl font-semibold text-blue-600 border-b pb-2 pt-4">
+              {/* Section Header: Entrepreneurship Experience */}
+              <h4 className="text-xl font-semibold text-blue-600 border-b-2 border-blue-300 pb-3 pt-6">
                 Entrepreneurship Experience
               </h4>
 
@@ -888,7 +929,12 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.everStartedBusiness === choice}
-                      onChange={() => updateDemographics("everStartedBusiness", choice)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, everStartedBusiness: choice },
+                        }))
+                      }
                       name="everStartedBusiness"
                     />
                   ))}
@@ -909,17 +955,17 @@ export default function RegisterForm() {
                       value={b}
                       isRadio={false}
                       isChecked={(formData.demographics.businessType || []).includes(b)}
-                      onChange={() => toggleArrayField("businessType", b)}
+                      onChange={() => handleMultiToggle(b, "businessType")}
                       name="businessType"
                     />
                   ))}
                   {formData.demographics.businessType?.includes("Other") && (
                     <input
-                      className="p-2 border border-gray-300 rounded-lg shadow-sm"
+                      className="p-3 border border-gray-300 rounded-lg shadow-sm"
                       placeholder="Other business type"
                       value={formData.demographics.businessTypeOther}
-                      onChange={(e) => updateDemographics("businessTypeOther", e.target.value)}
-                      required
+                      onChange={(e) => handleChange(e, "demographics")}
+                      name="businessTypeOther"
                     />
                   )}
                 </div>
@@ -935,7 +981,12 @@ export default function RegisterForm() {
                       value={l}
                       isRadio={true}
                       isChecked={formData.demographics.entrepreneurshipLevel === l}
-                      onChange={() => updateDemographics("entrepreneurshipLevel", l)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, entrepreneurshipLevel: l },
+                        }))
+                      }
                       name="entrepreneurshipLevel"
                     />
                   ))}
@@ -952,7 +1003,12 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.attendedTraining === choice}
-                      onChange={() => updateDemographics("attendedTraining", choice)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, attendedTraining: choice },
+                        }))
+                      }
                       name="attendedTraining"
                     />
                   ))}
@@ -969,8 +1025,13 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.followEntrepreneurContent === choice}
-                      onChange={() => updateDemographics("followEntrepreneurContent", choice)}
-                      name="followContent"
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, followEntrepreneurContent: choice },
+                        }))
+                      }
+                      name="followEntrepreneurContent"
                     />
                   ))}
                 </div>
@@ -986,7 +1047,12 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.hasMentor === choice}
-                      onChange={() => updateDemographics("hasMentor", choice)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, hasMentor: choice },
+                        }))
+                      }
                       name="hasMentor"
                     />
                   ))}
@@ -1007,7 +1073,7 @@ export default function RegisterForm() {
                       value={ea}
                       isRadio={false}
                       isChecked={(formData.demographics.exposureAreas || []).includes(ea)}
-                      onChange={() => toggleArrayField("exposureAreas", ea)}
+                      onChange={() => handleMultiToggle(ea, "exposureAreas")}
                       name="exposureAreas"
                     />
                   ))}
@@ -1024,15 +1090,20 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.familiarWithDigitalTools === choice}
-                      onChange={() => updateDemographics("familiarWithDigitalTools", choice)}
-                      name="familiarWithDigital"
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, familiarWithDigitalTools: choice },
+                        }))
+                      }
+                      name="familiarWithDigitalTools"
                     />
                   ))}
                 </div>
               </QuestionBlock>
 
-              {/* Question 24-29: Vision & Motivation */}
-              <h4 className="text-xl font-semibold text-blue-600 border-b pb-2 pt-4">
+              {/* Section Header: Vision & Motivation */}
+              <h4 className="text-xl font-semibold text-blue-600 border-b-2 border-blue-300 pb-3 pt-6">
                 Vision & Motivation
               </h4>
 
@@ -1050,17 +1121,17 @@ export default function RegisterForm() {
                       value={w}
                       isRadio={false}
                       isChecked={(formData.demographics.whyStartBusiness || []).includes(w)}
-                      onChange={() => toggleArrayField("whyStartBusiness", w)}
+                      onChange={() => handleMultiToggle(w, "whyStartBusiness")}
                       name="whyStartBusiness"
                     />
                   ))}
                   {formData.demographics.whyStartBusiness?.includes("Other") && (
                     <input
-                      className="p-2 border border-gray-300 rounded-lg shadow-sm"
+                      className="p-3 border border-gray-300 rounded-lg shadow-sm"
                       placeholder="Other reason"
                       value={formData.demographics.whyStartBusinessOther}
-                      onChange={(e) => updateDemographics("whyStartBusinessOther", e.target.value)}
-                      required
+                      onChange={(e) => handleChange(e, "demographics")}
+                      name="whyStartBusinessOther"
                     />
                   )}
                 </div>
@@ -1079,8 +1150,13 @@ export default function RegisterForm() {
                       value={choice}
                       isRadio={true}
                       isChecked={formData.demographics.hasClearVision === choice}
-                      onChange={() => updateDemographics("hasClearVision", choice)}
-                      name="clearVision"
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, hasClearVision: choice },
+                        }))
+                      }
+                      name="hasClearVision"
                     />
                   ))}
                 </div>
@@ -1096,7 +1172,12 @@ export default function RegisterForm() {
                       value={c}
                       isRadio={true}
                       isChecked={formData.demographics.plannedCommitment === c}
-                      onChange={() => updateDemographics("plannedCommitment", c)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, plannedCommitment: c },
+                        }))
+                      }
                       name="plannedCommitment"
                     />
                   ))}
@@ -1106,7 +1187,7 @@ export default function RegisterForm() {
               {/* Q27: Interested Business Types */}
               <QuestionBlock
                 questionNumber={27}
-                title="Type of Business You’re Interested In"
+                title="Type of Business You're Interested In"
                 isMulti={true}
               >
                 <div className="flex flex-wrap gap-2">
@@ -1117,7 +1198,7 @@ export default function RegisterForm() {
                       value={b}
                       isRadio={false}
                       isChecked={(formData.demographics.interestedBusinessTypes || []).includes(b)}
-                      onChange={() => toggleArrayField("interestedBusinessTypes", b)}
+                      onChange={() => handleMultiToggle(b, "interestedBusinessTypes")}
                       name="interestedBusinessTypes"
                     />
                   ))}
@@ -1137,7 +1218,12 @@ export default function RegisterForm() {
                       value={p}
                       isRadio={true}
                       isChecked={formData.demographics.preferCreateOrImprove === p}
-                      onChange={() => updateDemographics("preferCreateOrImprove", p)}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          demographics: { ...prev.demographics, preferCreateOrImprove: p },
+                        }))
+                      }
                       name="preferCreateOrImprove"
                     />
                   ))}
@@ -1154,7 +1240,7 @@ export default function RegisterForm() {
                       value={bm}
                       isRadio={false}
                       isChecked={(formData.demographics.preferredBusinessModel || []).includes(bm)}
-                      onChange={() => toggleArrayField("preferredBusinessModel", bm)}
+                      onChange={() => handleMultiToggle(bm, "preferredBusinessModel")}
                       name="preferredBusinessModel"
                     />
                   ))}
@@ -1163,29 +1249,19 @@ export default function RegisterForm() {
             </div>
           </section>
 
-          {/* Submit Button & Footer */}
-          <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-gray-300">
+          {/* SUBMIT BUTTON */}
+          <div className="flex items-center justify-center pt-8 border-t-2 border-gray-300">
             <button
               type="submit"
-              className="w-full sm:w-auto px-10 py-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 disabled:from-gray-400 disabled:to-gray-400 text-white font-bold text-lg rounded shadow-lg hover:shadow-xl disabled:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 disabled:cursor-not-allowed"
-              disabled={loading}
+              className="w-full sm:w-auto px-12 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
             >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="inline-block w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></span>
-                  Registering...
-                </span>
-              ) : (
-                "✓ Complete Registration"
-              )}
+              ✓ Save All Changes
             </button>
-
-            <div className="text-sm text-gray-600 mt-6 sm:mt-0 text-center">
-              <span className="font-semibold text-red-500">*</span> indicates a required field.
-            </div>
           </div>
         </form>
       </div>
     </div>
   );
-}
+};
+
+export default UpdateProfile;

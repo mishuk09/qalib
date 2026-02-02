@@ -1,9 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import { Trash } from "lucide-react";
+import { useEffect, useState } from "react";
 import Items from "../../utills/Items";
 import Spin from "../../utills/Spin";
-
 
 const AdminHome = () => {
   const [users, setUsers] = useState([]);
@@ -13,7 +12,7 @@ const AdminHome = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/api/users");
+      const response = await axios.get("https://qalib.cloud/api/users");
       setUsers(response.data.users || []); // use response.data.users
       setLoading(false);
     } catch (error) {
@@ -40,7 +39,7 @@ const AdminHome = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      await axios.delete(`http://127.0.0.1:5000/api/users/${id}`);
+      await axios.delete(`https://qalib.cloud/api/users/${id}`);
       setUsers(users.filter((user) => user.id !== id)); // update UI
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -49,8 +48,6 @@ const AdminHome = () => {
 
   return (
     <div className="overflow-x-auto">
-    
-
       <div className="flex justify-between mt-10 mb-3">
         <Items name={`Users (${users.length})`} />
       </div>
@@ -58,19 +55,13 @@ const AdminHome = () => {
       <table className="min-w-full border border-gray-300 table-fixed">
         <thead className="bg-sky-300 text-gray-800 font-normal">
           <tr>
-            {[
-              "Name",
-              "Email",
-              "Gender",
-              "Age",
-              "Residence",
-              "Education",
-              "Delete",
-            ].map((header, index) => (
-              <th key={index} className="px-4 py-2 text-center w-24">
-                {header}
-              </th>
-            ))}
+            {["Name", "Email", "Gender", "Age", "Residence", "Education", "Delete"].map(
+              (header, index) => (
+                <th key={index} className="px-4 py-2 text-center w-24">
+                  {header}
+                </th>
+              )
+            )}
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 text-gray-700 text-sm">
@@ -90,12 +81,8 @@ const AdminHome = () => {
               >
                 <td className="px-2 py-1 text-start">{user.name}</td>
                 <td className="px-2 py-1 text-start">{user.email}</td>
-                <td className="px-2 py-1 text-center">
-                  {user.demographics?.gender || "-"}
-                </td>
-                <td className="px-2 py-1 text-center">
-                  {user.demographics?.age || "-"}
-                </td>
+                <td className="px-2 py-1 text-center">{user.demographics?.gender || "-"}</td>
+                <td className="px-2 py-1 text-center">{user.demographics?.age || "-"}</td>
                 <td className="px-2 py-1 text-center">
                   {user.demographics?.place_of_residence || "-"}
                 </td>
@@ -127,10 +114,9 @@ const AdminHome = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`px-3 py-1 border shadow rounded-lg ${currentPage === 1
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-blue-100"
-            }`}
+          className={`px-3 py-1 border shadow rounded-lg ${
+            currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-100"
+          }`}
         >
           Prev
         </button>
@@ -138,10 +124,9 @@ const AdminHome = () => {
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`px-3 py-1 border rounded-lg transition-colors ${currentPage === index + 1
-              ? "bg-red-500 text-white"
-              : "hover:bg-blue-100"
-              }`}
+            className={`px-3 py-1 border rounded-lg transition-colors ${
+              currentPage === index + 1 ? "bg-red-500 text-white" : "hover:bg-blue-100"
+            }`}
           >
             {index + 1}
           </button>
@@ -149,10 +134,9 @@ const AdminHome = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`px-3 py-1 border shadow rounded-lg ${currentPage === totalPages
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-blue-100"
-            }`}
+          className={`px-3 py-1 border shadow rounded-lg ${
+            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-100"
+          }`}
         >
           Next
         </button>

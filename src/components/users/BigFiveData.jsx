@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const BigFiveData = () => {
   const [bigFive, setBigFive] = useState({
@@ -16,7 +16,7 @@ const BigFiveData = () => {
 
   const [message, setMessage] = useState("");
 
-  const API_BASE = "http://localhost:5000/api"; // adjust if needed
+  const API_BASE = "https://qalib.cloud/api"; // adjust if needed
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -101,9 +101,7 @@ const BigFiveData = () => {
         </button>
       </form>
 
-      {message && (
-        <p className="text-center mt-4 font-medium text-gray-700">{message}</p>
-      )}
+      {message && <p className="text-center mt-4 font-medium text-gray-700">{message}</p>}
     </div>
   );
 };
