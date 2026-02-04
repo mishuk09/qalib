@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import MiniLoading from "../utills/miniLoading";
 import useUserData from "../utills/useUserData";
 
-import { Bookmark, ClipboardList, Library, Star, Users, UsersRound } from "lucide-react";
+import { ClipboardList, Library, Star, Users, UsersRound } from "lucide-react";
+import ConnectionsPage from "../components/users/ConnectionsPage";
 import SurveyForm from "../components/users/SurveyForm";
 import CreatePost from "./Post/CreatePost";
 import MainFeed from "./Post/MainFeed";
@@ -13,50 +14,23 @@ const API_URL = "https://qalib.cloud/api/users";
 
 const Dashboard = () => {
   const { userData, loading } = useUserData();
+  const navigate = useNavigate();
   const location = useLocation();
+  const shouldShowSurvey = useMemo(() => {
+    return new URLSearchParams(location.search).get("showSurvey") === "1";
+  }, [location.search]);
   const [secondModalOpen, setSecondModalOpen] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [siteusers, setSiteusers] = useState([]);
-
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(API_BASE);
-        const data = await res.json();
-        setUsers(data.users || []);
-      } catch (err) {
-        // setError("Failed to fetch users");
-      } finally {
-        // setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-  useEffect(() => {
-    if (location.state?.showModalAfter) {
+    if (shouldShowSurvey) {
       const timer = setTimeout(() => {
         setSecondModalOpen(true);
+        navigate("/dashboard", { replace: true });
       }, 3000);
 
       // Cleanup in case user leaves early
       return () => clearTimeout(timer);
     }
-  }, [location.state]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        setSiteusers(data.users || []);
-      } catch (error) {
-        console.error("Error loading users:", error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
+  }, [navigate, shouldShowSurvey]);
 
   return (
     <div className="relative">
@@ -118,12 +92,16 @@ const Dashboard = () => {
               <ul className="space-y-2 text-sm text-blue-600">
                 <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                   <Users size={16} />
-                  <a href="#">My Connections</a>
+                  <a href="/my-connections">My Connections</a>
                 </li>
 
-                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
+                {/* <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                   <Bookmark size={16} />
                   <a href="#">Saved Posts</a>
+                </li> */}
+                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
+                  <ClipboardList size={16} />
+                  <a href="/survey-form"> Profiling Survey</a>
                 </li>
 
                 <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
@@ -134,11 +112,6 @@ const Dashboard = () => {
                 <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                   <Star size={16} />
                   <a href="/big-five">Big Five</a>
-                </li>
-
-                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <ClipboardList size={16} />
-                  <a href="/survey-form">Retake Profiling Survey</a>
                 </li>
 
                 <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
@@ -243,30 +216,7 @@ const Dashboard = () => {
           <aside className="lg:col-span-3 space-y-6 sticky top-20 self-start">
             {/* Suggestions */}
             <div className="bg-white rounded-lg shadow-md p-4">
-              <h3 className="font-semibold mb-3">People you may know</h3>
-              <div className="space-y-0">
-                {siteusers.slice(0, 5).map((user) => (
-                  <div key={user.id} className="flex items-center space-x-3 py-2  ">
-                    {/* Avatar */}
-                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg">
-                      {user.demographics?.gender === "Male" ? "👦🏻" : "👩🏻"}
-                    </div>
-
-                    {/* User info + button */}
-                    <div className="flex flex-col">
-                      <p className="text-sm font-semibold">
-                        {user.fullName?.split(" ").slice(0, 2).join("")}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {user.cohortinformation?.programName || "N/A"}
-                      </p>
-                      <button className="mt-1 text-blue-600 text-xs font-medium hover:underline self-start">
-                        Connect
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <ConnectionsPage />
             </div>
 
             {/* Footer */}

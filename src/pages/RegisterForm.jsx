@@ -717,7 +717,7 @@ export default function RegisterForm() {
               </h4>
 
               {/* Q8: Hobbies Influence */}
-              <QuestionBlock questionNumber={8} title="Hobbies that could influence business idea">
+              <QuestionBlock questionNumber={8} title="Do you have hobbies ?">
                 <div className="flex gap-2 items-center">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -746,7 +746,11 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q9: Skills */}
-              <QuestionBlock questionNumber={9} title="Skills You Possess" isMulti={true}>
+              <QuestionBlock
+                questionNumber={9}
+                title="Select relevant skills that you possess"
+                isMulti={true}
+              >
                 <div className="flex flex-wrap gap-2">
                   {skillOptions.map((s) => (
                     <OptionPill
@@ -763,7 +767,11 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q10: Working Style */}
-              <QuestionBlock questionNumber={10} title="Working Style" isMulti={true}>
+              <QuestionBlock
+                questionNumber={10}
+                title="What is/are your working style"
+                isMulti={true}
+              >
                 <div className="flex flex-wrap gap-2">
                   {workingStyleOptions.map((w) => (
                     <OptionPill
@@ -780,7 +788,7 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q11: Creative problem solving */}
-              <QuestionBlock questionNumber={11} title="Enjoy solving problems creatively?">
+              <QuestionBlock questionNumber={11} title="Do you Enjoy solving problems creatively?">
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -799,7 +807,7 @@ export default function RegisterForm() {
               {/* Q12: Areas confident */}
               <QuestionBlock
                 questionNumber={12}
-                title="Areas You Feel Most Confident In"
+                title="Select Areas You Feel Most Confident In"
                 isMulti={true}
               >
                 <div className="flex flex-wrap gap-2">
@@ -818,7 +826,11 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q13: Preferred learning style */}
-              <QuestionBlock questionNumber={13} title="Preferred Learning Style" isMulti={true}>
+              <QuestionBlock
+                questionNumber={13}
+                title="What is /are your preferred learning style?"
+                isMulti={true}
+              >
                 <div className="flex flex-wrap gap-2">
                   {learningStyleOptions.map((l) => (
                     <OptionPill
@@ -835,7 +847,10 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q14: Comfortable taking risks */}
-              <QuestionBlock questionNumber={14} title="Comfortable taking calculated risks?">
+              <QuestionBlock
+                questionNumber={14}
+                title="Are you Comfortable taking calculated risks?"
+              >
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -854,7 +869,7 @@ export default function RegisterForm() {
               {/* Q15: Traits */}
               <QuestionBlock
                 questionNumber={15}
-                title="Traits That Best Describe You"
+                title="Choose the traits That Best Describe You"
                 isMulti={true}
                 note="Please choose up to three traits."
               >
@@ -879,7 +894,10 @@ export default function RegisterForm() {
               </h4>
 
               {/* Q16: Ever Started Business */}
-              <QuestionBlock questionNumber={16} title="Ever started or managed a business before?">
+              <QuestionBlock
+                questionNumber={16}
+                title="Have you Ever started or managed a business before?"
+              >
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -926,7 +944,10 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q18: Entrepreneurship Level */}
-              <QuestionBlock questionNumber={18} title="Entrepreneurship Experience Level">
+              <QuestionBlock
+                questionNumber={18}
+                title="Rate your entrepreneurship Experience Level"
+              >
                 <div className="flex flex-wrap gap-2">
                   {entrepreneurshipLevels.map((l) => (
                     <OptionPill
@@ -943,7 +964,10 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q19: Attended Training */}
-              <QuestionBlock questionNumber={19} title="Attended training/workshops?">
+              <QuestionBlock
+                questionNumber={19}
+                title="Have you attended relevant training/workshops?"
+              >
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -960,7 +984,7 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q20: Follow Entrepreneur Content */}
-              <QuestionBlock questionNumber={20} title="Follow entrepreneurship content?">
+              <QuestionBlock questionNumber={20} title="Do you follow entrepreneurship content?">
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -977,7 +1001,7 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q21: Has Mentor */}
-              <QuestionBlock questionNumber={21} title="Have a mentor or advisor?">
+              <QuestionBlock questionNumber={21} title="Do you have an entrepreneurship mentor? ">
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -996,7 +1020,7 @@ export default function RegisterForm() {
               {/* Q22: Exposure Areas */}
               <QuestionBlock
                 questionNumber={22}
-                title="Areas You've Been Exposed To"
+                title="Choose the Areas You've Been Exposed To"
                 isMulti={true}
               >
                 <div className="flex flex-wrap gap-2">
@@ -1015,7 +1039,10 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q23: Digital Tools */}
-              <QuestionBlock questionNumber={23} title="Familiar with digital tools for business?">
+              <QuestionBlock
+                questionNumber={23}
+                title="Are you familiar with digital tools for business?"
+              >
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -1127,7 +1154,7 @@ export default function RegisterForm() {
               {/* Q28: Prefer Create or Improve */}
               <QuestionBlock
                 questionNumber={28}
-                title="Prefer: Creating new or Improving existing ideas?"
+                title="Which one is your preference? Creating new or Improving existing ideas?"
               >
                 <div className="flex flex-wrap gap-2">
                   {preferCreateImprove.map((p) => (
@@ -1145,7 +1172,11 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q29: Preferred Business Model */}
-              <QuestionBlock questionNumber={29} title="Preferred Business Model" isMulti={true}>
+              <QuestionBlock
+                questionNumber={29}
+                title="Choose your preferred business model"
+                isMulti={true}
+              >
                 <div className="flex flex-wrap gap-2">
                   {businessModelOptions.map((bm) => (
                     <OptionPill

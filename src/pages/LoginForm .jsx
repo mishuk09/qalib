@@ -40,7 +40,7 @@ const LoginForm = () => {
         localStorage.setItem("email", data.user?.email || formData.email);
         setMessage("✓ Login successful! Redirecting...");
         setMessageType("success");
-        setTimeout(() => navigate("/dashboard", { state: { showModalAfter: true } }), 1500);
+        setTimeout(() => navigate("/dashboard?showSurvey=1"), 1500);
       } else {
         setMessage(data.error || "Invalid credentials");
         setMessageType("error");
@@ -135,7 +135,7 @@ const LoginForm = () => {
 
         {/* Message Display */}
         {setMessage && (
-          <div className="absolute  top-20 right-2 ">
+          <div className="absolute  top-26 right-2 ">
             <div
               className={`px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
                 messageType === "success"

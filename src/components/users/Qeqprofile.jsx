@@ -133,23 +133,24 @@ const Qeqprofile = () => {
     <div className="max-w-7xl mx-auto px-4 pb-10 mt-10">
       <div className="flex flex-col md:flex-row gap-6 w-full">
         {/* Your Score Section */}
-        <div className="w-full md:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
-          <div className="flex items-center justify-center gap-2 mb-4">
+        <div className="w-full md:w-1/2 bg-white rounded-2xl flex flex-col items-center justify-center shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
+          <h1 className="text-xl flex font-bold text-gray-800 text-center">
+            
             <Star className="text-yellow-500 w-6 h-6" />
-            <h1 className="text-xl font-bold text-gray-800"> QEQ Score</h1>
-          </div>
+            Qalb Entrepreneurial Quotient Score
+          </h1>
 
           {/* IEI Total */}
           <div className="text-center mb-6">
             <h2 className="text-3xl font-semibold text-indigo-600 flex items-center justify-center gap-2">
               <TrendingUp className="w-6 h-6 text-indigo-600" />
-              IEI Total: {ieiScore}
+              {ieiScore}
             </h2>
             <p className="text-gray-500 text-sm mt-1">{/* (IEI = D + H + Att + PBC + II) */}</p>
           </div>
 
           {/* Individual Scores */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center mt-6">
+          {/* <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center mt-6">
             {["D", "H", "Att", "PBC", "II"].map((group) => (
               <div
                 key={group}
@@ -161,7 +162,7 @@ const Qeqprofile = () => {
                 </p>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* Spider Web Section */}

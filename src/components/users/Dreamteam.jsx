@@ -44,21 +44,20 @@ const DreamTeam = () => {
                     Your top collaborative matches based on performance and synergy
                 </p>
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <a href="/dream-team-add" target="_blank" className="text-blue-600 px-4 py-2 border-2 border-blue-500 rounded   hover:underline">
                     + Add Your Data
                 </a>
-            </div>
+            </div> */}
 
             {/* Team Cards */}
-            <div className="space-y-5">
+            {/* <div className="space-y-5">
                 {team.map((member, index) => (
                     <motion.div
                         key={index}
                         whileHover={{ scale: 1.02 }}
                         className={`flex flex-col sm:flex-row items-center justify-between ${member.color} p-5 rounded-2xl shadow-sm hover:shadow-md transition-all`}
                     >
-                        {/* Left: User Info */}
                         <div className="flex items-center gap-4">
                             <UserCircle className="w-12 h-12 text-gray-700" />
                             <div>
@@ -67,13 +66,11 @@ const DreamTeam = () => {
                             </div>
                         </div>
 
-                        {/* Middle: Score */}
                         <div className="mt-3 sm:mt-0 text-center">
                             <p className="text-sm text-gray-500">QEQ Score</p>
                             <p className="text-xl font-bold text-gray-800">{member.score}</p>
                         </div>
 
-                        {/* Right: Actions */}
                         <div className="flex gap-3 mt-3 sm:mt-0">
                             <button className="flex items-center gap-2 bg-white text-gray-700 px-3 py-2 rounded-xl shadow hover:bg-gray-100 transition-all">
                                 <Mail className="w-4 h-4" /> Message
@@ -84,12 +81,13 @@ const DreamTeam = () => {
                         </div>
                     </motion.div>
                 ))}
-            </div>
+            </div> */}
 
             {/* Footer CTA */}
             <div className="mt-10 flex justify-center">
                 <button className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl shadow-md hover:bg-blue-700 transition-all">
-                    <UserPlus className="w-5 h-5" /> Add New Member
+                    {/* <UserPlus className="w-5 h-5" /> No user yet */}
+                    No user yet
                 </button>
             </div>
         </div>

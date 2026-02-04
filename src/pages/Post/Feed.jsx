@@ -39,6 +39,10 @@ const Feed = () => {
     fetchFeed();
   }, []);
 
+  const handlePostDeleted = (postId) => {
+    setPosts((prev) => prev.filter((post) => post.post_id !== postId));
+  };
+
   return (
     <div className="   ">
       {/* Create Post */}
@@ -54,7 +58,10 @@ const Feed = () => {
       )}
 
       <div className="flex gap-2 overflow-x-auto pb-4">
-        {!loading && posts.map((post) => <PostCard key={post.post_id} post={post} />)}
+        {!loading &&
+          posts.map((post) => (
+            <PostCard key={post.post_id} post={post} onPostDeleted={handlePostDeleted} />
+          ))}
       </div>
     </div>
   );

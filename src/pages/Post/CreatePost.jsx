@@ -1,16 +1,18 @@
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
 import { uploadToCloudinary } from "../../utills/cloudinaryUpload";
 
 const CreatePost = ({ onPostCreated }) => {
   const [text, setText] = useState("");
   const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [postingLoading, setPostingLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleImageSelect = async (e) => {
     const files = Array.from(e.target.files).slice(0, 3);
-    setLoading(true);
+    setUploadingImages(true);
     setError("");
 
     try {
@@ -24,7 +26,7 @@ const CreatePost = ({ onPostCreated }) => {
       console.error(err);
       setError("Image upload failed");
     } finally {
-      setLoading(false);
+      setUploadingImages(false);
     }
   };
 
@@ -41,29 +43,35 @@ const CreatePost = ({ onPostCreated }) => {
       return;
     }
 
-    setLoading(true);
+    setPostingLoading(true);
     setError("");
+    setSuccess(false);
 
     try {
       await axios.post(
-        "http://127.0.0.1:5000/api/posts",
+        "https://qalib.cloud/api/posts",
         { text, images },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
 
       setText("");
       setImages([]);
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        window.location.reload();
+      }, 2000);
       if (onPostCreated) onPostCreated();
     } catch (err) {
       console.error(err);
       setError("Failed to create post");
     } finally {
-      setLoading(false);
+      setPostingLoading(false);
     }
   };
 
@@ -84,22 +92,19 @@ const CreatePost = ({ onPostCreated }) => {
 
         {/* Actions row */}
         <div className="flex items-center justify-between text-sm">
-          <span
-            className={`${
-              text.length === 300 ? "text-red-500" : "text-gray-400"
-            }`}
-          >
+          <span className={`${text.length === 300 ? "text-red-500" : "text-gray-400"}`}>
             {text.length}/300
           </span>
 
           <label className="inline-flex items-center gap-1 cursor-pointer text-blue-600 hover:text-blue-700 font-medium">
-            <span>📷 Add Images</span>
+            <span>{uploadingImages ? "⏳ Uploading..." : "📷 Add Images"}</span>
             <input
               type="file"
               multiple
               accept="image/*"
               onChange={handleImageSelect}
               className="hidden"
+              disabled={uploadingImages}
             />
           </label>
         </div>
@@ -108,10 +113,7 @@ const CreatePost = ({ onPostCreated }) => {
         {images.length > 0 && (
           <div className="grid grid-cols-3 gap-2">
             {images.map((img, index) => (
-              <div
-                key={index}
-                className="relative overflow-hidden rounded-lg border"
-              >
+              <div key={index} className="relative overflow-hidden rounded-lg border">
                 <img
                   src={img}
                   alt="preview"
@@ -129,15 +131,22 @@ const CreatePost = ({ onPostCreated }) => {
           </div>
         )}
 
+        {/* Success */}
+        {success && (
+          <div className="absolute top-4 right-4 rounded-lg bg-green-50 border  border-green-600 px-3 py-3 text-sm text-green-600">
+            Post created successfully ✓
+          </div>
+        )}
+
         {/* Submit */}
         <button
           type="submit"
-          disabled={loading}
+          disabled={postingLoading || uploadingImages}
           className="w-full rounded-lg bg-blue-600 py-2.5 text-white font-medium
                      hover:bg-blue-700 active:scale-[0.98] transition
                      disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? "Posting…" : "Post"}
+          {postingLoading ? "Posting…" : "Post"}
         </button>
       </form>
     </div>

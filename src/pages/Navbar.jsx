@@ -6,6 +6,7 @@ import { User } from "lucide-react";
 import { FaSearch } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
 import qaliblogo from "../assets/qaliblogo.png";
+import qaliblogo2 from "../assets/qaliblogo-2.png";
 import useUserData from "../utills/useUserData";
 
 const Navbar = () => {
@@ -49,7 +50,10 @@ const Navbar = () => {
         {/* Logo & Search */}
         <div className="flex items-center gap-6">
           <a href="/dashboard" className="shrink-0">
-            <img src={qaliblogo} alt="Qalib Logo" className="w-28 md:w-32" />
+            <img src={qaliblogo} alt="Qalib Logo" className="w-18" />
+          </a>
+          <a href="/dashboard" className="shrink-0">
+            <img src={qaliblogo2} alt="Qalib Logo" className="w-18" />
           </a>
 
           <div className="relative hidden sm:block">
@@ -138,9 +142,9 @@ const Navbar = () => {
                 <a href="/profile" className="block px-4 py-2 hover:bg-blue-50">
                   Profile
                 </a>
-                <a href="#" className="block px-4 py-2 hover:bg-blue-50">
+                {/* <a href="#" className="block px-4 py-2 hover:bg-blue-50">
                   Settings
-                </a>
+                </a> */}
                 <button onClick={handleLogout} className="block px-4 py-2 hover:bg-blue-50">
                   Logout
                 </button>
@@ -199,9 +203,9 @@ const Navbar = () => {
             <a href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
               Profile
             </a>
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            {/* <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
               Settings
-            </a>
+            </a> */}
             <button
               onClick={handleLogout}
               className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 focus:outline-none"

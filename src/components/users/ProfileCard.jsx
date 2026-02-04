@@ -7,6 +7,7 @@ import { uploadToCloudinary } from "../../utills/cloudinaryUpload";
 import MiniLoading from "../../utills/miniLoading";
 import useUserData from "../../utills/useUserData";
 import BehaviorQuestion from "./BehaviorQuestion";
+import ConnectionsPage from "./ConnectionsPage";
 import Qeqprofile from "./Qeqprofile";
 import UpdateProfile from "./UpdateProfile";
 
@@ -16,29 +17,11 @@ export default function ProfileCard() {
   const { userData, loading } = useUserData();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [secondModalOpen, setSecondModalOpen] = React.useState(false);
-  const [siteusers, setSiteusers] = useState([]);
+  // const [siteusers, setSiteusers] = useState([]);
   const [uploading, setUploading] = useState(false);
   const token = localStorage.getItem("token"); // or however you store JWT
 
-  // const navigate = useNavigate();
-
-  // function handleNavigate() {
-  //   navigate("/qeq-profile");
-  // }
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        setSiteusers(data.users || []);
-      } catch (error) {
-        console.error("Error loading users:", error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
+ 
   const handleProfileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -295,31 +278,7 @@ export default function ProfileCard() {
           {/* Right column - 3/12 (25%) on large screens --> use lg:col-span-3 */}
           <aside className="lg:col-span-3">
             <div className="bg-white rounded-xl shadow p-4 sticky top-24">
-              <h3 className="font-semibold mb-3">People you may know</h3>
-
-              {/* Suggestions */}
-              {siteusers.slice(0, 5).map((user) => (
-                <div key={user.id} className="flex items-center space-x-3 py-2  ">
-                  {/* Avatar */}
-                  <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg">
-                    {user.demographics?.gender === "Male" ? "👦🏻" : "👩🏻"}
-                  </div>
-
-                  {/* User info + button */}
-                  <div className="flex flex-col">
-                    <p className="text-sm font-semibold">
-                      {user.fullName?.split(" ").slice(0, 2).join("")}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {user.cohortinformation?.programName || "N/A"}
-                    </p>
-                    <button className="mt-1 text-blue-600 text-xs font-medium hover:underline self-start">
-                      Connect
-                    </button>
-                  </div>
-                </div>
-              ))}
-
+              <ConnectionsPage />
               <div className="mt-4 border-t pt-4 text-sm text-gray-500">© 2025 Qalib Network</div>
             </div>
           </aside>

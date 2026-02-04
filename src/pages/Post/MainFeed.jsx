@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import PostCard from "./PostCard";
+import MainPostCard from "./MainPostCard";
 
 const MainFeed = () => {
   const [posts, setPosts] = useState([]);
@@ -54,7 +54,7 @@ const MainFeed = () => {
       )}
 
       <div className="space-y-2 ">
-        {!loading && posts.map((post) => <PostCard key={post.post_id} post={post} />)}
+        {!loading && posts.map((post) => <MainPostCard key={post.post_id} post={post} />)}
       </div>
     </div>
   );

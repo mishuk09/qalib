@@ -5,6 +5,7 @@ import BigFive from "./components/users/BigFive";
 import BigFiveData from "./components/users/BigFiveData";
 import DreamTeam from "./components/users/Dreamteam";
 import DreamTeamData from "./components/users/DreamTeamData";
+import MyConnection from "./components/users/Myconnection";
 import ProfileCard from "./components/users/ProfileCard";
 import Qeqprofile from "./components/users/Qeqprofile";
 import QeqprofileOriginal from "./components/users/QeqprofileOriginal";
@@ -44,6 +45,7 @@ function App() {
         {/* Protect the Dash-board route */}
         <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} />} />
         <Route path="/profile" element={<ProtectedRoute element={ProfileCard} />} />
+        <Route path="/my-connections" element={<ProtectedRoute element={MyConnection} />} />
         {/* <Route
           path="/post-up"
           element={<ProtectedRoute element={Dashboard} />}
