@@ -1,98 +1,60 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { UserCircle, Radar, Mail, UserPlus } from "lucide-react";
-
 const DreamTeam = () => {
-    const team = [
-        {
-            name: "Sarah Johnson",
-            role: "Creative Strategist",
-            score: 92,
-            email: "sarah@teamqeq.com",
-            color: "bg-blue-100",
-        },
-        {
-            name: "David Kim",
-            role: "Product Designer",
-            score: 88,
-            email: "david@teamqeq.com",
-            color: "bg-green-100",
-        },
-        {
-            name: "Emily Carter",
-            role: "Marketing Lead",
-            score: 85,
-            email: "emily@teamqeq.com",
-            color: "bg-yellow-100",
-        },
-        {
-            name: "James Walker",
-            role: "Data Analyst",
-            score: 80,
-            email: "james@teamqeq.com",
-            color: "bg-purple-100",
-        },
-    ];
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="max-w-2xl w-full text-center">
+        {/* Empty State Container */}
+        <div className="bg-white rounded-2xl shadow-xl p-10 md:p-16">
+          {/* Large Icon */}
+          <div className="text-7xl mb-6">👥</div>
 
-    return (
-       <div className="min-h-screen bg-blue-50  ">
-         <div className="max-w-7xl mx-auto px-4 py-8">
-            {/* Header Section */}
-            <div className="mb-10 text-center">
-                <h1 className="text-3xl font-bold text-gray-800">Dream Team</h1>
-                <p className="text-gray-500 mt-2">
-                    Your top collaborative matches based on performance and synergy
-                </p>
-            </div>
-            {/* <div className="mb-4">
-                <a href="/dream-team-add" target="_blank" className="text-blue-600 px-4 py-2 border-2 border-blue-500 rounded   hover:underline">
-                    + Add Your Data
-                </a>
-            </div> */}
+          {/* Title */}
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">No Dream Team Yet</h1>
 
-            {/* Team Cards */}
-            {/* <div className="space-y-5">
-                {team.map((member, index) => (
-                    <motion.div
-                        key={index}
-                        whileHover={{ scale: 1.02 }}
-                        className={`flex flex-col sm:flex-row items-center justify-between ${member.color} p-5 rounded-2xl shadow-sm hover:shadow-md transition-all`}
-                    >
-                        <div className="flex items-center gap-4">
-                            <UserCircle className="w-12 h-12 text-gray-700" />
-                            <div>
-                                <h2 className="text-lg font-semibold text-gray-800">{member.name}</h2>
-                                <p className="text-sm text-gray-500">{member.role}</p>
-                            </div>
-                        </div>
+          {/* Subtitle */}
+          <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+            Complete the survey to get your personalized Dream Team recommendations based on your
+            skills and personality profile.
+          </p>
 
-                        <div className="mt-3 sm:mt-0 text-center">
-                            <p className="text-sm text-gray-500">QEQ Score</p>
-                            <p className="text-xl font-bold text-gray-800">{member.score}</p>
-                        </div>
+          {/* Features List */}
+          <div className="bg-blue-50 rounded-xl p-6 mb-8 text-left">
+            <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <span>✨</span> What You'll Get
+            </h3>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-3 text-gray-700">
+                <span className="text-xl">🎨</span>
+                <span>Perfect matches for your Hipster qualities</span>
+              </li>
+              <li className="flex items-center gap-3 text-gray-700">
+                <span className="text-xl">⚙️</span>
+                <span>Hacker collaborators who complement your tech skills</span>
+              </li>
+              <li className="flex items-center gap-3 text-gray-700">
+                <span className="text-xl">🚀</span>
+                <span>Hustler partners to boost your sales and networking</span>
+              </li>
+            </ul>
+          </div>
 
-                        <div className="flex gap-3 mt-3 sm:mt-0">
-                            <button className="flex items-center gap-2 bg-white text-gray-700 px-3 py-2 rounded-xl shadow hover:bg-gray-100 transition-all">
-                                <Mail className="w-4 h-4" /> Message
-                            </button>
-                            <button className="flex items-center gap-2 bg-gray-800 text-white px-3 py-2 rounded-xl shadow hover:bg-gray-700 transition-all">
-                                <Radar className="w-4 h-4" /> View Chart
-                            </button>
-                        </div>
-                    </motion.div>
-                ))}
-            </div> */}
+          {/* CTA Buttons */}
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+              📋 Take Survey
+            </button>
+            <button className="px-8 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition duration-300 transform hover:scale-105">
+              ℹ️ Learn More
+            </button>
+          </div> */}
 
-            {/* Footer CTA */}
-            <div className="mt-10 flex justify-center">
-                <button className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl shadow-md hover:bg-blue-700 transition-all">
-                    {/* <UserPlus className="w-5 h-5" /> No user yet */}
-                    No user yet
-                </button>
-            </div>
+          {/* Footer Text */}
+          <p className="text-sm text-gray-500 mt-8">
+            🎯 Your Dream Team awaits. Complete the survey now!
+          </p>
         </div>
-       </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default DreamTeam;

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { User } from "lucide-react";
 import { FaSearch } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
-import qaliblogo from "../assets/qaliblogo.png";
 import qaliblogo2 from "../assets/qaliblogo-2.png";
 import useUserData from "../utills/useUserData";
 
@@ -181,11 +180,11 @@ const Navbar = () => {
                   My Connections
                 </a>
               </li>
-              <li className="px-4 py-2 hover:bg-gray-100">
+              {/* <li className="px-4 py-2 hover:bg-gray-100">
                 <a href="#" className="block">
                   Saved Posts
                 </a>
-              </li>
+              </li> */}
               <li className="px-4 py-2 hover:bg-gray-100">
                 <a href="/dream-team" className="block">
                   Dream Team
@@ -194,6 +193,12 @@ const Navbar = () => {
               <li className="px-4 py-2 hover:bg-gray-100">
                 <a href="/big-five" className="block">
                   Big Five
+                </a>
+              </li>
+              <li className="px-4 py-2 hover:bg-gray-100">
+                <Library size={16} />
+                <a href="/resources" target="_blank">
+                  Library
                 </a>
               </li>
             </ul>

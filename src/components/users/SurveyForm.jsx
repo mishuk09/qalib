@@ -270,10 +270,9 @@ const SurveyForm = () => {
           are required.
         </p>
 
-        {/* Message Alert (Positioned inside the form container) */}
         {message && (
           <div
-            className={`absolute top-30 right-4 z-20 p-3 rounded-lg text-sm font-semibold shadow-xl transition-opacity duration-300 ${
+            className={`fixed top-26 right-4 z-50 p-3 rounded-lg text-sm font-semibold shadow-xl transition-opacity duration-300 ${
               message.type === "error"
                 ? "bg-red-50 border border-red-300 text-red-800"
                 : "bg-green-50 border border-green-300 text-green-800"

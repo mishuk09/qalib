@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const BigFiveData = () => {
   const [bigFive, setBigFive] = useState({
@@ -15,8 +15,29 @@ const BigFiveData = () => {
   });
 
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const timerRef = useRef(null);
 
-  const API_BASE = "https://qalib.cloud/api"; // adjust if needed
+  // Helper function to set message and auto-hide after duration
+  const setTimedMessage = (text, duration = 4000) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    setMessage(text);
+    timerRef.current = setTimeout(() => {
+      setMessage("");
+      timerRef.current = null;
+    }, duration);
+  };
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,15 +46,18 @@ const BigFiveData = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setIsSubmitting(true);
 
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        setMessage("Please log in again. Token missing.");
+        setTimedMessage("❌ Session expired. Please log in again.");
+        setIsSubmitting(false);
         return;
       }
 
-      const res = await fetch(`${API_BASE}/update-profile`, {
+      const res = await fetch("http://localhost:5000/api/add-bigfive", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,34 +67,45 @@ const BigFiveData = () => {
       });
 
       const data = await res.json();
+      console.log(data);
       if (res.ok) {
-        setMessage("✅ Big Five data submitted successfully!");
+        setTimedMessage("✅ Big Five data submitted successfully!");
+        // Optional: Reset form after success
+        // setBigFive({ q1: "", q2: "", q3: "", q4: "", q5: "", q6: "", q7: "", q8: "", q9: "", q10: "" });
       } else {
-        setMessage(`❌ ${data.message || "Something went wrong."}`);
+        setTimedMessage(`❌ ${data.message || "Something went wrong."}`);
       }
     } catch (error) {
       console.error(error);
-      setMessage("⚠️ Server error while submitting data.");
+      setTimedMessage("❌ Network error. Could not connect to the server.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const renderScale = (qKey, questionText) => (
-    <div className="mb-4">
-      <p className="font-medium mb-2">{questionText}</p>
-      <div className="flex space-x-4">
-        {[1, 2, 3, 4, 5].map((num) => (
-          <label key={num} className="flex flex-col items-center">
-            <input
-              type="radio"
-              name={qKey}
-              value={num}
-              checked={bigFive[qKey] === String(num)}
-              onChange={handleChange}
-              className="accent-blue-500"
-            />
-            <span className="text-sm">{num}</span>
-          </label>
-        ))}
+    <div className="mb-6 bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+      <p className="font-medium mb-4 text-gray-800">{questionText}</p>
+      <div className="flex justify-between items-center text-xs sm:text-sm font-medium text-gray-600">
+        <span className="w-1/4 text-left">Strongly Disagree</span>
+
+        <div className="flex justify-center items-center flex-grow space-x-2 sm:space-x-4">
+          {[1, 2, 3, 4, 5].map((num) => (
+            <label key={num} className="flex flex-col items-center cursor-pointer">
+              <input
+                type="radio"
+                name={qKey}
+                value={num}
+                checked={bigFive[qKey] === String(num)}
+                onChange={handleChange}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 accent-blue-500"
+              />
+              <span className="text-xs mt-1">{num}</span>
+            </label>
+          ))}
+        </div>
+
+        <span className="w-1/4 text-right">Strongly Agree</span>
       </div>
     </div>
   );
@@ -95,13 +130,26 @@ const BigFiveData = () => {
 
         <button
           type="submit"
-          className="mt-6 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+          disabled={isSubmitting}
+          className="mt-6 w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-semibold"
         >
-          Submit
+          {isSubmitting ? "Processing..." : "Submit Survey"}
         </button>
       </form>
 
-      {message && <p className="text-center mt-4 font-medium text-gray-700">{message}</p>}
+      {message && (
+        <div
+          className="fixed top-26 right-4 z-50 p-3 rounded-lg text-sm font-semibold shadow-xl transition-opacity duration-300 max-w-sm"
+          style={{
+            backgroundColor: message.includes("✅") ? "#dcfce7" : "#fee2e2",
+            borderColor: message.includes("✅") ? "#86efac" : "#fca5a5",
+            color: message.includes("✅") ? "#166534" : "#991b1b",
+            border: "1px solid",
+          }}
+        >
+          {message}
+        </div>
+      )}
     </div>
   );
 };

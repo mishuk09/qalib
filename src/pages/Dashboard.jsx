@@ -85,19 +85,15 @@ const Dashboard = () => {
             <div className="bg-white rounded-lg shadow-md p-4">
               <h3 className="font-semibold mb-3">Quick Links</h3>
               <ul className="space-y-2 text-sm text-blue-600">
-                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <Users size={16} />
-                  <a href="/my-connections">My Connections</a>
-                </li>
+                {/* <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
+                  <ClipboardList size={16} />
+                  <a href="/survey-form"> Profiling Survey</a>
+                </li> */}
 
                 {/* <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                   <Bookmark size={16} />
                   <a href="#">Saved Posts</a>
                 </li> */}
-                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <ClipboardList size={16} />
-                  <a href="/survey-form"> Profiling Survey</a>
-                </li>
 
                 <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                   <UsersRound size={16} />
@@ -107,6 +103,10 @@ const Dashboard = () => {
                 <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                   <Star size={16} />
                   <a href="/big-five">Big Five</a>
+                </li>
+                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
+                  <Users size={16} />
+                  <a href="/my-connections">My Connections</a>
                 </li>
 
                 <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
