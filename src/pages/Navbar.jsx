@@ -49,9 +49,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center py-3">
         {/* Logo & Search */}
         <div className="flex items-center gap-6">
-          <a href="/dashboard" className="shrink-0">
+          {/* <a href="/dashboard" className="shrink-0">
             <img src={qaliblogo} alt="Qalib Logo" className="w-18" />
-          </a>
+          </a> */}
           <a href="/dashboard" className="shrink-0">
             <img src={qaliblogo2} alt="Qalib Logo" className="w-18" />
           </a>

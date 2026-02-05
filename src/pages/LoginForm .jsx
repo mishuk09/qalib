@@ -40,7 +40,7 @@ const LoginForm = () => {
         localStorage.setItem("email", data.user?.email || formData.email);
         setMessage("✓ Login successful! Redirecting...");
         setMessageType("success");
-        setTimeout(() => navigate("/dashboard?showSurvey=1"), 1500);
+        setTimeout(() => navigate("/dashboard"), 1500);
       } else {
         setMessage(data.error || "Invalid credentials");
         setMessageType("error");

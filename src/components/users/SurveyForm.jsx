@@ -218,7 +218,7 @@ const SurveyForm = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("https://qalib.cloud/api/add-survey", {
+      const res = await fetch("http://localhost:5000/api/add-survey", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -231,7 +231,7 @@ const SurveyForm = () => {
       console.log(data);
       if (res.ok) {
         // Changed from alert to non-blocking message
-        setTimedMessage("success", "✅ Survey submitted successfully! Thank you for your input.");
+        setTimedMessage("success", "✅ Survey submitted successfully! ");
       } else {
         // Changed from alert to non-blocking message
         setTimedMessage(
@@ -259,8 +259,8 @@ const SurveyForm = () => {
 
   // --- UI Structure (Greatly Improved) ---
   return (
-    <div className="min-h-screen   p-4  ">
-      <div className="max-w-4xl mx-auto  rounded-xl shadow-2xl p-6 md:p-10 border border-gray-100">
+    <div className="min-h-screen p-4">
+      <div className="max-w-4xl mx-auto rounded-xl shadow-2xl p-6 md:p-10 border border-gray-100 relative">
         {/* Header */}
         <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-2">
           🧠 Qalb Entrepreneurial Survey
@@ -270,10 +270,10 @@ const SurveyForm = () => {
           are required.
         </p>
 
-        {/* Message Alert (Positioned fixed for visibility) */}
+        {/* Message Alert (Positioned inside the form container) */}
         {message && (
           <div
-            className={`fixed top-4 right-4 z-50 p-3 rounded-lg text-sm font-semibold shadow-xl transition-opacity duration-300 ${
+            className={`absolute top-30 right-4 z-20 p-3 rounded-lg text-sm font-semibold shadow-xl transition-opacity duration-300 ${
               message.type === "error"
                 ? "bg-red-50 border border-red-300 text-red-800"
                 : "bg-green-50 border border-green-300 text-green-800"

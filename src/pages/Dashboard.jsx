@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import MiniLoading from "../utills/miniLoading";
 import useUserData from "../utills/useUserData";
 
@@ -14,23 +13,19 @@ const API_URL = "https://qalib.cloud/api/users";
 
 const Dashboard = () => {
   const { userData, loading } = useUserData();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const shouldShowSurvey = useMemo(() => {
-    return new URLSearchParams(location.search).get("showSurvey") === "1";
-  }, [location.search]);
+
   const [secondModalOpen, setSecondModalOpen] = useState(false);
+
   useEffect(() => {
-    if (shouldShowSurvey) {
+    if (userData && !userData.issurveyDone) {
       const timer = setTimeout(() => {
         setSecondModalOpen(true);
-        navigate("/dashboard", { replace: true });
-      }, 3000);
+      }, 1500);
 
       // Cleanup in case user leaves early
       return () => clearTimeout(timer);
     }
-  }, [navigate, shouldShowSurvey]);
+  }, [userData]);
 
   return (
     <div className="relative">
