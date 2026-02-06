@@ -218,7 +218,7 @@ const SurveyForm = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/add-survey", {
+      const res = await fetch("https://qalib.cloud/api/add-survey", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

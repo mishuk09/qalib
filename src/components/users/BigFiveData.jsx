@@ -57,7 +57,7 @@ const BigFiveData = () => {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/add-bigfive", {
+      const res = await fetch("https://qalib.cloud/api/add-bigfive", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
