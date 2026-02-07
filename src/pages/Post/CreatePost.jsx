@@ -133,7 +133,7 @@ const CreatePost = ({ onPostCreated }) => {
 
         {/* Success */}
         {success && (
-          <div className="absolute top-4 right-4 rounded-lg bg-green-50 border  border-green-600 px-3 py-3 text-sm text-green-600">
+          <div className="absolute top-4 z-50 right-4 rounded-lg bg-green-50 border  border-green-600 px-3 py-3 text-sm text-green-600">
             Post created successfully ✓
           </div>
         )}

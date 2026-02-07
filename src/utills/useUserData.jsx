@@ -7,6 +7,32 @@ export default function useUserData() {
 
   const token = localStorage.getItem("token");
 
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Fetch user profile
+      const res = await fetch("https://qalib.cloud/api/user-profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.user) {
+        setUserData(data.user);
+      } else {
+        throw new Error(data.error || "Failed to fetch profile");
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!token) {
       setLoading(false);
@@ -14,32 +40,14 @@ export default function useUserData() {
       return;
     }
 
-    const fetchData = async () => {
-      try {
-        // Fetch user profile
-        const res = await fetch("https://qalib.cloud/api/user-profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        const data = await res.json();
-
-        if (res.ok && data.user) {
-          setUserData(data.user);
-        } else {
-          throw new Error(data.error || "Failed to fetch profile");
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [token]);
 
-  return { userData, loading, error };
+  const refetch = () => {
+    if (token) {
+      fetchData();
+    }
+  };
+
+  return { userData, loading, error, refetch };
 }

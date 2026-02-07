@@ -2,17 +2,18 @@ import { useEffect, useState } from "react";
 import MiniLoading from "../utills/miniLoading";
 import useUserData from "../utills/useUserData";
 
-import { ClipboardList, Library, Star, Users, UsersRound } from "lucide-react";
+import { Library, Star, Users, UsersRound } from "lucide-react";
 import ConnectionsPage from "../components/users/ConnectionsPage";
 import SurveyForm from "../components/users/SurveyForm";
 import CreatePost from "./Post/CreatePost";
 import MainFeed from "./Post/MainFeed";
+import Sidebar from "../utills/Sidebar";
 
 const API_BASE = "https://qalib.cloud/api/users";
 const API_URL = "https://qalib.cloud/api/users";
 
 const Dashboard = () => {
-  const { userData, loading } = useUserData();
+  const { userData, loading, refetch } = useUserData();
 
   const [secondModalOpen, setSecondModalOpen] = useState(false);
 
@@ -27,13 +28,18 @@ const Dashboard = () => {
     }
   }, [userData]);
 
+  const handleSurveySuccess = () => {
+    refetch(); // Refetch user data to update issurveyDone
+    setSecondModalOpen(false); // Close the modal
+  };
+
   return (
     <div className="relative">
       {secondModalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-20">
+        <div className="fixed inset-0 top-20 bg-black/40 flex items-center justify-center z-20">
           {/* Modal Content */}
           <div
-            className="bg-white relative p-6 max-w-4xl w-full h-[80vh] rounded-xl shadow-lg overflow-y-auto"
+            className="bg-white relative p-2 m-2 lg:p-6 max-w-4xl w-full h-[80vh] rounded-xl shadow-lg overflow-y-auto"
             onClick={(e) => e.stopPropagation()} // ensure inside clicks don’t propagate
           >
             {/* Close Button */}
@@ -45,7 +51,7 @@ const Dashboard = () => {
             </button>
 
             {/* Scrollable Content */}
-            <SurveyForm />
+            <SurveyForm onSuccess={handleSurveySuccess} />
           </div>
         </div>
       )}
@@ -54,69 +60,7 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Sidebar - 20% */}
           <aside className="lg:col-span-3 space-y-6 lg:sticky top-20 self-start">
-            {/* Profile Card */}
-            <div className="bg-white rounded-lg shadow-md p-4 text-center">
-              <div className="w-20 h-20 mx-auto rounded-full border border-gray-300 overflow-hidden flex items-center justify-center">
-                {userData?.profilePhoto?.path ? (
-                  <img
-                    src={userData.profilePhoto.path}
-                    alt="Avatar"
-                    className="w-24 h-24 rounded-full border-2 border-white object-cover"
-                  />
-                ) : (
-                  <span className="w-24 h-24 flex items-center justify-center text-6xl border-2 border-white rounded-full bg-white">
-                    {userData?.demographics?.gender?.toLowerCase() === "male" ? "👦🏻" : "👩🏻"}
-                  </span>
-                )}
-              </div>
-
-              <h2 className="mt-3 text-lg font-semibold">
-                {loading ? <MiniLoading /> : userData?.fullName}
-              </h2>
-              {/* <p className="text-sm leading-4 text-gray-500">
-                                🎓  {userData?.demographics?.field_of_study}
-                            </p>
-                            <p className="text-sm mt-1 text-gray-400">
-                                🏠︎  {userData?.demographics?.place_of_residence}
-                            </p> */}
-            </div>
-
-            {/* Shortcuts */}
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h3 className="font-semibold mb-3">Quick Links</h3>
-              <ul className="space-y-2 text-sm text-blue-600">
-                {/* <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <ClipboardList size={16} />
-                  <a href="/survey-form"> Profiling Survey</a>
-                </li> */}
-
-                {/* <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <Bookmark size={16} />
-                  <a href="#">Saved Posts</a>
-                </li> */}
-
-                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <UsersRound size={16} />
-                  <a href="/dream-team">Dream Team</a>
-                </li>
-
-                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <Star size={16} />
-                  <a href="/big-five">Big Five</a>
-                </li>
-                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <Users size={16} />
-                  <a href="/my-connections">My Connections</a>
-                </li>
-
-                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-                  <Library size={16} />
-                  <a href="/resources" target="_blank">
-                    Library
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <Sidebar /> 
           </aside>
 
           {/* Main Content - 60% */}

@@ -5,6 +5,7 @@ const API_URL = "https://qalib.cloud/api/users";
 const ConnectionsPage = () => {
   const [siteusers, setSiteusers] = useState([]);
   const [connectingUsers, setConnectingUsers] = useState({});
+  const [connectedUsers, setConnectedUsers] = useState(new Set());
   const [connectionMessage, setConnectionMessage] = useState({
     userId: null,
     message: "",
@@ -21,7 +22,23 @@ const ConnectionsPage = () => {
       }
     };
 
+    const fetchConnections = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      try {
+        const res = await fetch("https://qalib.cloud/api/user/connections", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        const connectedSet = new Set(data.connections.map((c) => c.email));
+        setConnectedUsers(connectedSet);
+      } catch (error) {
+        console.error("Error fetching connections:", error);
+      }
+    };
+
     fetchUsers();
+    fetchConnections();
   }, []);
 
   const handleConnect = async (targetUser) => {
@@ -59,6 +76,7 @@ const ConnectionsPage = () => {
           message: "Connected successfully!",
           type: "success",
         });
+        setConnectedUsers((prev) => new Set([...prev, targetUser.email]));
         setTimeout(() => {
           setConnectionMessage({ userId: null, message: "", type: "" });
         }, 2000);
@@ -104,10 +122,14 @@ const ConnectionsPage = () => {
                 </p>
                 <button
                   onClick={() => handleConnect(user)}
-                  disabled={connectingUsers[userKey]}
+                  disabled={connectingUsers[userKey] || connectedUsers.has(user.email)}
                   className="mt-1 text-blue-600 text-xs font-medium hover:underline self-start disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {connectingUsers[userKey] ? "Connecting..." : "Connect"}
+                  {connectedUsers.has(user.email)
+                    ? "Connected"
+                    : connectingUsers[userKey]
+                      ? "Connecting..."
+                      : "Connect"}
                 </button>
                 {connectionMessage.userId === userKey && (
                   <p

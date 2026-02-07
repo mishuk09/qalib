@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Sidebar from "../../utills/Sidebar";
 
 const BigFiveData = () => {
   const [bigFive, setBigFive] = useState({
@@ -111,46 +112,63 @@ const BigFiveData = () => {
   );
 
   return (
-    <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-8 mt-8">
-      <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
-        🧩 Big Five Personality Survey
-      </h2>
+    <>
+      <div className="bg-blue-50 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <aside className="lg:col-span-3">
+            <Sidebar />
+          </aside>
+          <main className="lg:col-span-9 space-y-6">
+            <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-8  ">
+              <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+                🧩 Big Five Personality Survey
+              </h2>
 
-      <form onSubmit={handleSubmit}>
-        {renderScale("q1", "1. I see myself as someone who is reserved.")}
-        {renderScale("q2", "2. I see myself as someone who is generally trusting.")}
-        {renderScale("q3", "3. I see myself as someone who tends to be lazy.")}
-        {renderScale("q4", "4. I see myself as someone who is relaxed, handles stress well.")}
-        {renderScale("q5", "5. I see myself as someone who has few artistic interests.")}
-        {renderScale("q6", "6. I see myself as someone who is outgoing, sociable.")}
-        {renderScale("q7", "7. I see myself as someone who tends to find fault with others.")}
-        {renderScale("q8", "8. I see myself as someone who does a thorough job.")}
-        {renderScale("q9", "9. I see myself as someone who gets nervous easily.")}
-        {renderScale("q10", "10. I see myself as someone who has an active imagination.")}
+              <form onSubmit={handleSubmit}>
+                {renderScale("q1", "1. I see myself as someone who is reserved.")}
+                {renderScale("q2", "2. I see myself as someone who is generally trusting.")}
+                {renderScale("q3", "3. I see myself as someone who tends to be lazy.")}
+                {renderScale(
+                  "q4",
+                  "4. I see myself as someone who is relaxed, handles stress well."
+                )}
+                {renderScale("q5", "5. I see myself as someone who has few artistic interests.")}
+                {renderScale("q6", "6. I see myself as someone who is outgoing, sociable.")}
+                {renderScale(
+                  "q7",
+                  "7. I see myself as someone who tends to find fault with others."
+                )}
+                {renderScale("q8", "8. I see myself as someone who does a thorough job.")}
+                {renderScale("q9", "9. I see myself as someone who gets nervous easily.")}
+                {renderScale("q10", "10. I see myself as someone who has an active imagination.")}
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="mt-6 w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-semibold"
-        >
-          {isSubmitting ? "Processing..." : "Submit Survey"}
-        </button>
-      </form>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="mt-6 w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-semibold"
+                >
+                  {isSubmitting ? "Processing..." : "Submit Survey"}
+                </button>
+              </form>
 
-      {message && (
-        <div
-          className="fixed top-26 right-4 z-50 p-3 rounded-lg text-sm font-semibold shadow-xl transition-opacity duration-300 max-w-sm"
-          style={{
-            backgroundColor: message.includes("✅") ? "#dcfce7" : "#fee2e2",
-            borderColor: message.includes("✅") ? "#86efac" : "#fca5a5",
-            color: message.includes("✅") ? "#166534" : "#991b1b",
-            border: "1px solid",
-          }}
-        >
-          {message}
+              {message && (
+                <div
+                  className="fixed top-26 right-4 z-50 p-3 rounded-lg text-sm font-semibold shadow-xl transition-opacity duration-300 max-w-sm"
+                  style={{
+                    backgroundColor: message.includes("✅") ? "#dcfce7" : "#fee2e2",
+                    borderColor: message.includes("✅") ? "#86efac" : "#fca5a5",
+                    color: message.includes("✅") ? "#166534" : "#991b1b",
+                    border: "1px solid",
+                  }}
+                >
+                  {message}
+                </div>
+              )}
+            </div>
+          </main>
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import underimg from "../assets/underimg.png";
+import qaliblogo2 from "../assets/qaliblogo-2.png";
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -20,6 +22,9 @@ const Home = () => {
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center mt-20">
         {/* Title */}
+         <a href="/dashboard" className="shrink-0">
+                    <img src={qaliblogo2} alt="Qalib Logo" className="w-24 lg:w-32" />
+                  </a>
         <h1 className="text-3xl md:text-5xl font-bold text-gray-800 text-center">
           👋 Qalib Entrepreneurial Quotient and Profiling
           <span className="text-blue-600 inline-block ms-3 relative">

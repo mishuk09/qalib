@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-const Qeqprofile = () => {
+const ProfileQue = () => {
   const [chartData, setChartData] = useState(null);
   const [groupInfo, setGroupInfo] = useState({});
   const [loading, setLoading] = useState(true);
@@ -133,14 +133,14 @@ const Qeqprofile = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 pb-10 ">
-      <div className="mb-6  ">
+      {/* <div className="mb-6  ">
         <button
           onClick={() => navigate("/survey-form")}
           className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
         >
           <Plus /> Add QEQ Profile Survey
         </button>
-      </div>
+      </div> */}
       <div className="flex flex-col md:flex-row gap-6 w-full">
         {/* Your Score Section */}
         <div className="w-full md:w-1/2 bg-white rounded-2xl flex flex-col items-center justify-center shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
@@ -251,4 +251,4 @@ const Qeqprofile = () => {
   );
 };
 
-export default Qeqprofile;
+export default ProfileQue;

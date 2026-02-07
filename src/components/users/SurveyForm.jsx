@@ -43,7 +43,7 @@ const LikertScaleOptions = ({ questionCode, checkedValue, onChange }) => (
 
 // --- Main Component ---
 
-const SurveyForm = () => {
+const SurveyForm = ({ onSuccess }) => {
   // 💡 Message state (instead of alert) and Timer reference
   const [message, setMessage] = useState(null);
   const timerRef = useRef(null);
@@ -232,6 +232,7 @@ const SurveyForm = () => {
       if (res.ok) {
         // Changed from alert to non-blocking message
         setTimedMessage("success", "✅ Survey submitted successfully! ");
+        if (onSuccess) onSuccess();
       } else {
         // Changed from alert to non-blocking message
         setTimedMessage(
@@ -260,7 +261,7 @@ const SurveyForm = () => {
   // --- UI Structure (Greatly Improved) ---
   return (
     <div className="min-h-screen p-4">
-      <div className="max-w-4xl mx-auto rounded-xl shadow-2xl p-6 md:p-10 border border-gray-100 relative">
+      <div className="max-w-4xl mx-auto rounded-xl shadow-2xl p-6 md:p-10   relative">
         {/* Header */}
         <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-2">
           🧠 Qalb Entrepreneurial Survey
@@ -716,7 +717,7 @@ const SurveyForm = () => {
               className="w-full sm:w-auto px-10 py-3 bg-green-600 text-white font-bold rounded-lg shadow-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition duration-300 transform hover:scale-[1.01]"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Processing Submission..." : "Complete and Submit Survey"}
+              {isSubmitting ? "Submission..." : " Submit Survey"}
             </button>
           </div>
         </form>

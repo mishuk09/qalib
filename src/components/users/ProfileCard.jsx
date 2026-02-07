@@ -10,6 +10,7 @@ import BehaviorQuestion from "./BehaviorQuestion";
 import ConnectionsPage from "./ConnectionsPage";
 import Qeqprofile from "./Qeqprofile";
 import UpdateProfile from "./UpdateProfile";
+import ProfileQue from "../../ProfileQue";
 
 const API_URL = "https://qalib.cloud/api/users";
 
@@ -132,7 +133,6 @@ export default function ProfileCard() {
 
       <div className="bg-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Main column - 9/12 (75%) on large screens --> use lg:col-span-9 */}
           <main className="lg:col-span-9 space-y-6">
             {/* Profile header card */}
             <section className="bg-white rounded-xl shadow p-3 overflow-hidden">
@@ -248,7 +248,7 @@ export default function ProfileCard() {
                     <h2 className="font-semibold text-gray-800">User Information</h2>
 
                     {/* Age Group + Location */}
-                    <div className="mt-3 text-sm text-gray-600 space-y-1">
+                    <div className="mt-3 text-sm text-gray-600 space-y-1 mb-10">
                       {userData?.demographics?.ageGroup && (
                         <p>
                           🎯 <span className="font-medium">Age Group:</span>{" "}
@@ -264,7 +264,7 @@ export default function ProfileCard() {
                       )}
                     </div>
 
-                    <Qeqprofile />
+                    <ProfileQue />
                   </div>
                 </div>
               </div>
