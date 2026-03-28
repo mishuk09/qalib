@@ -379,7 +379,6 @@ export default function RegisterForm() {
       "areasConfident",
       "preferredLearningStyle",
       "traits",
-      "businessType",
       "exposureAreas",
       "whyStartBusiness",
       "interestedBusinessTypes",
@@ -420,6 +419,11 @@ export default function RegisterForm() {
         !formData.demographics.hobbiesDetails
       ) {
         missingField = "Hobbies Details";
+      } else if (
+        formData.demographics.everStartedBusiness === "Yes" &&
+        formData.demographics.businessType.length === 0
+      ) {
+        missingField = "businessType";
       } else if (
         formData.demographics.businessType?.includes("Other") &&
         !formData.demographics.businessTypeOther
@@ -488,7 +492,6 @@ export default function RegisterForm() {
           <p className=" md:text-lg text-gray-600 max-w-2xl mx-auto">
             Complete your profile to get started. All fields are required.
           </p>
-         
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
@@ -896,54 +899,58 @@ export default function RegisterForm() {
                 questionNumber={16}
                 title="Have you Ever started or managed a business before?"
               >
-                <div className="flex gap-2">
-                  {["Yes", "No"].map((choice) => (
-                    <OptionPill
-                      key={choice}
-                      label={choice}
-                      value={choice}
-                      isRadio={true}
-                      isChecked={formData.demographics.everStartedBusiness === choice}
-                      onChange={() => updateDemographics("everStartedBusiness", choice)}
-                      name="everStartedBusiness"
-                    />
-                  ))}
-                </div>
-              </QuestionBlock>
+                <div className="space-y-4">
+                  <div className="flex gap-2">
+                    {["Yes", "No"].map((choice) => (
+                      <OptionPill
+                        key={choice}
+                        label={choice}
+                        value={choice}
+                        isRadio={true}
+                        isChecked={formData.demographics.everStartedBusiness === choice}
+                        onChange={() => updateDemographics("everStartedBusiness", choice)}
+                        name="everStartedBusiness"
+                      />
+                    ))}
+                  </div>
 
-              {/* Q17: Business Type */}
-              <QuestionBlock
-                questionNumber={17}
-                title="If yes, what type of business was it?"
-                isMulti={true}
-              >
-                <div className="flex flex-wrap gap-2 items-center">
-                  {businessTypes.map((b) => (
-                    <OptionPill
-                      key={b}
-                      label={b}
-                      value={b}
-                      isRadio={false}
-                      isChecked={(formData.demographics.businessType || []).includes(b)}
-                      onChange={() => toggleArrayField("businessType", b)}
-                      name="businessType"
-                    />
-                  ))}
-                  {formData.demographics.businessType?.includes("Other") && (
-                    <input
-                      className="p-2 border border-gray-300 rounded-lg shadow-sm"
-                      placeholder="Other business type"
-                      value={formData.demographics.businessTypeOther}
-                      onChange={(e) => updateDemographics("businessTypeOther", e.target.value)}
-                      required
-                    />
+                  {formData.demographics.everStartedBusiness === "Yes" && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 mb-2">
+                        If yes, what type of business was it?
+                      </p>
+                      <div className="flex flex-wrap gap-2 items-center">
+                        {businessTypes.map((b) => (
+                          <OptionPill
+                            key={b}
+                            label={b}
+                            value={b}
+                            isRadio={false}
+                            isChecked={(formData.demographics.businessType || []).includes(b)}
+                            onChange={() => toggleArrayField("businessType", b)}
+                            name="businessType"
+                          />
+                        ))}
+                        {formData.demographics.businessType?.includes("Other") && (
+                          <input
+                            className="p-2 border border-gray-300 rounded-lg shadow-sm"
+                            placeholder="Other business type"
+                            value={formData.demographics.businessTypeOther}
+                            onChange={(e) =>
+                              updateDemographics("businessTypeOther", e.target.value)
+                            }
+                            required
+                          />
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
               </QuestionBlock>
 
-              {/* Q18: Entrepreneurship Level */}
+              {/* Q17: Entrepreneurship Level */}
               <QuestionBlock
-                questionNumber={18}
+                questionNumber={17}
                 title="Rate your entrepreneurship Experience Level"
               >
                 <div className="flex flex-wrap gap-2">
@@ -963,7 +970,7 @@ export default function RegisterForm() {
 
               {/* Q19: Attended Training */}
               <QuestionBlock
-                questionNumber={19}
+                questionNumber={18}
                 title="Have you attended relevant training/workshops?"
               >
                 <div className="flex gap-2">
@@ -982,7 +989,7 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q20: Follow Entrepreneur Content */}
-              <QuestionBlock questionNumber={20} title="Do you follow entrepreneurship content?">
+              <QuestionBlock questionNumber={19} title="Do you follow entrepreneurship content?">
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -999,7 +1006,7 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q21: Has Mentor */}
-              <QuestionBlock questionNumber={21} title="Do you have an entrepreneurship mentor? ">
+              <QuestionBlock questionNumber={20} title="Do you have an entrepreneurship mentor? ">
                 <div className="flex gap-2">
                   {["Yes", "No"].map((choice) => (
                     <OptionPill
@@ -1017,7 +1024,7 @@ export default function RegisterForm() {
 
               {/* Q22: Exposure Areas */}
               <QuestionBlock
-                questionNumber={22}
+                questionNumber={21}
                 title="Choose the Areas You've Been Exposed To"
                 isMulti={true}
               >
@@ -1038,7 +1045,7 @@ export default function RegisterForm() {
 
               {/* Q23: Digital Tools */}
               <QuestionBlock
-                questionNumber={23}
+                questionNumber={22}
                 title="Are you familiar with digital tools for business?"
               >
                 <div className="flex gap-2">
@@ -1063,7 +1070,7 @@ export default function RegisterForm() {
 
               {/* Q24: Why Start Business */}
               <QuestionBlock
-                questionNumber={24}
+                questionNumber={23}
                 title="Why do you want to start a business?"
                 isMulti={true}
               >
@@ -1093,7 +1100,7 @@ export default function RegisterForm() {
 
               {/* Q25: Has Clear Vision */}
               <QuestionBlock
-                questionNumber={25}
+                questionNumber={24}
                 title="Do you have a clear vision for your business?"
               >
                 <div className="flex gap-2">
@@ -1112,7 +1119,7 @@ export default function RegisterForm() {
               </QuestionBlock>
 
               {/* Q26: Planned Commitment */}
-              <QuestionBlock questionNumber={26} title="Planned Commitment">
+              <QuestionBlock questionNumber={25} title="Planned Commitment">
                 <div className="flex flex-wrap gap-2">
                   {commitmentOptions.map((c) => (
                     <OptionPill
@@ -1128,9 +1135,9 @@ export default function RegisterForm() {
                 </div>
               </QuestionBlock>
 
-              {/* Q27: Interested Business Types */}
+              {/* Q26: Interested Business Types */}
               <QuestionBlock
-                questionNumber={27}
+                questionNumber={26}
                 title="Type of Business You’re Interested In"
                 isMulti={true}
               >
@@ -1149,9 +1156,9 @@ export default function RegisterForm() {
                 </div>
               </QuestionBlock>
 
-              {/* Q28: Prefer Create or Improve */}
+              {/* Q27: Prefer Create or Improve */}
               <QuestionBlock
-                questionNumber={28}
+                questionNumber={27}
                 title="Which one is your preference? Creating new or Improving existing ideas?"
               >
                 <div className="flex flex-wrap gap-2">
@@ -1171,7 +1178,7 @@ export default function RegisterForm() {
 
               {/* Q29: Preferred Business Model */}
               <QuestionBlock
-                questionNumber={29}
+                questionNumber={28}
                 title="Choose your preferred business model"
                 isMulti={true}
               >
