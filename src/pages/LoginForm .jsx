@@ -13,6 +13,11 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [messageType, setMessageType] = useState("");
   const [message, setMessage] = useState("");
+
+  const openResetPasswordWindow = () => {
+    window.open("/reset-password", "_blank", "noopener,noreferrer");
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -47,7 +52,7 @@ const LoginForm = () => {
       }
 
       setTimeout(() => setMessage(""), 4000);
-    } catch (error) {
+    } catch {
       setMessage("✕ Server error. Please try again.");
       setMessageType("error");
     } finally {
@@ -116,6 +121,16 @@ const LoginForm = () => {
             </div>
           </div>
 
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={openResetPasswordWindow}
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors hover:underline focus:outline-none"
+            >
+              Forgot password?
+            </button>
+          </div>
+
           {/* Sign In Button */}
           <button
             type="submit"
@@ -134,7 +149,7 @@ const LoginForm = () => {
         </form>
 
         {/* Message Display */}
-        {setMessage && (
+        {message && (
           <div className="absolute  top-26 right-2 ">
             <div
               className={`px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${

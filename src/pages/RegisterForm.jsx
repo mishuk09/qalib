@@ -488,9 +488,7 @@ export default function RegisterForm() {
           <p className=" md:text-lg text-gray-600 max-w-2xl mx-auto">
             Complete your profile to get started. All fields are required.
           </p>
-          <div className="mt-4 inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium">
-            📋 Step-by-step registration form
-          </div>
+         
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">

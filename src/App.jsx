@@ -17,6 +17,7 @@ import Layout from "./pages/Home/Layout";
 import LoginForm from "./pages/LoginForm ";
 import Navbar from "./pages/Navbar";
 import RegisterForm from "./pages/RegisterForm";
+import ResetPassword from "./pages/ResetPassword";
 import Resources from "./pages/Resources";
 import AdminProtectedRoute from "./utills/AdminProtectedRoute";
 import ProtectedRoute from "./utills/ProtectedRoute";
@@ -28,6 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/user-register" element={<RegisterForm />} />
         {/* <Route path="/profile" element={<ProfileCard />} /> */}
