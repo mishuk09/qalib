@@ -1,16 +1,16 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaCamera } from "react-icons/fa";
 // import { useNavigate } from "react-router-dom";
 import Feed from "../../pages/Post/Feed";
+import ProfileQue from "../../ProfileQue";
 import { uploadToCloudinary } from "../../utills/cloudinaryUpload";
 import MiniLoading from "../../utills/miniLoading";
+import QuickLinks from "../../utills/QuickLinks";
 import useUserData from "../../utills/useUserData";
 import BehaviorQuestion from "./BehaviorQuestion";
 import ConnectionsPage from "./ConnectionsPage";
-import Qeqprofile from "./Qeqprofile";
 import UpdateProfile from "./UpdateProfile";
-import ProfileQue from "../../ProfileQue";
 
 const API_URL = "https://qalib.cloud/api/users";
 
@@ -22,7 +22,6 @@ export default function ProfileCard() {
   const [uploading, setUploading] = useState(false);
   const token = localStorage.getItem("token"); // or however you store JWT
 
- 
   const handleProfileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -132,8 +131,11 @@ export default function ProfileCard() {
       )}
 
       <div className="bg-blue-50 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <main className="lg:col-span-9 space-y-6">
+        <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <aside className="lg:col-span-3 space-y-6 lg:sticky top-20 self-start">
+            <QuickLinks />
+          </aside>
+          <main className="lg:col-span-6 space-y-6">
             {/* Profile header card */}
             <section className="bg-white rounded-xl shadow p-3 overflow-hidden">
               <div className="relative">
@@ -276,7 +278,7 @@ export default function ProfileCard() {
           </main>
 
           {/* Right column - 3/12 (25%) on large screens --> use lg:col-span-3 */}
-          <aside className="lg:col-span-3">
+          <aside className="lg:col-span-3 space-y-6 sticky top-20 self-start">
             <div className="bg-white rounded-xl shadow p-4 sticky top-24">
               <ConnectionsPage />
               <div className="mt-4 border-t pt-4 text-sm text-gray-500">© 2025 Qalib Network</div>

@@ -10,7 +10,7 @@ import {
   RadialLinearScale,
   Tooltip,
 } from "chart.js";
-import { BarChart3, Loader2, Plus, Star, TrendingUp } from "lucide-react";
+import { BarChart3, Loader2, Star, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Radar } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
@@ -141,9 +141,9 @@ const ProfileQue = () => {
           <Plus /> Add QEQ Profile Survey
         </button>
       </div> */}
-      <div className="flex flex-col md:flex-row gap-6 w-full">
+      <div className="flex flex-col md:flex-col gap-6 w-full">
         {/* Your Score Section */}
-        <div className="w-full md:w-1/2 bg-white rounded-2xl flex flex-col items-center justify-center shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
+        <div className="w-full  h-50 bg-white rounded-2xl flex flex-col items-center justify-center shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
           <h1 className="text-xl flex font-bold text-gray-800 text-center">
             <Star className="text-yellow-500 w-6 h-6" />
             Qalb Entrepreneurial Quotient Score
@@ -175,7 +175,7 @@ const ProfileQue = () => {
         </div>
 
         {/* Spider Web Section */}
-        <div className="w-full md:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
+        <div className="w-full   bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-center gap-2 mb-4">
             <BarChart3 className="text-blue-500 w-6 h-6" />
             <h1 className="text-xl font-bold text-gray-800">Your Spider Web</h1>
