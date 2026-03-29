@@ -1,8 +1,10 @@
 import { Mail, MessageSquare, Trash2, User } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../../utills/Sidebar";
 
 const MyConnection = () => {
+  const navigate = useNavigate();
   const [connections, setConnections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -58,7 +60,7 @@ const MyConnection = () => {
     }
 
     try {
-      const response = await fetch("https://qalib.cloud/api/user/connections", {
+      const response = await fetch("http://localhost:5000/api/user/connections", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,6 +108,19 @@ const MyConnection = () => {
 
   const closeDeleteConfirm = () => {
     setConfirmDelete({ email: null, fullName: null });
+  };
+
+  // const openUserByEmail = (email) => {
+  //   if (!email) return;
+  //   navigate(`/by-email?email=${encodeURIComponent(email)}`);
+  // };
+
+  const openUserByEmail = (email) => {
+    if (!email) return;
+
+    const cleanEmail = email.replace(/\s+/g, ""); // removes spaces, tabs, etc
+
+    navigate(`/by-email?email=${encodeURIComponent(cleanEmail)}`);
   };
 
   const confirmAndDelete = async () => {
@@ -255,9 +270,12 @@ const MyConnection = () => {
 
                       {/* Action Buttons */}
                       <div className="border-t px-4 py-3 flex gap-2">
-                        <button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                        <button
+                          onClick={() => openUserByEmail(connection.email)}
+                          className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+                        >
                           <MessageSquare size={16} />
-                          Message
+                          View Profile
                         </button>
                         <button
                           onClick={() => openDeleteConfirm(connection.email, connection.fullName)}

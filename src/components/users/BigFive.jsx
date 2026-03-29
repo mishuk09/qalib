@@ -8,9 +8,10 @@ import {
   RadialLinearScale,
   Tooltip,
 } from "chart.js";
-import { Loader2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import Sidebar from "../../utills/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -19,6 +20,7 @@ const BigFive = () => {
   const [traitScores, setTraitScores] = useState({});
   const [big5Score, setBig5Score] = useState(0);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Use your exact scoring formula:
   // Extraversion = (6-Q1)+Q5
@@ -244,9 +246,17 @@ const BigFive = () => {
                   </h2>
 
                   {/* Coming Soon */}
-                  <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+                  {/* <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
                     Coming Soon<span className="text-gray-500"></span>
-                  </h1>
+                  </h1> */}
+                  <div className="mb-6  flex items-center justify-center gap-2 mt-10">
+                    <button
+                      onClick={() => navigate("/survey-form")}
+                      className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                    >
+                      <Plus /> Add   Profile Survey
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

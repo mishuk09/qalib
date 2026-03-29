@@ -11,6 +11,7 @@ import Qeqprofile from "./components/users/Qeqprofile";
 import QeqprofileOriginal from "./components/users/QeqprofileOriginal";
 import SurveyForm from "./components/users/SurveyForm";
 import SurveyViewer from "./components/users/SurveyViewer";
+import UserByEmail from "./components/users/UserByEmail";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Layout from "./pages/Home/Layout";
@@ -48,6 +49,7 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} />} />
         <Route path="/profile" element={<ProtectedRoute element={ProfileCard} />} />
         <Route path="/my-connections" element={<ProtectedRoute element={MyConnection} />} />
+        <Route path="/by-email" element={<ProtectedRoute element={UserByEmail} />} />
         {/* <Route
           path="/post-up"
           element={<ProtectedRoute element={Dashboard} />}
