@@ -251,10 +251,10 @@ const BigFive = () => {
                   </h1> */}
                   <div className="mb-6  flex items-center justify-center gap-2 mt-10">
                     <button
-                      onClick={() => navigate("/survey-form")}
+                      onClick={() => navigate("/big-five-add")}
                       className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                     >
-                      <Plus /> Add   Profile Survey
+                      <Plus /> Add Big Five Data
                     </button>
                   </div>
                 </div>

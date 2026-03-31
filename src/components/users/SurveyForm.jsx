@@ -498,9 +498,7 @@ const SurveyForm = ({ onSuccess }) => {
               <QuestionBlock title="T62. As an entrepreneur, I would not show dislike if the opinion of any subordinate is not agreed upon.">
                 {renderScaleOptions("T62")}
               </QuestionBlock>
-              <QuestionBlock title="T63. (Placeholder - ensures state completeness) ">
-                {renderScaleOptions("T63")}
-              </QuestionBlock>
+              
             </div>
           </section>
 
@@ -672,9 +670,7 @@ const SurveyForm = ({ onSuccess }) => {
               <QuestionBlock title="Hus94. I believe any product can be successful with a good sales and marketing approach.">
                 {renderScaleOptions("Hus94")}
               </QuestionBlock>
-              <QuestionBlock title="Hus95. (Placeholder - ensures state completeness) ">
-                {renderScaleOptions("Hus95")}
-              </QuestionBlock>
+             
             </div>
           </section>
 
@@ -704,9 +700,7 @@ const SurveyForm = ({ onSuccess }) => {
               <QuestionBlock title="Y100. I’ve got the firm intention to start a firm someday that produces inclusive products/services.">
                 {renderScaleOptions("Y100")}
               </QuestionBlock>
-              <QuestionBlock title="Y101. (Placeholder - ensures state completeness) ">
-                {renderScaleOptions("Y101")}
-              </QuestionBlock>
+              
             </div>
           </section>
 

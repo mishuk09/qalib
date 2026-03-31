@@ -24,6 +24,19 @@ const Qeqprofile = () => {
   const [ieiScore, setIeiScore] = useState(null);
   const navigate = useNavigate();
 
+  const labelMap = {
+    D: "Darruriyat",
+    H: "Hajiyyat",
+    T: "Tahsiniyyat",
+    Hip: "Hipster",
+    Hac: "Hacker",
+    Hus: "Hustler",
+    Att: "Attitude",
+    SN: "Subjective Norms",
+    PBC: "Perceived Behavioural Control",
+    Y: "Intention",
+  };
+
   const summarizeSurvey = (survey) => {
     const groups = {};
 
@@ -82,16 +95,16 @@ const Qeqprofile = () => {
         setIeiScore(totalIei.toFixed(2));
 
         // --- Build chart data for spider web ---
-        // 1) Remove "I" and "II" from the radar chart
-        // 2) Take only the first 10 groups
-        const cleanedEntries = Object.entries(summarized).filter(
-          ([key]) => key !== "I" && key !== "II"
-        );
+        // Define the specific order for the radar chart
+        const chartOrder = ["Y", "D", "H", "T", "PBC", "SN", "Att", "Hus", "Hip"];
 
-        const limitedEntries = cleanedEntries.slice(0, 10);
+        const labels = chartOrder
+          .filter((key) => summarized[key] !== undefined)
+          .map((key) => labelMap[key] || key);
 
-        const labels = limitedEntries.map(([key]) => key);
-        const values = limitedEntries.map(([_, val]) => val);
+        const values = chartOrder
+          .filter((key) => summarized[key] !== undefined)
+          .map((key) => summarized[key]);
 
         if (labels.length === 0) {
           setChartData(null);
@@ -200,12 +213,16 @@ const Qeqprofile = () => {
                   callbacks: {
                     label: (tooltipItem) => {
                       const labelIndex = tooltipItem.dataIndex;
-                      const group = chartData.labels[labelIndex];
-                      const avg = groupInfo[group]?.average
-                        ? groupInfo[group].average.toFixed(2)
+                      const fullLabel = chartData.labels[labelIndex];
+                      // Extract the abbreviation from the full label map
+                      const abbr =
+                        Object.keys(labelMap).find((key) => labelMap[key] === fullLabel) ||
+                        fullLabel;
+                      const avg = groupInfo[abbr]?.average
+                        ? groupInfo[abbr].average.toFixed(2)
                         : "0.00";
-                      const answered = groupInfo[group]?.answered ?? 0;
-                      return `${group}: ${avg} (${answered} answered)`;
+                      const answered = groupInfo[abbr]?.answered ?? 0;
+                      return `${fullLabel}: ${avg} (${answered} answered)`;
                     },
                   },
                 },

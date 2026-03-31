@@ -186,6 +186,7 @@ export default function ProfileCard() {
                     <div>
                       <h2 className="mt-3 text-xl lg:text-2xl font-semibold">
                         {loading ? <MiniLoading /> : userData?.fullName}
+                       {/* { userData.batch_name} */}
                       </h2>
                       {/* <p className="text-sm leading-4 text-gray-500">
                         🎓{userData?.demographics?.field_of_study}
