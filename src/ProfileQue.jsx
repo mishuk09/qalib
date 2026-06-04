@@ -13,16 +13,27 @@ import {
 import { BarChart3, Loader2, Star, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Radar } from "react-chartjs-2";
-import { useNavigate } from "react-router-dom";
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
+
+const LABEL_MAP = {
+  D: "Darruriyat",
+  H: "Hajiyyat",
+  T: "Tahsiniyyat",
+  Hip: "Hipster",
+  Hac: "Hacker",
+  Hus: "Hustler",
+  Att: "Attitude",
+  SN: "Subjective Norms",
+  PBC: "Perceived Behavioural Control",
+  Y: "Intention",
+};
 
 const ProfileQue = () => {
   const [chartData, setChartData] = useState(null);
   const [groupInfo, setGroupInfo] = useState({});
   const [loading, setLoading] = useState(true);
   const [ieiScore, setIeiScore] = useState(null);
-  const navigate = useNavigate();
 
   const summarizeSurvey = (survey) => {
     const groups = {};
@@ -81,17 +92,16 @@ const ProfileQue = () => {
 
         setIeiScore(totalIei.toFixed(2));
 
-        // --- Build chart data for spider web ---
-        // 1) Remove "I" and "II" from the radar chart
-        // 2) Take only the first 10 groups
-        const cleanedEntries = Object.entries(summarized).filter(
-          ([key]) => key !== "I" && key !== "II"
-        );
+        // Build the radar chart in a fixed sequence with full labels.
+        const chartOrder = ["Y", "D", "H", "T", "PBC", "SN", "Att", "Hus", "Hac", "Hip"];
 
-        const limitedEntries = cleanedEntries.slice(0, 10);
+        const labels = chartOrder
+          .filter((key) => summarized[key] !== undefined)
+          .map((key) => LABEL_MAP[key] || key);
 
-        const labels = limitedEntries.map(([key]) => key);
-        const values = limitedEntries.map(([_, val]) => val);
+        const values = chartOrder
+          .filter((key) => summarized[key] !== undefined)
+          .map((key) => summarized[key]);
 
         if (labels.length === 0) {
           setChartData(null);
@@ -200,12 +210,16 @@ const ProfileQue = () => {
                   callbacks: {
                     label: (tooltipItem) => {
                       const labelIndex = tooltipItem.dataIndex;
-                      const group = chartData.labels[labelIndex];
-                      const avg = groupInfo[group]?.average
-                        ? groupInfo[group].average.toFixed(2)
-                        : "0.00";
-                      const answered = groupInfo[group]?.answered ?? 0;
-                      return `${group}: ${avg} (${answered} answered)`;
+                      const fullLabel = chartData.labels[labelIndex];
+                      const group = Object.keys(LABEL_MAP).find(
+                        (key) => LABEL_MAP[key] === fullLabel
+                      );
+                      const avg =
+                        group && groupInfo[group]?.average
+                          ? groupInfo[group].average.toFixed(2)
+                          : "0.00";
+                      const answered = group ? (groupInfo[group]?.answered ?? 0) : 0;
+                      return `${fullLabel}: ${avg} (${answered} answered)`;
                     },
                   },
                 },
@@ -213,7 +227,7 @@ const ProfileQue = () => {
             }}
           />
 
-          <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-700">
+          {/* <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-700">
             <span>
               <strong>D:</strong> Darruriyat
             </span>
@@ -244,7 +258,7 @@ const ProfileQue = () => {
             <span>
               <strong>Y:</strong> Intention
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

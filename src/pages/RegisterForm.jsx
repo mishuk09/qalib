@@ -350,6 +350,17 @@ export default function RegisterForm() {
       return;
     }
 
+    // Password validation: minimum 6 characters and at least one uppercase letter
+    if (formData.password.length < 6) {
+      alert("Error: Password must be at least 6 characters long.");
+      return;
+    }
+
+    if (!/[A-Z]/.test(formData.password)) {
+      alert("Error: Password must contain at least one uppercase letter.");
+      return;
+    }
+
     // where the actual <input> is hidden and interaction is via <label> (OptionPill).
     const requiredDemographicsFields = [
       "ageGroup",
@@ -514,19 +525,25 @@ export default function RegisterForm() {
                 onChange={(e) => updateTopLevel("email", e.target.value.toLowerCase())}
                 required={true} // Explicitly required
               />
-              <ProfessionalInput
-                label="Password"
-                type="password"
-                value={formData.password}
-                onChange={(e) => updateTopLevel("password", e.target.value)}
-                required={true} // Explicitly required
-              />
+              <div>
+                <ProfessionalInput
+                  label="Password"
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) => updateTopLevel("password", e.target.value)}
+                  placeholder="At least 6 characters with a capital letter"
+                  required={true}
+                />
+                <p className="text-xs text-gray-600 mt-1">
+                  Must be at least 6 characters and contain at least one uppercase letter.
+                </p>
+              </div>
               <ProfessionalInput
                 label="Confirm Password"
                 type="password"
                 value={formData.confirmPassword}
                 onChange={(e) => updateTopLevel("confirmPassword", e.target.value)}
-                required={true} // Explicitly required
+                required={true}
               />
             </div>
           </section>

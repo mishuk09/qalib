@@ -60,7 +60,7 @@ const MyConnection = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/user/connections", {
+      const response = await fetch("https://qalib.cloud/api/user/connections", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -223,7 +223,6 @@ const MyConnection = () => {
 
                     {/* Card Content */}
                     <div className="p-6 space-y-4 flex-grow">
-                      
                       {/* {connection.cohortinformation?.programName && (
                         <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
                           <p className="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-1">

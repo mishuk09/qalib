@@ -157,9 +157,6 @@ const SurveyForm = ({ onSuccess }) => {
       Y98: "",
       Y99: "",
       Y100: "",
-      // Added T63 and Y101 to fully capture the original structure
-      T63: "",
-      Y101: "",
     })
   );
 
@@ -585,9 +582,6 @@ const SurveyForm = ({ onSuccess }) => {
               </QuestionBlock>
               <QuestionBlock title="PBC76. Generally, it will be easy for me to develop a business idea.">
                 {renderScaleOptions("PBC76")}
-              </QuestionBlock>
-              <QuestionBlock title="PBC77. (Placeholder - ensures state completeness) ">
-                {renderScaleOptions("PBC77")}
               </QuestionBlock>
             </div>
           </section>

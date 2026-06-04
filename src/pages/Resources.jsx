@@ -7,9 +7,6 @@ export default function Resources() {
   const [loadingVideos, setLoadingVideos] = useState({});
   const [loadingSlides, setLoadingSlides] = useState({});
 
-  // Passport URL
-  const passportUrl = "https://drive.google.com/drive/folders/1QGBGHea435f8p09V0bkEUiqtdU4n75sf";
-
   // Videos (MP4) resources
   const videos = [
     {
@@ -82,9 +79,22 @@ export default function Resources() {
       downloadUrl:
         "https://drive.google.com/uc?export=download&id=1nusyMG5rdiVnFOgmKqEjdGQXXDItUtnt",
     },
+    {
+      title: "Inceif Financial Module v3",
+      viewUrl: "https://drive.google.com/file/d/1rtVg-4Fthv53aAyReZlQ4dg_2HEHIym_/view",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1rtVg-4Fthv53aAyReZlQ4dg_2HEHIym_",
+    },
+    {
+      title: "Inceif Financial Module ",
+      viewUrl: "https://drive.google.com/file/d/1B6fJHmu-jySu30H-Io0TzqhVUx_Xri_0/view",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1B6fJHmu-jySu30H-Io0TzqhVUx_Xri_0",
+    },
   ];
 
   // Slides (PPT) resources
+  /*
   const slides = [
     {
       title: "Business model",
@@ -157,6 +167,64 @@ export default function Resources() {
         "https://docs.google.com/presentation/d/1FjL6EmKO_bzBX3BgjNjeHB8087Tc1DqF/export/pptx",
     },
   ];
+  */
+
+  const slides = [
+    {
+      title: "Business Model Blueprint",
+      viewUrl: "https://drive.google.com/file/d/1oJ_Hea_R9JY5SBlSGwZGuLfqXfxD6Oqy/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1oJ_Hea_R9JY5SBlSGwZGuLfqXfxD6Oqy",
+    },
+    {
+      title: "Finding The Single",
+      viewUrl: "https://drive.google.com/file/d/1lsmdivSAbJMDkbz6dtjXOxySG2rYjEY7/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1lsmdivSAbJMDkbz6dtjXOxySG2rYjEY7",
+    },
+    {
+      title: "Founder Field Guide",
+      viewUrl: "https://drive.google.com/file/d/1II5fxeVFwWY_9y0iJg2i-mkoYe3KI5c5/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1II5fxeVFwWY_9y0iJg2i-mkoYe3KI5c5",
+    },
+    {
+      title: "Founder To Market Fit",
+      viewUrl: "https://drive.google.com/file/d/1CMgl5KiXkoDG0067PgYc7bBKBJCIOYc3/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1CMgl5KiXkoDG0067PgYc7bBKBJCIOYc3",
+    },
+    {
+      title: "INCEIF FINANCIAL MODULE v3",
+      viewUrl: "https://drive.google.com/file/d/16W2nb08Kl2bBRNq1V0cchKBTBxglyqGo/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=16W2nb08Kl2bBRNq1V0cchKBTBxglyqGo",
+    },
+    {
+      title: "Starting Up Pitch Blueprint",
+      viewUrl: "https://drive.google.com/file/d/1MZ7mSnz3gouJUt4CfmbBuSnTYEDeJ7D_/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1MZ7mSnz3gouJUt4CfmbBuSnTYEDeJ7D_",
+    },
+    {
+      title: "The Blueprint To Impact",
+      viewUrl: "https://drive.google.com/file/d/16YrFmxiv-R-6z26evcKIYE6KTVgxqCVu/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=16YrFmxiv-R-6z26evcKIYE6KTVgxqCVu",
+    },
+    {
+      title: "The Ideation Engine",
+      viewUrl: "https://drive.google.com/file/d/1lj8miNiaBFHV6eUll4eI6K9_Gua7W5oo/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1lj8miNiaBFHV6eUll4eI6K9_Gua7W5oo",
+    },
+    {
+      title: "Traction Flight Module",
+      viewUrl: "https://drive.google.com/file/d/1h5FBbuv6P7mu62DZsqeMKM80QZhMs8px/view?usp=sharing",
+      downloadUrl:
+        "https://drive.google.com/uc?export=download&id=1h5FBbuv6P7mu62DZsqeMKM80QZhMs8px",
+    },
+  ];
 
   // const handlePassportView = () => {
   //   window.open(passportUrl, "_blank");
@@ -190,7 +258,7 @@ export default function Resources() {
               {/* Header */}
               <div className="text-center mb-6 sm:mb-8">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-                  Resources
+                  Library
                 </h1>
                 <p className="text-sm sm:text-base text-gray-600 px-4">
                   Access your learning materials and documentation
@@ -333,6 +401,11 @@ export default function Resources() {
                           } else if (slide.viewUrl.includes("/document/")) {
                             // For Google Docs
                             embedUrl = slide.viewUrl.replace("/edit", "/preview");
+                          } else if (slide.viewUrl.includes("drive.google.com/file/d/")) {
+                            const fileId = slide.viewUrl.match(/\/d\/([^/]+)/)?.[1];
+                            embedUrl = fileId
+                              ? `https://drive.google.com/file/d/${fileId}/preview`
+                              : null;
                           }
 
                           return (

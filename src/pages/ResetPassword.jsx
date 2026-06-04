@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE = "http://localhost:5000/api"; // Base Flask API URL
+const API_BASE = "https://qalib.cloud/api"; // Base Flask API URL
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -22,8 +22,11 @@ const ResetPassword = () => {
     if (password.length < 6) {
       return "Password must be at least 6 characters.";
     }
-    if (!/[a-zA-Z]/.test(password)) {
-      return "Password must contain at least one letter.";
+    if (!/[a-z]/.test(password)) {
+      return "Password must contain at least one lowercase letter.";
+    }
+    if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter.";
     }
     if (!/[0-9]/.test(password)) {
       return "Password must contain at least one digit.";
@@ -122,7 +125,7 @@ const ResetPassword = () => {
               required
             />
             <p className="text-xs text-gray-600 mt-1">
-              Must be at least 6 characters with letters and numbers.
+              Must be at least 6 characters with uppercase, lowercase, and numbers.
             </p>
           </div>
 

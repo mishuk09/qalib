@@ -17,10 +17,10 @@ const DreamTeam = () => {
                 <div className="w-full max-w-4xl text-center">
                   <div className="bg-white rounded-2xl shadow-lg p-10 md:p-16">
                     {/* Title */}
-                    <h2 className="flex items-center justify-center gap-2  font-semibold text-gray-800 mb-6">
+                    {/* <h2 className="flex items-center justify-center gap-2  font-semibold text-gray-800 mb-6">
                       <span className="text-green-500"><Users /></span>
                       Big Five Personality Survey
-                    </h2>
+                    </h2> */}
 
                     {/* Coming Soon */}
                     <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">

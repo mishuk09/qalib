@@ -13,7 +13,6 @@ import {
   Building2,
   CalendarDays,
   CheckCircle2,
-  ClipboardList,
   Copy,
   GraduationCap,
   Mail,
@@ -368,9 +367,12 @@ const UserByEmail = () => {
 
       try {
         setLoading(true);
-        const response = await fetch(`/api/users/by-email?email=${encodeURIComponent(email)}`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `https://qalib.cloud/api/users/by-email?email=${encodeURIComponent(email)}`,
+          {
+            method: "GET",
+          }
+        );
 
         const data = await response.json();
 

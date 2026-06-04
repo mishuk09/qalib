@@ -17,25 +17,25 @@ import { useNavigate } from "react-router-dom";
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
+const LABEL_MAP = {
+  D: "Darruriyat",
+  H: "Hajiyyat",
+  T: "Tahsiniyyat",
+  Hip: "Hipster",
+  Hac: "Hacker",
+  Hus: "Hustler",
+  Att: "Attitude",
+  SN: "Subjective Norms",
+  PBC: "Perceived Behavioural Control",
+  Y: "Intention",
+};
+
 const Qeqprofile = () => {
   const [chartData, setChartData] = useState(null);
   const [groupInfo, setGroupInfo] = useState({});
   const [loading, setLoading] = useState(true);
   const [ieiScore, setIeiScore] = useState(null);
   const navigate = useNavigate();
-
-  const labelMap = {
-    D: "Darruriyat",
-    H: "Hajiyyat",
-    T: "Tahsiniyyat",
-    Hip: "Hipster",
-    Hac: "Hacker",
-    Hus: "Hustler",
-    Att: "Attitude",
-    SN: "Subjective Norms",
-    PBC: "Perceived Behavioural Control",
-    Y: "Intention",
-  };
 
   const summarizeSurvey = (survey) => {
     const groups = {};
@@ -96,11 +96,11 @@ const Qeqprofile = () => {
 
         // --- Build chart data for spider web ---
         // Define the specific order for the radar chart
-        const chartOrder = ["Y", "D", "H", "T", "PBC", "SN", "Att", "Hus", "Hip"];
+        const chartOrder = ["Y", "D", "H", "T", "PBC", "SN", "Att", "Hus", "Hac", "Hip"];
 
         const labels = chartOrder
           .filter((key) => summarized[key] !== undefined)
-          .map((key) => labelMap[key] || key);
+          .map((key) => LABEL_MAP[key] || key);
 
         const values = chartOrder
           .filter((key) => summarized[key] !== undefined)
@@ -151,7 +151,7 @@ const Qeqprofile = () => {
           onClick={() => navigate("/survey-form")}
           className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
         >
-          <Plus /> Add QEQ Profile Survey
+          <Plus /> Update QEQ profile survey
         </button>
       </div>
       <div className="flex flex-col md:flex-row gap-6 w-full">
@@ -216,7 +216,7 @@ const Qeqprofile = () => {
                       const fullLabel = chartData.labels[labelIndex];
                       // Extract the abbreviation from the full label map
                       const abbr =
-                        Object.keys(labelMap).find((key) => labelMap[key] === fullLabel) ||
+                        Object.keys(LABEL_MAP).find((key) => LABEL_MAP[key] === fullLabel) ||
                         fullLabel;
                       const avg = groupInfo[abbr]?.average
                         ? groupInfo[abbr].average.toFixed(2)
@@ -230,7 +230,7 @@ const Qeqprofile = () => {
             }}
           />
 
-          <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-700">
+          {/* <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-700">
             <span>
               <strong>D:</strong> Darruriyat
             </span>
@@ -261,7 +261,7 @@ const Qeqprofile = () => {
             <span>
               <strong>Y:</strong> Intention
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

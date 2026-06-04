@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { FaCamera } from "react-icons/fa";
-// import { useNavigate } from "react-router-dom";
 import Feed from "../../pages/Post/Feed";
 import ProfileQue from "../../ProfileQue";
 import { uploadToCloudinary } from "../../utills/cloudinaryUpload";
@@ -11,6 +10,7 @@ import useUserData from "../../utills/useUserData";
 import BehaviorQuestion from "./BehaviorQuestion";
 import ConnectionsPage from "./ConnectionsPage";
 import UpdateProfile from "./UpdateProfile";
+import Sidebar from "../../utills/Sidebar";
 
 const API_URL = "https://qalib.cloud/api/users";
 
@@ -134,6 +134,7 @@ export default function ProfileCard() {
         <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
           <aside className="lg:col-span-3 space-y-6 lg:sticky top-20 self-start">
             <QuickLinks />
+            {/* <Sidebar /> */}
           </aside>
           <main className="lg:col-span-6 space-y-6">
             {/* Profile header card */}

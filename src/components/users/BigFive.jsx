@@ -8,10 +8,10 @@ import {
   RadialLinearScale,
   Tooltip,
 } from "chart.js";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import Sidebar from "../../utills/Sidebar";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "../../utills/Sidebar";
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -240,22 +240,25 @@ const BigFive = () => {
               <div className="w-full max-w-4xl text-center">
                 <div className="bg-white rounded-2xl shadow-lg p-10 md:p-16">
                   {/* Title */}
-                  <h2 className="flex items-center justify-center gap-2  font-semibold text-gray-800 mb-6">
+                  {/* <h2 className="flex items-center justify-center gap-2  font-semibold text-gray-800 mb-6">
                     <span className="text-green-500">🧩</span>
                     Big Five Personality Survey
-                  </h2>
+                  </h2> */}
 
                   {/* Coming Soon */}
-                  {/* <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+                  <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
                     Coming Soon<span className="text-gray-500"></span>
-                  </h1> */}
+                  </h1>
                   <div className="mb-6  flex items-center justify-center gap-2 mt-10">
-                    <button
+                    {/* <button className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                      <Plus /> Add Big Five Data
+                    </button> */}
+                    {/* <button
                       onClick={() => navigate("/big-five-add")}
                       className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                     >
                       <Plus /> Add Big Five Data
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
