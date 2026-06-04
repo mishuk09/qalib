@@ -19,6 +19,8 @@ const Sidebar = () => {
   const [profilingOpen, setProfilingOpen] = useState(false);
   const [qeqOpen, setQeqOpen] = useState(false);
   const [bigFiveOpen, setBigFiveOpen] = useState(false);
+  const [myDreamTeamOpen, setMyDreamTeamOpen] = useState(false);
+  const [matchMeOpen, setMatchMeOpen] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -156,15 +158,71 @@ const Sidebar = () => {
           </li>
 
           <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
-            <UsersRound size={16} />
-            <a href="/dream-team">My Dream Team</a>
-          </li>
-
-          <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
             <Library size={16} />
             <a href="/resources" target="_blank">
               Library
             </a>
+          </li>
+
+          <li>
+            <button
+              type="button"
+              onClick={() => setMyDreamTeamOpen((open) => !open)}
+              className="flex w-full items-center justify-between gap-2 rounded-md py-1 text-left hover:text-blue-800"
+              aria-expanded={myDreamTeamOpen}
+            >
+              <span className="flex items-center gap-2 cursor-pointer">
+                <UsersRound size={16} />
+                <span>My Dream Team</span>
+              </span>
+              <ChevronDown
+                size={16}
+                className={`transition-transform ${myDreamTeamOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {myDreamTeamOpen && (
+              <ul className="mt-2 ml-6 space-y-2 border-l border-gray-200 pl-4 text-sm text-blue-600">
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setMatchMeOpen((open) => !open)}
+                    className="flex w-full items-center justify-between gap-2 rounded-md py-1 text-left hover:text-blue-800"
+                    aria-expanded={matchMeOpen}
+                  >
+                    <span className="flex items-center gap-2 cursor-pointer">
+                      <UsersRound size={16} />
+                      <span>Match Me</span>
+                    </span>
+                    <ChevronDown
+                      size={16}
+                      className={`transition-transform ${matchMeOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  {matchMeOpen && (
+                    <ul className="mt-2 ml-6 space-y-2 border-l border-gray-200 pl-4 text-sm text-blue-600">
+                      <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
+                        <UsersRound size={16} />
+                        <a href="/match-me/cohort">With my cohort</a>
+                      </li>
+                      <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
+                        <UserRound size={16} />
+                        <a href="/match-me/users">With any Qalib user</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
+                  <Star size={16} />
+                  <a href="/run-pso">Run pso</a>
+                </li>
+                <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
+                  <UsersRound size={16} />
+                  <a href="/suggested-group">Show Suggested Group</a>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
       </div>

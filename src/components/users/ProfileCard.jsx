@@ -198,22 +198,6 @@ export default function ProfileCard() {
                     </div>
 
                     <div className="mt-4 flex-row  md:mt-0 text-end  items-end  justify-end gap-3">
-                      {/* <div>
-                        <button
-                          onClick={() => setModalOpen(true)}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
-                        >
-                          Update Profile
-                        </button>
-                      </div>
-                      <div>
-                        <button
-                          onClick={handleNavigate}
-                          className="inline-flex items-center gap-2 px-4 py-2 mt-1 bg-red-600 text-white rounded-full text-sm font-medium hover:bg-red-700 transition"
-                        >
-                          QEQ Profile
-                        </button>
-                      </div> */}
                     </div>
                   </div>
 
