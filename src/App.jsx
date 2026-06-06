@@ -5,6 +5,7 @@ import BigFive from "./components/users/BigFive";
 import BigFiveData from "./components/users/BigFiveData";
 import DreamTeam from "./components/users/Dreamteam";
 import DreamTeamData from "./components/users/DreamTeamData";
+import MyCohort from "./components/users/Mycohort";
 import MyConnection from "./components/users/Myconnection";
 import ProfileCard from "./components/users/ProfileCard";
 import Qeqprofile from "./components/users/Qeqprofile";
@@ -40,7 +41,7 @@ function App() {
 
         <Route path="/survey-form" element={<SurveyForm />} />
         <Route path="/dream-team-add" element={<DreamTeamData />} />
-        <Route path="/big-five" element={<BigFive />} />
+        <Route path="/big-five-profile" element={<BigFive />} />
         <Route path="/big-five-add" element={<BigFiveData />} />
         <Route path="/survey" element={<SurveyViewer />} />
         <Route path="/resources" element={<Resources />} />
@@ -50,6 +51,7 @@ function App() {
         <Route path="/profile" element={<ProtectedRoute element={ProfileCard} />} />
         <Route path="/my-connections" element={<ProtectedRoute element={MyConnection} />} />
         <Route path="/by-email" element={<ProtectedRoute element={UserByEmail} />} />
+        <Route path="/my-cohort" element={<ProtectedRoute element={MyCohort} />} />
         {/* <Route
           path="/post-up"
           element={<ProtectedRoute element={Dashboard} />}

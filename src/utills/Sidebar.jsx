@@ -140,11 +140,11 @@ const Sidebar = () => {
                     <ul className="mt-2 ml-6 space-y-2 border-l border-gray-200 pl-4 text-sm text-blue-600">
                       <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                         <Brain size={16} />
-                        <a href="/big-five">Bigfive Survey</a>
+                        <a href="/big-five-add">Bigfive Survey</a>
                       </li>
                       <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                         <UserRound size={16} />
-                        <a href="/profile">My Profile</a>
+                        <a href="/big-five-profile">My Profile</a>
                       </li>
                     </ul>
                   )}
@@ -204,11 +204,11 @@ const Sidebar = () => {
                     <ul className="mt-2 ml-6 space-y-2 border-l border-gray-200 pl-4 text-sm text-blue-600">
                       <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                         <UsersRound size={16} />
-                        <a href="/match-me/cohort">With my cohort</a>
+                        <a href="/my-cohort">With my cohort</a>
                       </li>
                       <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                         <UserRound size={16} />
-                        <a href="/match-me/users">With any Qalib user</a>
+                        <a href="/match-me">With any Qalib user</a>
                       </li>
                     </ul>
                   )}

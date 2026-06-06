@@ -8,8 +8,9 @@ import {
   RadialLinearScale,
   Tooltip,
 } from "chart.js";
-import { Loader2 } from "lucide-react";
+import { BarChart3, Loader2, Plus, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Radar } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../utills/Sidebar";
 
@@ -47,11 +48,14 @@ const BigFive = () => {
     const q9 = toNum(bf.q9);
     const q10 = toNum(bf.q10);
 
-    const Extraversion = 6 - q1 + q5;
-    const Agreeableness = q2 + (6 - q7);
-    const Conscientiousness = 6 - q3 + q8;
-    const Neuroticism = 6 - q4 + q9;
-    const Openness = 6 - q5 + q10;
+    // BFI-10 scoring: reverse-scored items (6 - item) then average the two items
+    const rev = (v) => 6 - v;
+
+    const Extraversion = (rev(q1) + q6) / 2;
+    const Agreeableness = (q2 + rev(q7)) / 2;
+    const Conscientiousness = (rev(q3) + q8) / 2;
+    const Neuroticism = (rev(q4) + q9) / 2;
+    const Openness = (rev(q5) + q10) / 2;
 
     return {
       Extraversion,
@@ -164,35 +168,29 @@ const BigFive = () => {
           <Sidebar />
         </aside>
         <main className="lg:col-span-9 space-y-6">
-          {/* <div className="max-w-7xl mx-auto pb-10 mt-8 px-4">
-            <h1 className="text-4xl font-semibold">This is Big Five Component</h1>
+          <div className="max-w-7xl mx-auto pb-10 mt-8 px-4">
+            <h1 className="text-3xl font-semibold mb-6">Big Five Component</h1>
 
-            <div className="my-4">
-              <a
-                href="/big-five-add"
-                target="_blank"
-                className="text-blue-600 px-4 py-2 border-2 border-blue-500 rounded hover:underline"
+            <div className="mb-6">
+              <button
+                onClick={() => navigate("/big-five-add")}
+                className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
               >
-                + Add Your Big Five Data
-              </a>
+                
+                <Plus /> Update Big Five Data
+              </button>
             </div>
-
-            <p className="mb-6">Others Functionality will be there...</p>
-
             <div className="flex flex-col md:flex-row gap-6 w-full">
-              <div className="w-full md:w-1/2 bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+        <div className="w-full md:w-1/2 bg-white rounded-2xl flex flex-col items-center justify-center shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
                 <h2 className="text-xl font-bold text-gray-800 mb-2">Your Big Five Scores</h2>
-                <p className="text-gray-700 mb-4 font-medium">
-                  Big5 Total Score: <span className="text-indigo-600">{big5Score.toFixed(2)}</span>
-                </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {Object.entries(traitScores).map(([trait, value]) => (
-                    <div key={trait} className="p-3 rounded-lg border border-gray-100 bg-gray-50">
-                      <p className="text-sm font-medium text-gray-600">{trait}</p>
-                      <p className="text-lg font-semibold text-gray-800 mt-1">{value.toFixed(2)}</p>
-                    </div>
-                  ))}
+                <div className="text-center mb-6">
+                  <h2 className="text-3xl font-semibold text-indigo-600 flex items-center justify-center gap-2">
+                    <TrendingUp className="w-6 h-6 text-indigo-600" />
+                   {big5Score.toFixed(2)}
+                  </h2>
+                  <p className="text-gray-500 text-sm mt-1">
+                    {/* (IEI = D + H + Att + PBC + II) */}
+                  </p>
                 </div>
               </div>
 
@@ -233,37 +231,7 @@ const BigFive = () => {
                 />
               </div>
             </div>
-          </div> */}
-
-          <section className=" ">
-            <div className="  bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
-              <div className="w-full max-w-4xl text-center">
-                <div className="bg-white rounded-2xl shadow-lg p-10 md:p-16">
-                  {/* Title */}
-                  {/* <h2 className="flex items-center justify-center gap-2  font-semibold text-gray-800 mb-6">
-                    <span className="text-green-500">🧩</span>
-                    Big Five Personality Survey
-                  </h2> */}
-
-                  {/* Coming Soon */}
-                  <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
-                    Coming Soon<span className="text-gray-500"></span>
-                  </h1>
-                  <div className="mb-6  flex items-center justify-center gap-2 mt-10">
-                    {/* <button className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                      <Plus /> Add Big Five Data
-                    </button> */}
-                    {/* <button
-                      onClick={() => navigate("/big-five-add")}
-                      className="bg-indigo-600 flex gap-2 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-                    >
-                      <Plus /> Add Big Five Data
-                    </button> */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          </div>
         </main>
       </div>
     </div>
