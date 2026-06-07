@@ -23,6 +23,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Resources from "./pages/Resources";
 import AdminProtectedRoute from "./utills/AdminProtectedRoute";
 import ProtectedRoute from "./utills/ProtectedRoute";
+import ProfileMatchingPage from "./components/users/RunPso/ProfileMatchingPage";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <Route path="/my-connections" element={<ProtectedRoute element={MyConnection} />} />
         <Route path="/by-email" element={<ProtectedRoute element={UserByEmail} />} />
         <Route path="/my-cohort" element={<ProtectedRoute element={MyCohort} />} />
+        <Route path="/run-pso" element={<ProtectedRoute element={ProfileMatchingPage} />} />
         {/* <Route
           path="/post-up"
           element={<ProtectedRoute element={Dashboard} />}
