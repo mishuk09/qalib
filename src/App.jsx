@@ -24,6 +24,7 @@ import Resources from "./pages/Resources";
 import AdminProtectedRoute from "./utills/AdminProtectedRoute";
 import ProtectedRoute from "./utills/ProtectedRoute";
 import ProfileMatchingPage from "./components/users/RunPso/ProfileMatchingPage";
+import QalibAllUsers from "./components/users/Qalib-all-Users";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
         <Route path="/by-email" element={<ProtectedRoute element={UserByEmail} />} />
         <Route path="/my-cohort" element={<ProtectedRoute element={MyCohort} />} />
         <Route path="/run-pso" element={<ProtectedRoute element={ProfileMatchingPage} />} />
+        <Route path="/all-user" element={<ProtectedRoute element={QalibAllUsers} />} />
         {/* <Route
           path="/post-up"
           element={<ProtectedRoute element={Dashboard} />}
