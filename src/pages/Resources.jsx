@@ -1,230 +1,64 @@
 import { ExternalLink, FileText, Loader2, Video } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../utills/Sidebar";
 
 export default function Resources() {
   const [activeTab, setActiveTab] = useState("video");
   const [loadingVideos, setLoadingVideos] = useState({});
   const [loadingSlides, setLoadingSlides] = useState({});
+  const [videos, setVideos] = useState([]);
+  const [slides, setSlides] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Videos (MP4) resources
-  const videos = [
-    {
-      title: "Business model",
-      viewUrl:
-        "https://drive.google.com/file/d/1QkCTjH-8-80Npo6lrDPdB7CQ42WGlQkN/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1QkCTjH-8-80Npo6lrDPdB7CQ42WGlQkN",
-    },
-    {
-      title: "Ideation",
-      viewUrl:
-        "https://drive.google.com/file/d/1Wh_dcQOJ6hohuEw6UTB4aHimkr-N2FeV/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1Wh_dcQOJ6hohuEw6UTB4aHimkr-N2FeV",
-    },
-    {
-      title: "inspiring_entrepreneur",
-      viewUrl:
-        "https://drive.google.com/file/d/14dULg_k8iHGsUjXV17IJYajWxKKZf5I9/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=14dULg_k8iHGsUjXV17IJYajWxKKZf5I9",
-    },
-    {
-      title: "introtoEntrepreneurs",
-      viewUrl:
-        "https://drive.google.com/file/d/1Fa-vNQMfIpl8RnIqOFMdBxeLmQarBNYk/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1Fa-vNQMfIpl8RnIqOFMdBxeLmQarBNYk",
-    },
-    {
-      title: "maqasid-alsharia model",
-      viewUrl:
-        "https://drive.google.com/file/d/121aOmuH7NaZ3hrC7LAPr4Wbz4gTNyww3/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=121aOmuH7NaZ3hrC7LAPr4Wbz4gTNyww3",
-    },
-    {
-      title: "market_validation",
-      viewUrl:
-        "https://drive.google.com/file/d/1ut2rFVMLUOIODpPl_COR-VMKhuFTro6e/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1ut2rFVMLUOIODpPl_COR-VMKhuFTro6e",
-    },
-    {
-      title: "Pitching_1",
-      viewUrl:
-        "https://drive.google.com/file/d/1A9iRAkgFEKyCvaB9rkjBRf9LVLOY-wGi/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1A9iRAkgFEKyCvaB9rkjBRf9LVLOY-wGi",
-    },
-    {
-      title: "pitching_2",
-      viewUrl:
-        "https://drive.google.com/file/d/1opLZH8O73VoiDxQBUIdrn-1hhqlcEOD3/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1opLZH8O73VoiDxQBUIdrn-1hhqlcEOD3",
-    },
-    {
-      title: "Traction-1",
-      viewUrl:
-        "https://drive.google.com/file/d/1V2_8hh4QRwacyHBgmx_46B2URLQSHtIl/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1V2_8hh4QRwacyHBgmx_46B2URLQSHtIl",
-    },
-    {
-      title: "Traction-3",
-      viewUrl:
-        "https://drive.google.com/file/d/1nusyMG5rdiVnFOgmKqEjdGQXXDItUtnt/view?usp=drive_link",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1nusyMG5rdiVnFOgmKqEjdGQXXDItUtnt",
-    },
-    {
-      title: "Inceif Financial Module v3",
-      viewUrl: "https://drive.google.com/file/d/1rtVg-4Fthv53aAyReZlQ4dg_2HEHIym_/view",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1rtVg-4Fthv53aAyReZlQ4dg_2HEHIym_",
-    },
-    {
-      title: "Inceif Financial Module ",
-      viewUrl: "https://drive.google.com/file/d/1B6fJHmu-jySu30H-Io0TzqhVUx_Xri_0/view",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1B6fJHmu-jySu30H-Io0TzqhVUx_Xri_0",
-    },
-  ];
+  // Fetch training resources from database
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await fetch("https://qalib.cloud/api/training-resources");
 
-  // Slides (PPT) resources
-  /*
-  const slides = [
-    {
-      title: "Business model",
-      viewUrl:
-        "https://docs.google.com/presentation/d/1w89czCf4Q2FQPHTjOxY3Ap7JwnVf-xWz/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/presentation/d/1w89czCf4Q2FQPHTjOxY3Ap7JwnVf-xWz/export/pptx",
-    },
-    {
-      title: "Ideation",
-      viewUrl:
-        "https://docs.google.com/presentation/d/1haxZIWacQCsqdIFJZPYx83LYpYOGkjip/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/presentation/d/1haxZIWacQCsqdIFJZPYx83LYpYOGkjip/export/pptx",
-    },
-    {
-      title: "Inspiring Entrepreneur",
-      viewUrl:
-        "https://docs.google.com/presentation/d/1Y_Q2c5KdA5MPCa4t_7WUPfozuOylUjWW/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/presentation/d/1Y_Q2c5KdA5MPCa4t_7WUPfozuOylUjWW/export/pptx",
-    },
-    {
-      title: "Intro to Entrepreneurship",
-      viewUrl:
-        "https://docs.google.com/presentation/d/1Onsbweqnd4yvwF4C5g6-yIMDtNjawua_/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/presentation/d/1Onsbweqnd4yvwF4C5g6-yIMDtNjawua_/export/pptx",
-    },
-    {
-      title: "Islamic Entrepreneurship",
-      viewUrl:
-        "https://docs.google.com/document/d/1v-RbdxFs_DLV5ksRiOixJoLjYEsi8pOn/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/document/d/1v-RbdxFs_DLV5ksRiOixJoLjYEsi8pOn/export?format=docx",
-    },
-    {
-      title: "Market validation",
-      viewUrl:
-        "https://docs.google.com/presentation/d/1WPBfgGEJb7FTU1uRPdZst_4g6CsMCZZO/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/presentation/d/1WPBfgGEJb7FTU1uRPdZst_4g6CsMCZZO/export/pptx",
-    },
-    {
-      title: "Pitching",
-      viewUrl:
-        "https://docs.google.com/presentation/d/1l04ZZ5NoBgS69wXnP9vsNtMURxV2xy3B/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/presentation/d/1l04ZZ5NoBgS69wXnP9vsNtMURxV2xy3B/export/pptx",
-    },
-    {
-      title: "Qalb Entrepreneurship",
-      viewUrl:
-        "https://docs.google.com/document/d/1592PAEWGPqJZFMxpFHgWmm4vOn9Ao9dt/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/document/d/1592PAEWGPqJZFMxpFHgWmm4vOn9Ao9dt/export?format=docx",
-    },
-    {
-      title: "Starting up",
-      viewUrl:
-        "https://docs.google.com/presentation/d/1A1PpLuyrcw5g9CS4BY83lcaC5Ynx1H25/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/presentation/d/1A1PpLuyrcw5g9CS4BY83lcaC5Ynx1H25/export/pptx",
-    },
-    {
-      title: "Traction",
-      viewUrl:
-        "https://docs.google.com/presentation/d/1FjL6EmKO_bzBX3BgjNjeHB8087Tc1DqF/edit?usp=drive_link&ouid=111964271464933346710&rtpof=true&sd=true",
-      downloadUrl:
-        "https://docs.google.com/presentation/d/1FjL6EmKO_bzBX3BgjNjeHB8087Tc1DqF/export/pptx",
-    },
-  ];
-  */
+        if (!response.ok) {
+          throw new Error("Failed to fetch training resources");
+        }
 
-  const slides = [
-    {
-      title: "Business Model Blueprint",
-      viewUrl: "https://drive.google.com/file/d/1oJ_Hea_R9JY5SBlSGwZGuLfqXfxD6Oqy/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1oJ_Hea_R9JY5SBlSGwZGuLfqXfxD6Oqy",
-    },
-    {
-      title: "Finding The Single",
-      viewUrl: "https://drive.google.com/file/d/1lsmdivSAbJMDkbz6dtjXOxySG2rYjEY7/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1lsmdivSAbJMDkbz6dtjXOxySG2rYjEY7",
-    },
-    {
-      title: "Founder Field Guide",
-      viewUrl: "https://drive.google.com/file/d/1II5fxeVFwWY_9y0iJg2i-mkoYe3KI5c5/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1II5fxeVFwWY_9y0iJg2i-mkoYe3KI5c5",
-    },
-    {
-      title: "Founder To Market Fit",
-      viewUrl: "https://drive.google.com/file/d/1CMgl5KiXkoDG0067PgYc7bBKBJCIOYc3/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1CMgl5KiXkoDG0067PgYc7bBKBJCIOYc3",
-    },
-    {
-      title: "INCEIF FINANCIAL MODULE v3",
-      viewUrl: "https://drive.google.com/file/d/16W2nb08Kl2bBRNq1V0cchKBTBxglyqGo/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=16W2nb08Kl2bBRNq1V0cchKBTBxglyqGo",
-    },
-    {
-      title: "Starting Up Pitch Blueprint",
-      viewUrl: "https://drive.google.com/file/d/1MZ7mSnz3gouJUt4CfmbBuSnTYEDeJ7D_/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1MZ7mSnz3gouJUt4CfmbBuSnTYEDeJ7D_",
-    },
-    {
-      title: "The Blueprint To Impact",
-      viewUrl: "https://drive.google.com/file/d/16YrFmxiv-R-6z26evcKIYE6KTVgxqCVu/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=16YrFmxiv-R-6z26evcKIYE6KTVgxqCVu",
-    },
-    {
-      title: "The Ideation Engine",
-      viewUrl: "https://drive.google.com/file/d/1lj8miNiaBFHV6eUll4eI6K9_Gua7W5oo/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1lj8miNiaBFHV6eUll4eI6K9_Gua7W5oo",
-    },
-    {
-      title: "Traction Flight Module",
-      viewUrl: "https://drive.google.com/file/d/1h5FBbuv6P7mu62DZsqeMKM80QZhMs8px/view?usp=sharing",
-      downloadUrl:
-        "https://drive.google.com/uc?export=download&id=1h5FBbuv6P7mu62DZsqeMKM80QZhMs8px",
-    },
-  ];
+        const data = await response.json();
+        const resources = data.resources || [];
+
+        // Separate resources by type
+        const videoResources = resources
+          .filter((resource) => resource.type === "video")
+          .map((resource) => ({
+            id: resource.id,
+            title: resource.title,
+            viewUrl: resource.videoUrl,
+            downloadUrl: resource.videoUrl,
+            description: resource.description,
+          }));
+
+        const slideResources = resources
+          .filter((resource) => resource.type === "ppt")
+          .map((resource) => ({
+            id: resource.id,
+            title: resource.title,
+            viewUrl: resource.videoUrl,
+            downloadUrl: resource.videoUrl,
+            description: resource.description,
+          }));
+
+        setVideos(videoResources);
+        setSlides(slideResources);
+      } catch (err) {
+        console.error("Error fetching resources:", err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResources();
+  }, []);
 
   // const handlePassportView = () => {
   //   window.open(passportUrl, "_blank");
@@ -295,7 +129,17 @@ export default function Resources() {
 
                 {/* Content */}
                 <div className="p-4 sm:p-6">
-                  {activeTab === "video" && (
+                  {isLoading ? (
+                    <div className="flex items-center justify-center py-12">
+                      <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+                      <span className="ml-3 text-gray-600">Loading resources...</span>
+                    </div>
+                  ) : error ? (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+                      <p className="font-semibold">Error loading resources</p>
+                      <p className="text-sm mt-1">{error}</p>
+                    </div>
+                  ) : activeTab === "video" ? (
                     <div className="video-section py-6 sm:py-8">
                       <div className="text-center mb-6 sm:mb-8">
                         <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-indigo-100 rounded-full mb-4">
@@ -309,75 +153,79 @@ export default function Resources() {
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {videos.map((video) => {
-                          // Extract file ID from Google Drive URL for embedding
-                          const fileId = video.viewUrl.match(/\/d\/([^/]+)/)?.[1];
-                          const embedUrl = fileId
-                            ? `https://drive.google.com/file/d/${fileId}/preview`
-                            : null;
+                      {videos.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">
+                          <p>No video resources available</p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {videos.map((video) => {
+                            // Extract file ID from Google Drive URL for embedding
+                            const fileId = video.viewUrl.match(/\/d\/([^/]+)/)?.[1];
+                            const embedUrl = fileId
+                              ? `https://drive.google.com/file/d/${fileId}/preview`
+                              : null;
 
-                          return (
-                            <div
-                              key={video.title}
-                              className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
-                            >
-                              <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                                  <Video size={18} className="text-indigo-600" />
+                            return (
+                              <div
+                                key={video.id}
+                                className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <Video size={18} className="text-indigo-600" />
+                                  </div>
+                                  <h3 className="text-base sm:text-lg font-semibold text-gray-800">
+                                    {video.title}
+                                  </h3>
                                 </div>
-                                <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-                                  {video.title}
-                                </h3>
-                              </div>
 
-                              {/* Video Player */}
-                              {embedUrl && (
-                                <div className="mb-3 rounded-lg overflow-hidden bg-gray-900 relative">
-                                  {loadingVideos[video.title] !== false && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
-                                      <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-                                    </div>
-                                  )}
-                                  <iframe
-                                    src={embedUrl}
-                                    className="w-full aspect-video"
-                                    allow="autoplay"
-                                    allowFullScreen
-                                    onLoad={() =>
-                                      setLoadingVideos((prev) => ({
-                                        ...prev,
-                                        [video.title]: false,
-                                      }))
-                                    }
-                                  ></iframe>
+                                {/* Video Player */}
+                                {embedUrl && (
+                                  <div className="mb-3 rounded-lg overflow-hidden bg-gray-900 relative">
+                                    {loadingVideos[video.id] !== false && (
+                                      <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+                                        <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+                                      </div>
+                                    )}
+                                    <iframe
+                                      src={embedUrl}
+                                      className="w-full aspect-video"
+                                      allow="autoplay"
+                                      allowFullScreen
+                                      onLoad={() =>
+                                        setLoadingVideos((prev) => ({
+                                          ...prev,
+                                          [video.id]: false,
+                                        }))
+                                      }
+                                    ></iframe>
+                                  </div>
+                                )}
+
+                                <div className="flex flex-wrap gap-2 justify-center">
+                                  <button
+                                    onClick={() => handleVideoView(video.viewUrl)}
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-semibold rounded-md hover:bg-gray-200 transition-all"
+                                  >
+                                    <ExternalLink size={16} />
+                                    <span>View</span>
+                                  </button>
+                                  <button
+                                    onClick={() => handleVideoDownload(video.downloadUrl)}
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 transition-all"
+                                  >
+                                    <ExternalLink size={16} />
+                                    <span>Download</span>
+                                  </button>
                                 </div>
-                              )}
-
-                              <div className="flex flex-wrap gap-2 justify-center">
-                                <button
-                                  onClick={() => handleVideoView(video.viewUrl)}
-                                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-semibold rounded-md hover:bg-gray-200 transition-all"
-                                >
-                                  <ExternalLink size={16} />
-                                  <span>View</span>
-                                </button>
-                                <button
-                                  onClick={() => handleVideoDownload(video.downloadUrl)}
-                                  className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 transition-all"
-                                >
-                                  <ExternalLink size={16} />
-                                  <span>Download</span>
-                                </button>
                               </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
-                  )}
-
-                  {activeTab === "slides" && (
+                  ) : activeTab === "slides" ? (
                     <div className="slides-section py-6 sm:py-8">
                       <div className="text-center mb-6 sm:mb-8">
                         <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-indigo-100 rounded-full mb-4">
@@ -391,81 +239,87 @@ export default function Resources() {
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {slides.map((slide) => {
-                          // Create embed URL from Google Docs/Slides view URL
-                          let embedUrl = null;
-                          if (slide.viewUrl.includes("/presentation/")) {
-                            // For Google Slides
-                            embedUrl = slide.viewUrl.replace("/edit", "/embed");
-                          } else if (slide.viewUrl.includes("/document/")) {
-                            // For Google Docs
-                            embedUrl = slide.viewUrl.replace("/edit", "/preview");
-                          } else if (slide.viewUrl.includes("drive.google.com/file/d/")) {
-                            const fileId = slide.viewUrl.match(/\/d\/([^/]+)/)?.[1];
-                            embedUrl = fileId
-                              ? `https://drive.google.com/file/d/${fileId}/preview`
-                              : null;
-                          }
+                      {slides.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">
+                          <p>No slide resources available</p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {slides.map((slide) => {
+                            // Create embed URL from Google Docs/Slides view URL
+                            let embedUrl = null;
+                            if (slide.viewUrl.includes("/presentation/")) {
+                              // For Google Slides
+                              embedUrl = slide.viewUrl.replace("/edit", "/embed");
+                            } else if (slide.viewUrl.includes("/document/")) {
+                              // For Google Docs
+                              embedUrl = slide.viewUrl.replace("/edit", "/preview");
+                            } else if (slide.viewUrl.includes("drive.google.com/file/d/")) {
+                              const fileId = slide.viewUrl.match(/\/d\/([^/]+)/)?.[1];
+                              embedUrl = fileId
+                                ? `https://drive.google.com/file/d/${fileId}/preview`
+                                : null;
+                            }
 
-                          return (
-                            <div
-                              key={slide.title}
-                              className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
-                            >
-                              <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                                  <FileText size={18} className="text-indigo-600" />
+                            return (
+                              <div
+                                key={slide.id}
+                                className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <FileText size={18} className="text-indigo-600" />
+                                  </div>
+                                  <h3 className="text-base sm:text-lg font-semibold text-gray-800">
+                                    {slide.title}
+                                  </h3>
                                 </div>
-                                <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-                                  {slide.title}
-                                </h3>
-                              </div>
 
-                              {/* Slide/Document Preview */}
-                              {embedUrl && (
-                                <div className="mb-3 rounded-lg overflow-hidden bg-gray-100 relative">
-                                  {loadingSlides[slide.title] !== false && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                                      <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-                                    </div>
-                                  )}
-                                  <iframe
-                                    src={embedUrl}
-                                    className="w-full aspect-video"
-                                    allowFullScreen
-                                    onLoad={() =>
-                                      setLoadingSlides((prev) => ({
-                                        ...prev,
-                                        [slide.title]: false,
-                                      }))
-                                    }
-                                  ></iframe>
+                                {/* Slide/Document Preview */}
+                                {embedUrl && (
+                                  <div className="mb-3 rounded-lg overflow-hidden bg-gray-100 relative">
+                                    {loadingSlides[slide.id] !== false && (
+                                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                                        <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+                                      </div>
+                                    )}
+                                    <iframe
+                                      src={embedUrl}
+                                      className="w-full aspect-video"
+                                      allowFullScreen
+                                      onLoad={() =>
+                                        setLoadingSlides((prev) => ({
+                                          ...prev,
+                                          [slide.id]: false,
+                                        }))
+                                      }
+                                    ></iframe>
+                                  </div>
+                                )}
+
+                                <div className="flex flex-wrap gap-2 justify-center">
+                                  <button
+                                    onClick={() => handleSlideView(slide.viewUrl)}
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-semibold rounded-md hover:bg-gray-200 transition-all"
+                                  >
+                                    <ExternalLink size={16} />
+                                    <span>View</span>
+                                  </button>
+                                  <button
+                                    onClick={() => handleSlideDownload(slide.downloadUrl)}
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 transition-all"
+                                  >
+                                    <ExternalLink size={16} />
+                                    <span>Download</span>
+                                  </button>
                                 </div>
-                              )}
-
-                              <div className="flex flex-wrap gap-2 justify-center">
-                                <button
-                                  onClick={() => handleSlideView(slide.viewUrl)}
-                                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-semibold rounded-md hover:bg-gray-200 transition-all"
-                                >
-                                  <ExternalLink size={16} />
-                                  <span>View</span>
-                                </button>
-                                <button
-                                  onClick={() => handleSlideDownload(slide.downloadUrl)}
-                                  className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 transition-all"
-                                >
-                                  <ExternalLink size={16} />
-                                  <span>Download</span>
-                                </button>
                               </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>

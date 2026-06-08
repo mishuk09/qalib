@@ -208,7 +208,7 @@ const Sidebar = () => {
                       </li>
                       <li className="flex items-center gap-2 hover:text-blue-800 cursor-pointer">
                         <UserRound size={16} />
-                        <a href="/match-me">With any Qalib user</a>
+                        <a href="/all-user">With any Qalib user</a>
                       </li>
                     </ul>
                   )}
