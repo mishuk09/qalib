@@ -33,7 +33,6 @@ export default function Resources() {
             id: resource.id,
             title: resource.title,
             viewUrl: resource.videoUrl,
-            downloadUrl: resource.videoUrl,
             description: resource.description,
           }));
 
@@ -43,7 +42,6 @@ export default function Resources() {
             id: resource.id,
             title: resource.title,
             viewUrl: resource.videoUrl,
-            downloadUrl: resource.videoUrl,
             description: resource.description,
           }));
 
@@ -78,6 +76,21 @@ export default function Resources() {
 
   const handleSlideDownload = (url) => {
     window.open(url, "_blank");
+  };
+
+  // Helper function to extract file ID and generate download URL
+  const getDownloadUrl = (viewUrl) => {
+    if (!viewUrl) return null;
+
+    // Extract file ID from Google Drive URL
+    const fileIdMatch = viewUrl.match(/\/d\/([^/]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      const fileId = fileIdMatch[1];
+      return `https://drive.google.com/uc?export=download&id=${fileId}`;
+    }
+
+    // If it's not a Google Drive URL or already a download URL, return as is
+    return viewUrl;
   };
 
   return (
@@ -212,7 +225,9 @@ export default function Resources() {
                                     <span>View</span>
                                   </button>
                                   <button
-                                    onClick={() => handleVideoDownload(video.downloadUrl)}
+                                    onClick={() =>
+                                      handleVideoDownload(getDownloadUrl(video.viewUrl))
+                                    }
                                     className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 transition-all"
                                   >
                                     <ExternalLink size={16} />
@@ -306,7 +321,9 @@ export default function Resources() {
                                     <span>View</span>
                                   </button>
                                   <button
-                                    onClick={() => handleSlideDownload(slide.downloadUrl)}
+                                    onClick={() =>
+                                      handleSlideDownload(getDownloadUrl(slide.viewUrl))
+                                    }
                                     className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 transition-all"
                                   >
                                     <ExternalLink size={16} />
